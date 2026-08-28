@@ -1,7 +1,7 @@
 # MJ Studio — Intelligence Documentaire RAG d'Entreprise
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20TypeScript%20%7C%20Express%20%7C%20Supabase-blue)](https://github.com/mohamedjerbi2506)
+[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20TypeScript%20%7C%20Express%20%7C%20Supabase-blue)](https://github.com/mohamedjerbi-hub/rag-bedrock-opensearch)
 [![ENI Carthage](https://img.shields.io/badge/Institution-ENI%20Carthage-red)](https://www.enicarthage.rnu.tn/)
 
 > **Knowledge. Retrieved. Answered.**  
@@ -47,7 +47,7 @@
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/mohamedjerbi2506/rag-bedrock-opensearch.git
+git clone https://github.com/mohamedjerbi-hub/rag-bedrock-opensearch.git
 cd rag-bedrock-opensearch
 
 # 2. Installer les dépendances du Backend
@@ -134,7 +134,7 @@ Projet élaboré et réalisé par :
 
 **Mohamed Jerbi — MJ Studio**  
 *Élève Ingénieur — École Nationale d'Ingénieurs de Carthage (ENI Carthage)*  
-- GitHub : [@mohamedjerbi2506](https://github.com/mohamedjerbi2506)  
+- GitHub : [@mohamedjerbi-hub](https://github.com/mohamedjerbi-hub)  
 - Email : `mohamed.jerbi@enicar.ucar.tn`
 
 ---

@@ -421,7 +421,7 @@ export default function LandingPage() {
                   <span>Version 1.0.0 · Production Ready</span>
                 </div>
                 <a
-                  href="https://github.com/mohamedjerbi2506"
+                  href="https://github.com/mohamedjerbi-hub/rag-bedrock-opensearch"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
@@ -443,7 +443,7 @@ export default function LandingPage() {
             <a href="#fonctionnalites" className="hover:text-foreground transition-colors">Fonctionnalités</a>
             <a href="#comment-ca-marche" className="hover:text-foreground transition-colors">Comment ça marche</a>
             <a 
-              href="https://github.com/mohamedjerbi2506" 
+              href="https://github.com/mohamedjerbi-hub/rag-bedrock-opensearch" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-foreground transition-colors inline-flex items-center gap-1"
