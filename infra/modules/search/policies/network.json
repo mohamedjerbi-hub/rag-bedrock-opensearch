@@ -1,0 +1,23 @@
+[
+  {
+    "Description": "Restriction reseau uniquement au VPC de l'application via VPC Endpoint",
+    "Rules": [
+      {
+        "ResourceType": "collection",
+        "Resource": [
+          "collection/${collection_name}"
+        ]
+      },
+      {
+        "ResourceType": "dashboard",
+        "Resource": [
+          "collection/${collection_name}"
+        ]
+      }
+    ],
+    "AllowFromPublic": false,
+    "SourceVPCEs": [
+      "${vpc_endpoint_id}"
+    ]
+  }
+]

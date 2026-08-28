@@ -1,0 +1,9 @@
+{
+  "Rules": [
+    {
+      "ResourceType": "collection",
+      "Resource": ["collection/${collection_name}"]
+    }
+  ],
+  "AWSOwnedKey": true
+}

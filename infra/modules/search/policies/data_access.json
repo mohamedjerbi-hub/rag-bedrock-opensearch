@@ -1,0 +1,38 @@
+[
+  {
+    "Description": "Separation des privileges pour les differents intervenants de l'architecture",
+    "Rules": [
+      {
+        "ResourceType": "collection",
+        "Resource": [
+          "collection/${collection_name}"
+        ],
+        "Permission": [
+          "aoss:CreateCollectionItems",
+          "aoss:DeleteCollectionItems",
+          "aoss:UpdateCollectionItems",
+          "aoss:DescribeCollectionItems"
+        ]
+      },
+      {
+        "ResourceType": "index",
+        "Resource": [
+          "index/${collection_name}/*"
+        ],
+        "Permission": [
+          "aoss:CreateIndex",
+          "aoss:DeleteIndex",
+          "aoss:UpdateIndex",
+          "aoss:DescribeIndex",
+          "aoss:ReadDocument",
+          "aoss:WriteDocument"
+        ]
+      }
+    ],
+    "Principal": [
+      "${admin_arn}",
+      "${ingestion_arn}",
+      "${query_arn}"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+aws_region   = "eu-west-1"
+project_name = "rag"
+environment  = "dev"
+
+budget_limit_usd = 50
+
+# Mettre à jour après le premier déploiement frontend
+cloudfront_allowed_origins = ["https://localhost:5173"]
+
+opensearch_index_name      = "documents-knn"
+embedding_dimensions       = 1024
+bedrock_embedding_model_id = "amazon.titan-embed-text-v2:0"
+bedrock_llm_model_id       = "anthropic.claude-3-haiku-20240307-v1:0"
