@@ -55,7 +55,7 @@ export default function RegisterPage() {
         >
           <div className="mb-10">
             <div className="w-16 h-16 rounded-2xl bg-secondary border border-border/50 flex items-center justify-center shadow-lg mb-8 overflow-hidden">
-              <img src="/logo.png" alt="SmartDocs Logo" className="w-12 h-12 object-contain" />
+              <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-12 h-12 object-contain" />
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-foreground mb-3">
               Créer un compte

@@ -29,12 +29,10 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-md">
         <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground font-bold font-mono text-xs flex items-center justify-center tracking-tighter shadow-sm group-hover:scale-105 transition-transform">
-              MJ
-            </div>
+            <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-8 h-8 rounded-xl shadow-sm group-hover:scale-105 transition-transform" />
             <div className="flex flex-col">
               <span className="font-bold text-base tracking-tight text-foreground leading-none">MJ Studio</span>
-              <span className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mt-0.5">ENI Carthage</span>
+              <span className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mt-0.5">ENI Carthage × Smartovate</span>
             </div>
           </Link>
 
@@ -133,7 +131,7 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 sm:px-6 max-w-5xl text-center space-y-8">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-mono font-semibold shadow-sm">
               <GraduationCap size={14} />
-              <span>Projet Académique ENI Carthage · Mohamed Jerbi</span>
+              <span>Stage 2ème Année Cycle Ingénieur ENI Carthage × Smartovate · Mohamed Jerbi</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15] max-w-4xl mx-auto">
@@ -397,21 +395,19 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
             <div className="p-8 sm:p-10 rounded-3xl border border-border bg-card shadow-lg space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground font-bold font-mono text-base flex items-center justify-center shadow-md">
-                  MJ
-                </div>
+                <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-12 h-12 rounded-2xl shadow-md" />
                 <div>
                   <h2 className="text-xl sm:text-2xl font-bold text-foreground">MJ Studio — Mohamed Jerbi</h2>
-                  <p className="text-xs text-primary font-mono font-semibold">École Nationale d'Ingénieurs de Carthage (ENI Carthage)</p>
+                  <p className="text-xs text-primary font-mono font-semibold">Stage 2ème Année Cycle Ingénieur · ENI Carthage × Smartovate</p>
                 </div>
               </div>
 
               <div className="space-y-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 <p>
-                  Le projet <strong className="text-foreground">MJ Studio RAG</strong> a été conçu et développé par <strong className="text-foreground">Mohamed Jerbi</strong> dans le cadre académique de l'ENI Carthage. Il répond aux problématiques majeures d'accès à l'information d'entreprise par l'intelligence artificielle.
+                  Le projet <strong className="text-foreground">MJ Studio RAG</strong> a été conçu et développé par <strong className="text-foreground">Mohamed Jerbi</strong> dans le cadre de son <strong className="text-foreground">stage universitaire de 2ème année Cycle Ingénieur à l'École Nationale d'Ingénieurs de Carthage (ENI Carthage)</strong>, effectué au sein de l'entreprise <strong className="text-foreground">Smartovate</strong>.
                 </p>
                 <p>
-                  Grâce à une combinaison rigoureuse de recherche vectorielle sémantique, de réordonnancement par modèle de reranking et de garde-fous anti-hallucinations, la plateforme garantit que chaque réponse générée s'appuie strictement sur des données documentaires vérifiables.
+                  Grâce à une combinaison rigoureuse de recherche vectorielle sémantique, de réordonnancement par modèle de reranking (Cohere Rerank) et de garde-fous anti-hallucinations, la plateforme garantit que chaque réponse générée s'appuie strictement sur des données documentaires d'entreprise vérifiables.
                 </p>
               </div>
 

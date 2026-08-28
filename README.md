@@ -5,7 +5,8 @@
 [![ENI Carthage](https://img.shields.io/badge/Institution-ENI%20Carthage-red)](https://www.enicarthage.rnu.tn/)
 
 > **Knowledge. Retrieved. Answered.**  
-> Application d'intelligence documentaire d'entreprise basée sur l'architecture **Retrieval-Augmented Generation (RAG)** avec réponses synthétisées, citations vérifiables, recherche sémantique hybride et contrôle d'accès RBAC.
+> Application d'intelligence documentaire d'entreprise basée sur l'architecture **Retrieval-Augmented Generation (RAG)** avec réponses synthétisées, citations vérifiables, recherche sémantique hybride et contrôle d'accès RBAC.  
+> Développée par **Mohamed Jerbi** dans le cadre du **stage universitaire de 2ème année Cycle Ingénieur (ENI Carthage)** au sein de l'entreprise **Smartovate**.
 
 ![Aperçu de la Landing Page MJ Studio RAG](./frontend/public/app-preview.png)
 
@@ -133,7 +134,8 @@ rag-bedrock-opensearch/
 Projet élaboré et réalisé par :
 
 **Mohamed Jerbi — MJ Studio**  
-*Élève Ingénieur — École Nationale d'Ingénieurs de Carthage (ENI Carthage)*  
+*Élève Ingénieur (2ème Année Cycle Ingénieur — ENI Carthage)*  
+*Stage universitaire au sein de l'entreprise **Smartovate***  
 - GitHub : [@mohamedjerbi-hub](https://github.com/mohamedjerbi-hub)  
 - Email : `mohamed.jerbi@enicar.ucar.tn`
 

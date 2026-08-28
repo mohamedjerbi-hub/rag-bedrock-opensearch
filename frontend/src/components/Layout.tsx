@@ -44,9 +44,7 @@ export default function Layout() {
               {/* Logo MJ Studio Header */}
               <div className="px-4 py-4 flex items-center justify-between shrink-0 border-b border-border/50">
                 <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/chat')}>
-                  <div className="w-7 h-7 rounded-lg bg-primary text-primary-foreground font-bold font-mono text-xs flex items-center justify-center tracking-tighter shadow-sm">
-                    MJ
-                  </div>
+                  <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-7 h-7 rounded-lg shadow-sm" />
                   <div>
                     <h1 className="font-bold text-foreground tracking-tight text-sm leading-tight">MJ Studio</h1>
                     <p className="text-[10px] text-muted-foreground font-mono leading-none">RAG Engine</p>

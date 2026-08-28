@@ -13,13 +13,11 @@ export default function AboutPage() {
         {/* Header */}
         <div className="space-y-3 border-b border-border pb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground font-bold font-mono text-sm flex items-center justify-center">
-              MJ
-            </div>
+            <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-10 h-10 rounded-xl shadow-sm" />
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-foreground">MJ Studio — RAG Engine</h1>
-              <p className="text-xs text-muted-foreground font-mono">
-                Fondateur : Mohamed Jerbi · Élève Ingénieur ENI Carthage 2026
+              <p className="text-xs text-primary font-mono font-semibold">
+                Stage 2ème Année Cycle Ingénieur · ENI Carthage × Smartovate · Mohamed Jerbi
               </p>
             </div>
           </div>
@@ -29,7 +27,7 @@ export default function AboutPage() {
         <div className="space-y-4 text-sm leading-relaxed text-foreground">
           <h2 className="text-lg font-bold tracking-tight">À propos du projet</h2>
           <p className="text-muted-foreground">
-            <strong>MJ Studio RAG Engine</strong> est une solution logicielle d'intelligence artificielle documentaire d'entreprise. Elle permet d'interroger en langage naturel une base de connaissances complexe (PDF, DOCX, XLSX, TXT, MD) avec une précision absolue, sans risque d'hallucination.
+            <strong>MJ Studio RAG Engine</strong> a été développé par <strong>Mohamed Jerbi</strong> dans le cadre de son <strong>stage universitaire de 2ème année Cycle Ingénieur à l'École Nationale d'Ingénieurs de Carthage (ENI Carthage)</strong>, au sein de l'entreprise <strong>Smartovate</strong>. Il s'agit d'une solution d'intelligence artificielle documentaire d'entreprise permettant d'interroger en langage naturel une base de connaissances complexe (PDF, DOCX, XLSX, TXT, MD) avec une précision absolue et des citations vérifiables.
           </p>
         </div>
 

@@ -76,9 +76,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm space-y-8">
           {/* Logo & Header */}
           <div className="text-center space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground font-bold font-mono text-base flex items-center justify-center mx-auto shadow-sm">
-              MJ
-            </div>
+            <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-12 h-12 rounded-2xl mx-auto shadow-sm" />
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-foreground">
                 {requires2FA ? 'Vérification 2FA' : 'Connexion MJ Studio'}
@@ -86,7 +84,7 @@ export default function LoginPage() {
               <p className="text-xs text-muted-foreground mt-1">
                 {requires2FA
                   ? 'Saisissez le code à 6 chiffres de votre application 2FA.'
-                  : 'Accédez à votre assistant RAG d\'entreprise.'}
+                  : 'Accédez à votre assistant RAG d\'entreprise (Smartovate).'}
               </p>
             </div>
           </div>
