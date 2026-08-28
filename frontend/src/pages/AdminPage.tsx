@@ -152,6 +152,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'users' | 'stats'>('users');
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [stats, setStats] = useState<StatsData | null>(null);
+  const [gapStats, setGapStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [updatingUser, setUpdatingUser] = useState<string | null>(null);
 
@@ -164,10 +165,12 @@ export default function AdminPage() {
     Promise.all([
       api.getUsers().catch(() => ({ users: [] })),
       api.get<StatsData>('/stats').catch(() => null),
+      api.getGapStats().catch(() => null),
     ])
-      .then(([usersRes, statsRes]) => {
+      .then(([usersRes, statsRes, gapStatsRes]) => {
         setUsers(usersRes.users || []);
         if (statsRes) setStats(statsRes);
+        if (gapStatsRes) setGapStats(gapStatsRes);
       })
       .finally(() => setLoading(false));
   };
@@ -562,6 +565,43 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+
+          {/* Top 10 Missing Topics (Grouped Gap Reports) */}
+          {gapStats?.topMissingTopics && gapStats.topMissingTopics.length > 0 && (
+            <div className="p-6 rounded-2xl border border-amber-500/30 bg-amber-500/5 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-base text-amber-600 flex items-center gap-2">
+                  <AlertCircle size={18} /> Top 10 des Sujets Manquants (Questions Regroupées)
+                </h3>
+                <span className="text-xs font-mono font-bold text-amber-600">
+                  Total Signalements: {gapStats.totalGaps}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Ce classement regroupe automatiquement les questions similaires posées par les utilisateurs pour prioriser les documents à ajouter.
+              </p>
+              <div className="space-y-2">
+                {gapStats.topMissingTopics.map((topic: any, idx: number) => (
+                  <div key={idx} className="p-3 rounded-xl bg-card border border-border flex items-center justify-between text-xs gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-600 font-mono font-bold text-xs flex items-center justify-center shrink-0">
+                        #{idx + 1}
+                      </span>
+                      <p className="font-bold text-foreground truncate">{topic.primary_question}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 font-bold font-mono text-[11px]">
+                        {topic.similar_count} demandeur{topic.similar_count > 1 ? 's' : ''}
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-secondary text-muted-foreground border border-border">
+                        {topic.priority}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

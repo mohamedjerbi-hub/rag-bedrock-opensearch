@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
-import { MessageSquare, FileText, BarChart3, Eye, PanelLeftClose, PanelLeft, LogOut, Info } from 'lucide-react';
+import { MessageSquare, FileText, BarChart3, Eye, PanelLeftClose, PanelLeft, LogOut, Info, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SidebarChatHistory from './SidebarChatHistory';
 import { ThemeToggle } from './ThemeToggle';
@@ -17,6 +17,7 @@ export default function Layout() {
   const navItems = [
     { to: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'editor', 'reader', 'user', 'auditor'] },
     { to: '/documents', label: 'Documents', icon: FileText, roles: ['admin', 'editor'] },
+    { to: '/admin/signalements', label: 'Signalements', icon: AlertCircle, roles: ['admin', 'editor'] },
     { to: '/admin', label: 'Dashboard', icon: BarChart3, roles: ['admin'] },
     { to: '/audit', label: 'Audit', icon: Eye, roles: ['admin', 'auditor'] },
   ].filter(item => user && item.roles.includes(user.role));

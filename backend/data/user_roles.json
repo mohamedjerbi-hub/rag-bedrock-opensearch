@@ -26,5 +26,26 @@
     "active": true,
     "assigned_by": "admin@smartdocs.com",
     "updated_at": "2026-08-27T18:00:00.000Z"
+  },
+  "admin@smartdocs.ai": {
+    "email": "admin@smartdocs.ai",
+    "role": "admin",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-08-28T02:35:12.941Z"
+  },
+  "editor@smartdocs.ai": {
+    "email": "editor@smartdocs.ai",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-08-28T02:35:12.946Z"
+  },
+  "reader@smartdocs.ai": {
+    "email": "reader@smartdocs.ai",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-08-28T02:35:12.948Z"
   }
 }

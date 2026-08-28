@@ -17,6 +17,7 @@ const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AuditPage = lazy(() => import('./pages/AuditPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const GapManagementPage = lazy(() => import('./pages/GapManagementPage'));
 
 function PageLoader() {
   return (
@@ -60,6 +61,7 @@ export default function App() {
                 <Route path="chat" element={<ChatPage />} />
                 <Route path="documents" element={<Guard roles={['admin', 'editor']}><DocumentsPage /></Guard>} />
                 <Route path="admin" element={<Guard roles={['admin']}><AdminPage /></Guard>} />
+                <Route path="admin/signalements" element={<Guard roles={['admin', 'editor']}><GapManagementPage /></Guard>} />
                 <Route path="audit" element={<Guard roles={['admin', 'auditor']}><AuditPage /></Guard>} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>

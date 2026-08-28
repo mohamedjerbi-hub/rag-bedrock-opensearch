@@ -1,5 +1,40 @@
 [
   {
+    "query_id": "cafebbe4-62ac-42e6-9f10-eb1ecf6558fa",
+    "question": "hello",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 8532,
+    "user": "reader@smartdocs.ai",
+    "timestamp": "2026-08-28T02:49:54.897Z",
+    "sources": []
+  },
+  {
+    "query_id": "7b5c35c2-b9e3-4cde-a614-56cdeb8cf59e",
+    "question": "Comment soumettre une note de frais ?",
+    "answer": "Les notes de frais doivent être soumises dans les 60 jours suivant la dépense.\n\n- Les notes de frais sont déposées sur le portail finance avant le 5 du mois suivant.\n- Les frais doivent être soumis dans les 60 jours suivant la dépense ; au-delà, ils ne sont plus remboursables.\n- Les notes de frais suivent le barème publié par la Direction financière.\n- Les règles de validation hiérarchique sont les suivantes :\n- Jusqu'à 500 € : validation par le manager direct du salarié.\n- Au-delà de 500 € : validation obligatoire par Karim Belhadj, Directeur Financier, en plus de celle du manager direct.",
+    "latency_ms": 50717,
+    "user": "reader@smartdocs.ai",
+    "timestamp": "2026-08-28T02:45:02.538Z",
+    "sources": [
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.791
+      },
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.622
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.452
+      },
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.437
+      }
+    ]
+  },
+  {
     "query_id": "54492a0e-22d9-4e94-a683-a76fad9da29d",
     "question": "Qui contacter pour un problème IT ?",
     "answer": "Vous pouvez contacter le support informatique de Northwind Analytics pour les problèmes IT.\n\n- Le support est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, appelez le 0800 112 112.",

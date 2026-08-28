@@ -14,6 +14,18 @@ import { securityHeadersMiddleware, authRateLimiter, apiRateLimiter, promptInjec
 import { generateTOTPSetup, verifyTOTPCode } from '../services/totpService';
 import { getUserRoleRecord, setUserRole, setUserStatus, getAllUserRoleRecords, UserRole } from '../services/roleStore';
 import { getCachedQuery, setCachedQuery, clearQueryCache } from '../services/queryCache';
+import { 
+  createKnowledgeGap, 
+  getKnowledgeGaps, 
+  getKnowledgeGapById, 
+  updateKnowledgeGap, 
+  deleteKnowledgeGap, 
+  addGapComment, 
+  getGapComments, 
+  getKnowledgeGapStats, 
+  checkUserGapRateLimit,
+  createGapSchema
+} from '../services/knowledgeGapStore';
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 const envResult = dotenv.config();
@@ -730,6 +742,144 @@ app.post('/remarks', authenticate, (req: Request, res: Response) => {
   }
   engine.addRemark(question.trim());
   res.status(201).json({ status: 'added' });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// KNOWLEDGE GAPS & REPORTING ENDPOINTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+// POST /api/gaps - User submits a gap report (Zod validated, 5 req/hr rate-limited)
+app.post('/api/gaps', authenticate, (req: Request, res: Response) => {
+  const user = (req as any).user;
+  if (!user || !user.email) {
+    return apiError(res, 401, 'UNAUTHORIZED', 'Authentification requise.');
+  }
+
+  // Server-side Rate Limit check (5 reports per user per hour)
+  if (checkUserGapRateLimit(user.email)) {
+    logAuditEvent('RATE_LIMIT_EXCEEDED', 'warning', user.email, { action: 'knowledge_gap_report' });
+    return apiError(res, 429, 'RATE_LIMIT_EXCEEDED', 'Limite de 5 signalements par heure atteinte. Veuillez réessayer plus tard.');
+  }
+
+  // Zod validation
+  const parseResult = createGapSchema.safeParse(req.body);
+  if (!parseResult.success) {
+    const errorMsg = parseResult.error.issues.map(i => i.message).join(' ');
+    return apiError(res, 400, 'VALIDATION_ERROR', errorMsg);
+  }
+
+  const newGap = createKnowledgeGap({
+    user_id: user.id || user.email,
+    user_email: user.email,
+    user_name: user.name || user.email.split('@')[0],
+    ...parseResult.data,
+  });
+
+  logAuditEvent('DOC_UPLOAD', 'info', user.email, { event: 'knowledge_gap_created', ticket: newGap.ticket_number });
+
+  res.status(201).json({
+    message: `Signalement enregistré sous le ticket ${newGap.ticket_number}`,
+    ticket_number: newGap.ticket_number,
+    gap: newGap,
+  });
+});
+
+// GET /api/gaps - Get gaps (Strict RLS: standard users see ONLY their own gaps; Editor/Admin see all)
+app.get('/api/gaps', authenticate, (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const isElevated = user.role === 'admin' || user.role === 'editor';
+
+  const filters: any = {};
+
+  if (!isElevated) {
+    // RLS Enforcement: Force user_email filter for non-editors/admins
+    filters.user_email = user.email;
+  } else {
+    if (req.query.status) filters.status = req.query.status as any;
+    if (req.query.priority) filters.priority = req.query.priority as any;
+    if (req.query.issue_type) filters.issue_type = req.query.issue_type as any;
+    if (req.query.unassigned === 'true') filters.unassigned_only = true;
+    if (req.query.search) filters.search = String(req.query.search);
+  }
+
+  const items = getKnowledgeGaps(filters);
+  res.json({ items });
+});
+
+// GET /api/gaps/stats/summary - Summary metrics for Admin/Editor
+app.get('/api/gaps/stats/summary', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+  res.json(getKnowledgeGapStats());
+});
+
+// GET /api/notifications/my-resolutions - User notifications for resolved tickets
+app.get('/api/notifications/my-resolutions', authenticate, (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const gaps = getKnowledgeGaps({ user_email: user.email, status: 'resolu' }).filter(g => g.notify_user);
+  res.json({ items: gaps });
+});
+
+// GET /api/gaps/:id - Get single gap detail with comments
+app.get('/api/gaps/:id', authenticate, (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const gap = getKnowledgeGapById(req.params.id);
+
+  if (!gap) {
+    return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
+  }
+
+  const isElevated = user.role === 'admin' || user.role === 'editor';
+  if (!isElevated && gap.user_email.toLowerCase() !== user.email.toLowerCase()) {
+    return apiError(res, 403, 'FORBIDDEN', 'Vous n\'avez pas accès à ce signalement.');
+  }
+
+  const comments = isElevated ? getGapComments(gap.id) : [];
+  res.json({ gap, comments });
+});
+
+// PATCH /api/gaps/:id - Update status/assigned_to/resolution_note (Editor/Admin only)
+app.patch('/api/gaps/:id', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const updated = updateKnowledgeGap(req.params.id, req.body, user.email);
+
+  if (!updated) {
+    return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
+  }
+
+  logAuditEvent('USER_ROLE_CHANGE', 'info', user.email, { action: 'update_gap_status', ticket: updated.ticket_number, status: updated.status });
+  res.json({ gap: updated });
+});
+
+// DELETE /api/gaps/:id - Delete gap report (Admin only)
+app.delete('/api/gaps/:id', authenticate, requireRoles(['admin']), (req: Request, res: Response) => {
+  const success = deleteKnowledgeGap(req.params.id);
+  if (!success) {
+    return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
+  }
+  res.json({ success: true, message: 'Signalement supprimé.' });
+});
+
+// POST /api/gaps/:id/comments - Add internal comment (Editor/Admin only)
+app.post('/api/gaps/:id/comments', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const { body } = req.body;
+
+  if (!body || typeof body !== 'string' || body.trim().length === 0) {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Le contenu du commentaire est obligatoire.');
+  }
+
+  const gap = getKnowledgeGapById(req.params.id);
+  if (!gap) {
+    return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
+  }
+
+  const comment = addGapComment({
+    gap_id: gap.id,
+    author_email: user.email,
+    author_name: user.name || user.email.split('@')[0],
+    body,
+  });
+
+  res.status(201).json({ comment });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

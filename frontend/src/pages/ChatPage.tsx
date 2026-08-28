@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader2, Copy, Check, FileText, X, Square, Eye, ThumbsUp, ThumbsDown, RefreshCw, Sparkles } from 'lucide-react';
+import { Send, Bot, User, Loader2, Copy, Check, FileText, X, Square, Eye, ThumbsUp, ThumbsDown, RefreshCw, Sparkles, PlusCircle, CheckCircle2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { api, Source } from '../api/client';
 import toast from 'react-hot-toast';
 import { useChat, Message } from '../contexts/ChatContext';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
+import KnowledgeGapModal from '../components/KnowledgeGapModal';
+import GapNotificationBanner from '../components/GapNotificationBanner';
 
 export default function ChatPage() {
   const { activeId, active, updateConversation } = useChat();
@@ -14,9 +16,59 @@ export default function ChatPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<Record<string, 'up' | 'down'>>({});
   const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(null);
-  
+
   // Source detail drawer
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+
+  // Gap Report Modal State
+  const [isGapModalOpen, setIsGapModalOpen] = useState(false);
+  const [modalGapQuestion, setModalGapQuestion] = useState('');
+  const [modalGapAnswer, setModalGapAnswer] = useState('');
+  const [modalGapSources, setModalGapSources] = useState<any[]>([]);
+  const [myResolvedGaps, setMyResolvedGaps] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchMyResolutions();
+  }, []);
+
+  const fetchMyResolutions = async () => {
+    try {
+      const res = await api.getMyResolutions();
+      setMyResolvedGaps(res.items || []);
+    } catch (_) { }
+  };
+
+  const handleOpenGapModal = (msg?: Message, userQuestion?: string) => {
+    setModalGapQuestion(userQuestion || '');
+    setModalGapAnswer(msg?.content || '');
+    setModalGapSources(
+      msg?.sources?.map(s => ({
+        doc_name: s.document_name,
+        chunk: s.excerpt,
+        score: s.score,
+      })) || []
+    );
+    setIsGapModalOpen(true);
+  };
+
+  const isGapDetected = (msg: Message) => {
+    if (msg.role !== 'assistant' || !msg.content) return false;
+    const refusalPhrases = [
+      'pas présente dans les documents',
+      'non présente dans les documents',
+      'pas trouvée dans les documents',
+      'non trouvée',
+      'ne trouve pas cette information',
+      'information n\'est pas présente',
+      'pas mentionnée',
+    ];
+    const hasRefusal = refusalPhrases.some(p => msg.content.toLowerCase().includes(p));
+    const noSources = !msg.sources || msg.sources.length === 0;
+    const maxScore = msg.sources && msg.sources.length > 0 ? Math.max(...msg.sources.map(s => s.score)) : 0;
+    const lowScore = maxScore < 0.35;
+
+    return hasRefusal || noSources || lowScore;
+  };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -58,7 +110,7 @@ export default function ChatPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!active) return;
-    
+
     const question = input.trim();
     if (!question || isLoading) return;
 
@@ -145,7 +197,7 @@ export default function ChatPage() {
             <div className="w-2 h-2 rounded-full bg-primary" />
             <span className="font-semibold text-sm tracking-tight text-foreground">Assistant RAG MJ Studio</span>
             <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border">
-              v2.4 Pro
+              v1.2 Pro
             </span>
           </div>
         </header>
@@ -153,6 +205,38 @@ export default function ChatPage() {
         {/* Conversation Stream */}
         <div className="flex-1 overflow-y-auto px-4 md:px-8 py-6">
           <div className="max-w-3xl mx-auto space-y-6">
+
+            {/* Resolved Gap Notification Banner */}
+            {myResolvedGaps.length > 0 && (
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-foreground space-y-2.5 animate-fadeIn shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs">
+                    <CheckCircle2 size={16} />
+                    <span>Un signalement a été résolu par l'équipe ({myResolvedGaps[0].ticket_number})</span>
+                  </div>
+                  <button
+                    onClick={() => setMyResolvedGaps(prev => prev.slice(1))}
+                    className="p-1 text-muted-foreground hover:text-foreground"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <strong>Question initiale :</strong> "{myResolvedGaps[0].question}"<br />
+                  <strong>Note de résolution :</strong> {myResolvedGaps[0].resolution_note || 'La base documentaire a été enrichie.'}
+                </p>
+                <button
+                  onClick={() => {
+                    const q = myResolvedGaps[0].question;
+                    setMyResolvedGaps(prev => prev.slice(1));
+                    setInput(q);
+                  }}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition-all shadow-sm inline-flex items-center gap-1.5"
+                >
+                  <RefreshCw size={13} /> Reposer ma question
+                </button>
+              </div>
+            )}
             {(!active || active.messages.length === 0) && (
               <div className="flex flex-col items-center justify-center text-center py-16 space-y-6">
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
@@ -201,11 +285,10 @@ export default function ChatPage() {
                   )}
 
                   <div className={`flex flex-col gap-2 max-w-[85%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
-                    <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.role === 'user'
+                    <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
                         ? 'bg-secondary border border-border text-foreground font-medium rounded-br-none'
                         : 'bg-card border border-border text-foreground shadow-sm rounded-bl-none'
-                    }`}>
+                      }`}>
                       {msg.role === 'assistant' && isStreaming && msg.content === '' ? (
                         <div className="flex items-center gap-2.5 text-muted-foreground py-1">
                           <Loader2 size={15} className="animate-spin text-primary" />
@@ -220,15 +303,14 @@ export default function ChatPage() {
                                   const idx = parseInt(props.href.replace('#cite-', '')) - 1;
                                   const source = msg.sources?.[idx];
                                   if (!source) return <span>[{idx + 1}]</span>;
-                                  
+
                                   return (
-                                    <button 
-                                      onClick={() => setSelectedSource(source)} 
-                                      className={`inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold rounded mx-0.5 align-text-top transition-colors ${
-                                        selectedSource?.document_id === source.document_id 
-                                        ? 'bg-primary text-primary-foreground' 
-                                        : 'bg-primary/15 text-primary hover:bg-primary hover:text-primary-foreground'
-                                      }`}
+                                    <button
+                                      onClick={() => setSelectedSource(source)}
+                                      className={`inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold rounded mx-0.5 align-text-top transition-colors ${selectedSource?.document_id === source.document_id
+                                          ? 'bg-primary text-primary-foreground'
+                                          : 'bg-primary/15 text-primary hover:bg-primary hover:text-primary-foreground'
+                                        }`}
                                       title={source.document_name}
                                     >
                                       {idx + 1}
@@ -281,6 +363,15 @@ export default function ChatPage() {
                             >
                               <ThumbsDown size={14} />
                             </button>
+                            <div className="h-3 w-[1px] bg-border mx-1" />
+                            <button
+                              onClick={() => handleOpenGapModal(msg, lastUserMsg)}
+                              className="p-1 hover:text-amber-600 transition-colors rounded text-muted-foreground flex items-center gap-1 text-[11px] font-medium"
+                              title="Signaler un manque d'information"
+                            >
+                              <PlusCircle size={13} className="text-amber-500" />
+                              <span>Réponse incomplète ?</span>
+                            </button>
                           </div>
 
                           {msg.cached ? (
@@ -294,6 +385,13 @@ export default function ChatPage() {
                           ) : null}
                         </div>
 
+                        {/* Automatic Gap Notification Banner */}
+                        {msg.role === 'assistant' && !isStreaming && isGapDetected(msg) && (
+                          <GapNotificationBanner
+                            onOpenReportModal={() => handleOpenGapModal(msg, lastUserMsg)}
+                          />
+                        )}
+
                         {/* Source Chips */}
                         {msg.sources && msg.sources.length > 0 && (
                           <div className="flex flex-wrap gap-2 pt-2 border-t border-border/40">
@@ -301,11 +399,10 @@ export default function ChatPage() {
                               <button
                                 key={i}
                                 onClick={() => setSelectedSource(src)}
-                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border transition-colors ${
-                                  selectedSource?.document_name === src.document_name
+                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedSource?.document_name === src.document_name
                                     ? 'bg-primary/10 border-primary text-primary font-semibold'
                                     : 'bg-secondary/40 border-border text-muted-foreground hover:text-foreground'
-                                }`}
+                                  }`}
                               >
                                 <FileText size={12} />
                                 <span className="truncate max-w-[160px]">{src.document_name}</span>
@@ -333,7 +430,7 @@ export default function ChatPage() {
         {/* Stop Generating Floating Action */}
         {isLoading && (
           <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10">
-            <button 
+            <button
               onClick={stopGenerating}
               className="flex items-center gap-2 px-3.5 py-1.5 bg-background border border-border text-foreground text-xs font-semibold rounded-full shadow-md hover:bg-secondary transition-all"
             >
@@ -384,14 +481,14 @@ export default function ChatPage() {
             <h3 className="font-semibold text-xs uppercase tracking-wider text-foreground flex items-center gap-2">
               <FileText size={14} className="text-primary" /> Source Citée
             </h3>
-            <button 
+            <button
               onClick={() => setSelectedSource(null)}
               className="p-1 rounded hover:bg-secondary text-muted-foreground transition-colors"
             >
               <X size={14} />
             </button>
           </div>
-          
+
           <div className="p-5 overflow-y-auto flex-1 space-y-5 text-xs">
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase mb-1">Fichier Source</p>
@@ -402,13 +499,13 @@ export default function ChatPage() {
                 </span>
               ) : null}
             </div>
-            
+
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase mb-1.5">Score de Pertinence</p>
               <div className="flex items-center gap-3">
                 <div className="flex-1 bg-secondary rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className="bg-primary h-full rounded-full" 
+                  <div
+                    className="bg-primary h-full rounded-full"
                     style={{ width: `${Math.round(selectedSource.score * 100)}%` }}
                   />
                 </div>
@@ -422,9 +519,9 @@ export default function ChatPage() {
                 "{selectedSource.excerpt}"
               </div>
             </div>
-            
+
             <div className="pt-3">
-              <button 
+              <button
                 className="w-full py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl font-medium transition-colors flex items-center justify-center gap-1.5"
                 onClick={() => setSelectedDocumentId(selectedSource.document_id)}
               >
@@ -434,6 +531,19 @@ export default function ChatPage() {
           </div>
         </div>
       )}
+
+      <KnowledgeGapModal
+        isOpen={isGapModalOpen}
+        onClose={() => setIsGapModalOpen(false)}
+        initialQuestion={modalGapQuestion}
+        initialAnswer={modalGapAnswer}
+        initialSources={modalGapSources}
+        conversationId={activeId}
+        onSubmitted={() => {
+          setIsGapModalOpen(false);
+          toast.success('Votre signalement a été transmis à l\'équipe éditoriale.');
+        }}
+      />
     </div>
   );
 }

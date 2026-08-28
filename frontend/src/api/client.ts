@@ -37,6 +37,55 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 export const api = {
+  createKnowledgeGap: (body: any) =>
+    fetch(`${API_BASE}/api/gaps`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(body),
+    }).then(r => handleResponse<any>(r)),
+
+  getKnowledgeGaps: (params?: Record<string, string>) => {
+    const q = params ? '?' + new URLSearchParams(params).toString() : '';
+    return fetch(`${API_BASE}/api/gaps${q}`, {
+      headers: getHeaders(),
+    }).then(r => handleResponse<any>(r));
+  },
+
+  getKnowledgeGapById: (id: string) =>
+    fetch(`${API_BASE}/api/gaps/${id}`, {
+      headers: getHeaders(),
+    }).then(r => handleResponse<any>(r)),
+
+  updateKnowledgeGap: (id: string, updates: any) =>
+    fetch(`${API_BASE}/api/gaps/${id}`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify(updates),
+    }).then(r => handleResponse<any>(r)),
+
+  deleteKnowledgeGap: (id: string) =>
+    fetch(`${API_BASE}/api/gaps/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    }).then(r => handleResponse<any>(r)),
+
+  addGapComment: (id: string, body: string) =>
+    fetch(`${API_BASE}/api/gaps/${id}/comments`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ body }),
+    }).then(r => handleResponse<any>(r)),
+
+  getGapStats: () =>
+    fetch(`${API_BASE}/api/gaps/stats/summary`, {
+      headers: getHeaders(),
+    }).then(r => handleResponse<any>(r)),
+
+  getMyResolutions: () =>
+    fetch(`${API_BASE}/api/notifications/my-resolutions`, {
+      headers: getHeaders(),
+    }).then(r => handleResponse<any>(r)),
+
   login: (body: any) =>
     fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
