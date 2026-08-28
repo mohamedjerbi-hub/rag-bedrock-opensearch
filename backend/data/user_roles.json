@@ -1,0 +1,30 @@
+{
+  "admin@smartdocs.com": {
+    "email": "admin@smartdocs.com",
+    "role": "admin",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-08-27T18:00:00.000Z"
+  },
+  "editor@smartdocs.com": {
+    "email": "editor@smartdocs.com",
+    "role": "editor",
+    "active": true,
+    "assigned_by": "admin@smartdocs.com",
+    "updated_at": "2026-08-27T18:00:00.000Z"
+  },
+  "auditor@smartdocs.com": {
+    "email": "auditor@smartdocs.com",
+    "role": "auditor",
+    "active": true,
+    "assigned_by": "admin@smartdocs.com",
+    "updated_at": "2026-08-27T18:00:00.000Z"
+  },
+  "user@smartdocs.com": {
+    "email": "user@smartdocs.com",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "admin@smartdocs.com",
+    "updated_at": "2026-08-27T18:00:00.000Z"
+  }
+}

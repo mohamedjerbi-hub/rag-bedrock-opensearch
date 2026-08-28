@@ -1,0 +1,62 @@
+[
+  {
+    "document_id": "df543acd-0000-4398-a384-d6a382059ef4",
+    "name": "faq_support.md",
+    "is_folder": false,
+    "parent_id": null,
+    "size_bytes": 701,
+    "mime_type": "text/markdown",
+    "status": "indexed",
+    "chunk_count": 1,
+    "uploaded_by": "system",
+    "uploaded_at": "2026-08-24T23:06:42.807Z"
+  },
+  {
+    "document_id": "74a23b42-697f-4aa8-aa43-f00eef8d0055",
+    "name": "notes_de_frais.xlsx",
+    "is_folder": false,
+    "parent_id": null,
+    "size_bytes": 9071,
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "status": "indexed",
+    "chunk_count": 8,
+    "uploaded_by": "system",
+    "uploaded_at": "2026-08-24T23:06:44.006Z"
+  },
+  {
+    "document_id": "0f3d429b-bbe8-489e-8ff7-55b9c687a913",
+    "name": "politique_rh.pdf",
+    "is_folder": false,
+    "parent_id": null,
+    "size_bytes": 47911,
+    "mime_type": "application/pdf",
+    "status": "indexed",
+    "chunk_count": 5,
+    "uploaded_by": "system",
+    "uploaded_at": "2026-08-24T23:06:46.237Z"
+  },
+  {
+    "document_id": "f2e7caf2-aa31-44a4-b346-cd184da31022",
+    "name": "questions_de_test.md",
+    "is_folder": false,
+    "parent_id": null,
+    "size_bytes": 7249,
+    "mime_type": "text/markdown",
+    "status": "indexed",
+    "chunk_count": 12,
+    "uploaded_by": "system",
+    "uploaded_at": "2026-08-24T23:06:49.799Z"
+  },
+  {
+    "document_id": "d3456157-38cb-43be-bd14-3397616e05db",
+    "name": "securite_it.docx",
+    "is_folder": false,
+    "parent_id": null,
+    "size_bytes": 38629,
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "status": "indexed",
+    "chunk_count": 5,
+    "uploaded_by": "system",
+    "uploaded_at": "2026-08-24T23:06:52.760Z"
+  }
+]

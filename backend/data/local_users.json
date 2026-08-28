@@ -1,0 +1,31 @@
+[
+  {
+    "email": "admin@smartdocs.com",
+    "name": "Administrateur Système",
+    "role": "admin",
+    "password_hash": "$2b$10$pA8ZgfYBJhMOKVIKhJb7MuL66qqWRnfr.yaEiHLucfvyJM0WgixFi",
+    "created_at": "2026-08-27T18:00:00.000Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHNtYXJ0ZG9jcy5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4Nzg4MjcyMSwiZXhwIjoxNzg4NDg3NTIxfQ.W0Gk3K5f-BMt0E3xoUPj-f5W1E6L7mLKgntcibXrMDc"
+  },
+  {
+    "email": "editor@smartdocs.com",
+    "name": "Éditeur Documentaire",
+    "role": "editor",
+    "password_hash": "$2b$10$pA8ZgfYBJhMOKVIKhJb7MuL66qqWRnfr.yaEiHLucfvyJM0WgixFi",
+    "created_at": "2026-08-27T18:00:00.000Z"
+  },
+  {
+    "email": "auditor@smartdocs.com",
+    "name": "Auditeur Sécurité",
+    "role": "auditor",
+    "password_hash": "$2b$10$pA8ZgfYBJhMOKVIKhJb7MuL66qqWRnfr.yaEiHLucfvyJM0WgixFi",
+    "created_at": "2026-08-27T18:00:00.000Z"
+  },
+  {
+    "email": "user@smartdocs.com",
+    "name": "Utilisateur Lecteur",
+    "role": "reader",
+    "password_hash": "$2b$10$pA8ZgfYBJhMOKVIKhJb7MuL66qqWRnfr.yaEiHLucfvyJM0WgixFi",
+    "created_at": "2026-08-27T18:00:00.000Z"
+  }
+]

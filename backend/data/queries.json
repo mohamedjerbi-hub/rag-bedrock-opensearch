@@ -1,0 +1,215 @@
+[
+  {
+    "query_id": "54492a0e-22d9-4e94-a683-a76fad9da29d",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Vous pouvez contacter le support informatique de Northwind Analytics pour les problèmes IT.\n\n- Le support est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, appelez le 0800 112 112.",
+    "latency_ms": 12749,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-08-28T01:42:48.592Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "264ae993-ca32-4174-bf64-e88fcf969d4c",
+    "question": "Combien de jours de congés ai-je par an ?",
+    "answer": "Vous avez 25 jours ouvrés de congés payés par an.\n\n- Les demandes de congés se font via le portail RH, au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.\n- Les congés sont validés par le manager direct, puis contresignés par Claire Fontaine, Directrice des Ressources Humaines.",
+    "latency_ms": 12,
+    "user": "perfuser_1787615056301@test.com",
+    "timestamp": "2026-08-24T23:45:28.097Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.978
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.838
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.188
+      }
+    ]
+  },
+  {
+    "query_id": "cf94ff1a-775f-4f55-bcd6-36a54769d91f",
+    "question": "Combien de jours de congés ai-je par an ?",
+    "answer": "Vous avez 25 jours ouvrés de congés payés par an.\n\n- Les demandes de congés se font via le portail RH, au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.\n- Les congés sont validés par le manager direct, puis contresignés par Claire Fontaine, Directrice des Ressources Humaines.",
+    "latency_ms": 61497,
+    "user": "perfuser_1787615056301@test.com",
+    "timestamp": "2026-08-24T23:45:26.285Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.978
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.838
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.188
+      }
+    ]
+  },
+  {
+    "query_id": "e7abe283-04f3-4889-bfb5-64bbc0521eec",
+    "question": "Combien de jours de congés ai-je par an ?",
+    "answer": "Vous avez droit à 25 jours ouvrés de congés payés par an.\n\n- Les congés sont acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés doivent être faites au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.",
+    "latency_ms": 12,
+    "user": "perfuser_1787614870282@test.com",
+    "timestamp": "2026-08-24T23:42:15.942Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.978
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.838
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.188
+      }
+    ]
+  },
+  {
+    "query_id": "7519c6f6-230e-4d57-bbed-7dd9abc70321",
+    "question": "Combien de jours de congés ai-je par an ?",
+    "answer": "Vous avez droit à 25 jours ouvrés de congés payés par an.\n\n- Les congés sont acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés doivent être faites au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.",
+    "latency_ms": 51819,
+    "user": "perfuser_1787614870282@test.com",
+    "timestamp": "2026-08-24T23:42:14.496Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.978
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.838
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.188
+      }
+    ]
+  },
+  {
+    "query_id": "4d3e70dd-1045-4506-9b1b-348d0702d662",
+    "question": "Quelle est la couleur préférée du directeur ?",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 661,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:15:04.488Z",
+    "sources": []
+  },
+  {
+    "query_id": "c4d1ede1-9c6e-4ece-9ddf-57a1fe3c30a3",
+    "question": "Quel est le remboursement pour 1200 km en 5 CV ?",
+    "answer": "Le remboursement pour 1200 km en 5 CV est de 763,20 €.\n\nLe taux kilométrique pour un véhicule 5 CV est de 0,636 € / km.",
+    "latency_ms": 19071,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:15:02.767Z",
+    "sources": [
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.987
+      },
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.974
+      }
+    ]
+  },
+  {
+    "query_id": "6246d3ba-e58a-4e05-89b2-1bcb5bc04219",
+    "question": "Puis-je télétravailler le mardi ?",
+    "answer": "Non, le mardi est une journée de présence obligatoire sur site pour toutes les équipes.\n\n- Vous pouvez télétravailler jusqu'à 3 jours par semaine.\n- Le mardi est une journée de présence obligatoire sur site.\n- Pour vous connecter, vous devez passer par le VPN d'entreprise.",
+    "latency_ms": 34962,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:14:40.579Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.995
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.917
+      }
+    ]
+  },
+  {
+    "query_id": "d7593c3f-be9f-404d-b57f-a22ed8fd83e1",
+    "question": "Qui valide une note de frais de 800 € ?",
+    "answer": "Une note de frais de 800 € doit être validée par le manager direct et le Directeur Financier, Karim Belhadj.\n\n- Le manager direct et le Directeur Financier doivent valider les notes de frais de 500,01 € à 2 000 €.\n- Le délai de traitement est de 8 jours ouvrés.",
+    "latency_ms": 15724,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:14:03.945Z",
+    "sources": [
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.96
+      },
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.602
+      },
+      {
+        "document_name": "notes_de_frais.xlsx",
+        "score": 0.578
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.152
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.14
+      }
+    ]
+  },
+  {
+    "query_id": "17e1e52c-aba2-47af-9c4b-00cdee57fa98",
+    "question": "Combien de jours de congés par an ?",
+    "answer": "Les salariés à temps plein ont droit à 25 jours ouvrés de congés payés par an.\n\n- Ces congés sont acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés doivent être faites au moins 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.",
+    "latency_ms": 44231,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:13:38.881Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.974
+      },
+      {
+        "document_name": "questions_de_test.md",
+        "score": 0.889
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.276
+      }
+    ]
+  },
+  {
+    "query_id": "731e4251-6f79-44b9-9055-deacdb573210",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Vous pouvez contacter le support informatique de Northwind Analytics.\n\n- Pour les demandes standard, le délai de réponse est de 24 à 48 heures.\n- Pour les demandes urgentes, le délai de réponse est de moins de 2 heures.\n- En cas d'urgence ou d'incident de sécurité, vous pouvez appeler le 0800 112 112.",
+    "latency_ms": 31420,
+    "user": "admin@test.com",
+    "timestamp": "2026-08-24T23:12:53.043Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  }
+]
