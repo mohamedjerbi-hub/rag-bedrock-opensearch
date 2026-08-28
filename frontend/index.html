@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>MJ Studio — Intelligence Documentaire RAG</title>
+  <meta name="description" content="Solution RAG d'entreprise par Mohamed Jerbi (ENI Carthage). Posez vos questions et obtenez des réponses sourcées depuis vos documents." />
+  
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MJ Studio — Intelligence Documentaire RAG" />
+  <meta property="og:description" content="Solution RAG d'entreprise par Mohamed Jerbi (ENI Carthage). Posez vos questions et obtenez des réponses sourcées." />
+  <meta property="og:image" content="/app-preview.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Anti-flicker theme script -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('smartdocs-theme') || 'dark';
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(savedTheme);
+      } catch (e) {}
+    })();
+  </script>
+
+<body class="bg-background text-foreground antialiased selection:bg-primary/20">
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

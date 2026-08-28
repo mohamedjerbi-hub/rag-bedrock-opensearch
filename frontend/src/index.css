@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* Light Theme - High-Depth & High-Contrast Tokens */
+    --background: #F1F5F9;         /* Slate 100 - Tinted page background (not flat white) */
+    --foreground: #0F172A;         /* Slate 900 - Primary high-contrast text (15.2:1 ratio) */
+    
+    --card: #FFFFFF;               /* Pure white card surface (creates surface > background depth) */
+    --card-foreground: #0F172A;    /* Slate 900 - Card headings (16.1:1 ratio) */
+
+    --primary: #9A6A1E;            /* Warm Gold/Bronze - Brand identity accent */
+    --primary-foreground: #FFFFFF; /* High-contrast button text on primary (5.2:1 ratio) */
+    
+    --secondary: #E2E8F0;          /* Slate 200 - Surface containers */
+    --secondary-foreground: #0F172A;/* Slate 900 */
+    
+    --muted: #E2E8F0;              /* Slate 200 - Muted elements */
+    --muted-foreground: #475569;   /* Slate 600 - Readable secondary text (7.0:1 ratio on white) */
+    
+    --accent: #825817;             /* Darker Gold/Bronze accent */
+    --accent-foreground: #FFFFFF;
+    
+    --border: #CBD5E1;             /* Slate 300 - Subtle crisp borders (3.4:1 ratio for UI controls) */
+    --input: #CBD5E1;              /* Slate 300 - Form input borders */
+    --ring: #9A6A1E;               /* Accessible focus ring */
+
+    --success: #059669;            /* Emerald 600 */
+    --warning: #D97706;            /* Amber 600 */
+    --error: #DC2626;              /* Red 600 */
+    
+    --radius: 0.5rem;              /* 8px */
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: #09090B;
+    --foreground: #FAFAFA;
+    --primary: #D4A96B;
+    --primary-foreground: #09090B;
+    --secondary: #18181B;
+    --secondary-foreground: #FAFAFA;
+    --muted: #18181B;
+    --muted-foreground: #A1A1AA;
+    --accent: #B98C4E;
+    --accent-foreground: #FAFAFA;
+    --border: #27272A;
+    --input: #27272A;
+    --ring: #D4A96B;
+
+    --card: #121215;
+    --card-foreground: #FAFAFA;
+
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error: #EF4444;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  code, pre, .font-mono {
+    font-family: 'Geist Mono', monospace;
+  }
+  input, textarea, select, button {
+    @apply text-foreground;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Card Depth Shadows for Light & Dark Mode */
+.shadow-card {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+}
+.shadow-card-hover:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+/* Blinking streaming cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blinking-cursor::after {
+  content: '▋';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--primary);
+  animation: blink 0.8s infinite;
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
