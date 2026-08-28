@@ -75,9 +75,9 @@ export default function AboutPage() {
 
         {/* Key Performance Indicators */}
         <div className="p-5 rounded-2xl border border-primary/20 bg-primary/5 space-y-3 text-xs">
-          <h3 className="font-bold text-sm text-primary flex items-center gap-2">
-            <CheckCircle2 size={16} /> Conformité & Performance Soutenance
-          </h3>
+          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-xs font-semibold">
+            <CheckCircle2 size={16} /> Conformité & Performance Académique
+          </span>
           <ul className="grid grid-cols-2 gap-2 text-muted-foreground font-mono">
             <li>• Bundle JS: 151 KB Gzip</li>
             <li>• Latence Cache: 12 ms</li>

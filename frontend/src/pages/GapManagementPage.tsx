@@ -3,6 +3,7 @@ import {
   AlertCircle, 
   Search, 
   CheckCircle2, 
+  XCircle,
   UserCheck, 
   MessageSquare, 
   ChevronRight, 
@@ -158,6 +159,14 @@ export default function GapManagementPage() {
     mauvais_document_cite: 'Mauvais document cité',
   };
 
+  const statusLabels: Record<string, string> = {
+    nouveau: 'Nouveau',
+    en_cours: 'En cours',
+    resolu: 'Corrigé',
+    rejete: 'Ignoré / Rejeté',
+    doublon: 'Doublon',
+  };
+
   const priorityColors: Record<string, string> = {
     basse: 'bg-slate-500/10 text-slate-600 border-slate-500/20',
     normale: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
@@ -168,8 +177,8 @@ export default function GapManagementPage() {
   const statusColors: Record<string, string> = {
     nouveau: 'bg-purple-500/10 text-purple-600 border-purple-500/20',
     en_cours: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
-    resolu: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 font-semibold',
-    rejete: 'bg-slate-500/10 text-slate-600 border-slate-500/20',
+    resolu: 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30 font-bold',
+    rejete: 'bg-red-500/10 text-red-600 border-red-500/20 font-semibold',
     doublon: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
   };
 
@@ -364,11 +373,17 @@ export default function GapManagementPage() {
                     </td>
                     <td className="p-3.5">
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusColors[gap.status]}`}>
-                        {gap.status}
+                        {statusLabels[gap.status] || gap.status}
                       </span>
                     </td>
                     <td className="p-3.5 text-muted-foreground font-mono text-[11px]">
-                      {gap.assigned_to || <span className="italic text-muted-foreground/60">Non assigné</span>}
+                      {gap.resolved_by ? (
+                        <span className="text-emerald-600 font-bold">✓ {gap.resolved_by}</span>
+                      ) : gap.assigned_to ? (
+                        <span>{gap.assigned_to}</span>
+                      ) : (
+                        <span className="italic text-muted-foreground/60">Non assigné</span>
+                      )}
                     </td>
                     <td className="p-3.5 text-right" onClick={e => e.stopPropagation()}>
                       <button
@@ -432,6 +447,45 @@ export default function GapManagementPage() {
                   "{activeGap.question}"
                 </h3>
               </div>
+
+              {/* BILAN DU TRAITEMENT & SOLUTION (Corrigé ou Ignoré/Rejeté) */}
+              {(activeGap.status === 'resolu' || activeGap.status === 'rejete' || activeGap.resolution_note) && (
+                <div className={`p-4 rounded-2xl border ${
+                  activeGap.status === 'resolu' 
+                    ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-950 dark:text-emerald-100' 
+                    : activeGap.status === 'rejete'
+                    ? 'border-red-500/30 bg-red-500/10 text-red-950 dark:text-red-100'
+                    : 'border-border bg-secondary/30 text-foreground'
+                } space-y-2.5 shadow-sm`}>
+                  <div className="flex items-center justify-between">
+                    <div className="font-bold text-xs">
+                      {activeGap.status === 'resolu' ? (
+                        <span className="text-emerald-600 font-bold flex items-center gap-1.5"><CheckCircle2 size={16} /> Signalement Corrigé / Résolu</span>
+                      ) : activeGap.status === 'rejete' ? (
+                        <span className="text-red-600 font-bold flex items-center gap-1.5"><XCircle size={16} /> Signalement Ignoré / Rejeté</span>
+                      ) : (
+                        <span className="text-primary font-bold flex items-center gap-1.5"><AlertCircle size={16} /> En cours de traitement</span>
+                      )}
+                    </div>
+                    {activeGap.resolved_at && (
+                      <span className="font-mono text-[10px] text-muted-foreground">
+                        {new Date(activeGap.resolved_at).toLocaleString('fr-FR')}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="text-xs space-y-1.5 pt-1">
+                    <p>
+                      <strong className="text-foreground">Traité / Corrigé par :</strong>{' '}
+                      <span className="font-mono text-primary font-bold">{activeGap.resolved_by || activeGap.assigned_to || 'Éditeur responsable'}</span>
+                    </p>
+                    <p className="leading-relaxed">
+                      <strong className="text-foreground">Solution / Explication :</strong>{' '}
+                      <span className="italic">{activeGap.resolution_note || 'Aucune note d\'explication fournie.'}</span>
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* User Comment & Expected Answer */}
               <div className="space-y-3">

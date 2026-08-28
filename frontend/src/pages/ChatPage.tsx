@@ -463,7 +463,7 @@ export default function ChatPage() {
               </button>
             </div>
             <p className="text-center text-[10px] text-muted-foreground mt-2 font-mono">
-              Propulsé par MJ Studio RAG Engine · Soutenance ENI Carthage 2026
+              Propulsé par MJ Studio RAG Engine · ENI Carthage 2026
             </p>
           </form>
         </div>

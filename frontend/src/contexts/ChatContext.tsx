@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Source } from '../api/client';
+import { useAuth } from '../auth/AuthProvider';
 
 export interface Message {
   id: string;
@@ -15,17 +16,25 @@ export interface Conversation {
   title: string;
   messages: Message[];
   createdAt: string;
+  updatedAt: string; // Last consulted/updated timestamp
 }
 
 export function newConversation(): Conversation {
-  return { id: crypto.randomUUID(), title: 'Nouvelle conversation', messages: [], createdAt: new Date().toISOString() };
+  const now = new Date().toISOString();
+  return { 
+    id: crypto.randomUUID(), 
+    title: 'Nouvelle conversation', 
+    messages: [], 
+    createdAt: now,
+    updatedAt: now,
+  };
 }
 
 interface ChatContextType {
   conversations: Conversation[];
   setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   activeId: string;
-  setActiveId: React.Dispatch<React.SetStateAction<string>>;
+  setActiveId: (id: string) => void;
   active: Conversation | undefined;
   addConversation: () => void;
   deleteConversation: (id: string, e?: React.MouseEvent) => void;
@@ -35,29 +44,61 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const userEmail = user?.email || 'guest';
+  const storageKey = `rag_conversations_${userEmail.toLowerCase()}`;
+
   const [conversations, setConversations] = useState<Conversation[]>(() => {
-    const saved = localStorage.getItem('rag_conversations');
-    if (saved) {
-      try {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.length > 0) return parsed;
-      } catch (e) {}
-    }
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
     return [newConversation()];
   });
-  
-  const [activeId, setActiveId] = useState<string>(conversations[0]?.id || '');
 
+  const [activeId, setActiveIdState] = useState<string>(conversations[0]?.id || '');
+
+  // Switch conversation list when user changes
   useEffect(() => {
-    localStorage.setItem('rag_conversations', JSON.stringify(conversations));
-  }, [conversations]);
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setConversations(parsed);
+          setActiveIdState(parsed[0].id);
+          return;
+        }
+      }
+    } catch (e) {}
+
+    const fresh = [newConversation()];
+    setConversations(fresh);
+    setActiveIdState(fresh[0].id);
+  }, [storageKey]);
+
+  // Sync to localStorage
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(conversations));
+  }, [conversations, storageKey]);
 
   const active = conversations.find(c => c.id === activeId) || conversations[0];
+
+  const setActiveId = (id: string) => {
+    setActiveIdState(id);
+    // Touch last consulted date
+    setConversations(prev => prev.map(c => 
+      c.id === id ? { ...c, updatedAt: new Date().toISOString() } : c
+    ));
+  };
 
   const addConversation = () => {
     const c = newConversation();
     setConversations(prev => [c, ...prev]);
-    setActiveId(c.id);
+    setActiveIdState(c.id);
   };
 
   const deleteConversation = (id: string, e?: React.MouseEvent) => {
@@ -66,18 +107,21 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       const filtered = prev.filter(c => c.id !== id);
       if (filtered.length === 0) {
         const newC = newConversation();
-        setActiveId(newC.id);
+        setActiveIdState(newC.id);
         return [newC];
       }
       if (id === activeId) {
-        setActiveId(filtered[0].id);
+        setActiveIdState(filtered[0].id);
       }
       return filtered;
     });
   };
 
   const updateConversation = (id: string, updater: (c: Conversation) => Conversation) => {
-    setConversations(prev => prev.map(c => c.id === id ? updater(c) : c));
+    const now = new Date().toISOString();
+    setConversations(prev => prev.map(c => 
+      c.id === id ? { ...updater(c), updatedAt: now } : c
+    ));
   };
 
   return (

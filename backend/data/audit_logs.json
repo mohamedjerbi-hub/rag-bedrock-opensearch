@@ -1,5 +1,73 @@
 [
   {
+    "id": "d8ee1442-0eae-43e0-9813-dd5b80eedd81",
+    "event_type": "REFRESH_TOKEN",
+    "severity": "info",
+    "user_email": "admin@smartdocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {},
+    "timestamp": "2026-08-28T03:08:50.735Z"
+  },
+  {
+    "id": "25ba2c7f-3cfd-4295-a9fe-f017bcee67d4",
+    "event_type": "LOGIN_FAILURE",
+    "severity": "warning",
+    "user_email": "editor@smartodocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "reason": "User not found"
+    },
+    "timestamp": "2026-08-28T03:08:43.661Z"
+  },
+  {
+    "id": "c057e8ac-c0f6-4a7a-b4f1-b1617352b7bb",
+    "event_type": "REFRESH_TOKEN",
+    "severity": "info",
+    "user_email": "admin@smartdocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {},
+    "timestamp": "2026-08-28T03:07:55.071Z"
+  },
+  {
+    "id": "e45504b1-abe5-4855-bb4c-20a6f2b4ade9",
+    "event_type": "LOGIN_FAILURE",
+    "severity": "warning",
+    "user_email": "editor@smartodocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "reason": "User not found"
+    },
+    "timestamp": "2026-08-28T03:07:47.957Z"
+  },
+  {
+    "id": "bf7e8da8-d5ef-4b40-b420-6f4c8271b05d",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin@smartdocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "admin"
+    },
+    "timestamp": "2026-08-28T03:02:46.950Z"
+  },
+  {
+    "id": "7dde1aa2-839a-4817-ae7e-9268ebe42812",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "editor@smartdocs.ai",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-08-28T03:02:19.816Z"
+  },
+  {
     "id": "dc62a07a-210f-4de4-aed3-a19a77852bd1",
     "event_type": "LOGIN_SUCCESS",
     "severity": "info",
