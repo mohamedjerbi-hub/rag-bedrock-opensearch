@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { SkeletonTable } from '../components/Skeleton';
-import { Activity, Zap, FileStack, Users, RefreshCw, CheckCircle2, AlertCircle, Shield, UserCheck, Search, ShieldCheck, User, Eye, Power, PieChart, BarChart3, Download, FileText } from 'lucide-react';
+import { Activity, Zap, FileStack, Users, RefreshCw, CheckCircle2, AlertCircle, Shield, UserCheck, Search, ShieldCheck, User, Eye, Power, PieChart, BarChart3, Download, FileText, Trash2 } from 'lucide-react';
 import { api, StatsData, UserRecord } from '../api/client';
 import toast from 'react-hot-toast';
 
@@ -187,6 +187,20 @@ export default function AdminPage() {
       setUsers(prev => prev.map(u => u.email === email ? { ...u, role: newRole as any } : u));
     } catch (e: any) {
       toast.error(e.message || 'Erreur de modification de rôle');
+    } finally {
+      setUpdatingUser(null);
+    }
+  };
+
+  const handleDeleteUser = async (email: string) => {
+    if (!window.confirm(`Supprimer définitivement ${email} ? Cette action est irréversible.`)) return;
+    setUpdatingUser(email);
+    try {
+      await api.deleteUser(email);
+      toast.success(`Utilisateur ${email} supprimé`);
+      setUsers(prev => prev.filter(u => u.email !== email));
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Erreur suppression');
     } finally {
       setUpdatingUser(null);
     }
@@ -445,7 +459,7 @@ export default function AdminPage() {
                           )}
                         </td>
 
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 flex flex-wrap gap-2">
                           <button
                             onClick={() => handleStatusToggle(u.email, u.active)}
                             disabled={updatingUser === u.email}
@@ -453,6 +467,15 @@ export default function AdminPage() {
                           >
                             <Power size={13} />
                             {u.active ? 'Suspendre' : 'Réactiver'}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(u.email)}
+                            disabled={updatingUser === u.email}
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 text-red-600 hover:bg-red-500/10 flex items-center gap-1.5"
+                            title="Supprimer définitivement"
+                          >
+                            <Trash2 size={13} />
+                            Supprimer
                           </button>
                         </td>
                       </tr>

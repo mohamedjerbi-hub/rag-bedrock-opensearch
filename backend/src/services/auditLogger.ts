@@ -18,7 +18,10 @@ export type AuditEventType =
   | 'USER_ROLE_CHANGE'
   | 'RAG_QUERY'
   | 'PROMPT_INJECTION_BLOCKED'
-  | 'RATE_LIMIT_EXCEEDED';
+  | 'RATE_LIMIT_EXCEEDED'
+  | 'PASSWORD_RESET_REQUEST'
+  | 'PASSWORD_RESET_SUCCESS'
+  | 'USER_DELETED';
 
 export type AuditSeverity = 'info' | 'warning' | 'critical';
 

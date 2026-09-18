@@ -1,6 +1,7 @@
 import mammoth from 'mammoth';
 import * as XLSX from 'xlsx';
 import { extractText } from 'unpdf';
+import { createWorker } from 'tesseract.js';
 
 export interface ExtractedChunk {
   text: string;
@@ -19,6 +20,31 @@ export interface ParseResult {
 
 const MIN_EXTRACT_CHARS = 50;
 
+// ─── OCR Configuration ────────────────────────────────────────────────────────
+const OCR_ENABLED = process.env.OCR_ENABLED !== 'false'; // actif par défaut
+const OCR_LANGS = process.env.OCR_LANGS || 'fra+eng'; // langues Tesseract
+
+/**
+ * Tente un OCR Tesseract sur un Buffer image/PDF page.
+ * Retourne le texte extrait ou une chaîne vide en cas d'échec.
+ */
+async function runOcr(imageBuffer: Buffer): Promise<string> {
+  if (!OCR_ENABLED) return '';
+  let worker;
+  try {
+    worker = await createWorker(OCR_LANGS);
+    const { data } = await worker.recognize(imageBuffer);
+    return (data.text || '').trim();
+  } catch (err: any) {
+    console.warn('[Parser/OCR] Tesseract échec :', err?.message || err);
+    return '';
+  } finally {
+    if (worker) {
+      try { await worker.terminate(); } catch (_) {}
+    }
+  }
+}
+
 // ─── PDF Extraction ───────────────────────────────────────────────────────────
 
 async function extractPdf(filename: string, buffer: Buffer): Promise<{ text: string; chunks: ExtractedChunk[] }> {
@@ -32,17 +58,25 @@ async function extractPdf(filename: string, buffer: Buffer): Promise<{ text: str
     const pages: string[] = Array.isArray(rawText) ? (rawText as string[]) : [String(rawText || '')];
 
     for (let i = 0; i < pages.length; i++) {
-      const pageText = String(pages[i] || '').trim();
+      let pageText = String(pages[i] || '').trim();
+
+      if (pageText.length < MIN_EXTRACT_CHARS) {
+        // Page has very little text — likely a scanned image page → try OCR
+        console.warn(`[Parser] Page ${i + 1} of "${filename}" extracted only ${pageText.length} chars — tentative OCR Tesseract...`);
+        if (OCR_ENABLED) {
+          const ocrText = await runOcr(buffer);
+          if (ocrText.length >= MIN_EXTRACT_CHARS) {
+            console.log(`[Parser/OCR] Page ${i + 1} de "${filename}" : OCR récupéré ${ocrText.length} chars.`);
+            pageText = ocrText;
+          } else {
+            console.warn(`[Parser/OCR] Page ${i + 1} — OCR insuffisant (${ocrText.length} chars). Page ignorée.`);
+          }
+        }
+      }
+
       if (pageText.length >= MIN_EXTRACT_CHARS) {
         chunks.push({ text: pageText, page: i + 1, filename });
         fullText += (fullText ? '\n\n' : '') + pageText;
-      } else if (pageText.length > 0) {
-        // Page has very little text — likely a scanned image page
-        // We log it but don't add fake content
-        console.warn(`[Parser] Page ${i + 1} of "${filename}" extracted only ${pageText.length} chars — may be a scanned image.`);
-        // Append what we have anyway, even if short
-        fullText += (fullText ? '\n\n' : '') + pageText;
-        chunks.push({ text: pageText, page: i + 1, filename });
       }
     }
   } catch (e) {

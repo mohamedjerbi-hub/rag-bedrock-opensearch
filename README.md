@@ -38,6 +38,21 @@
 
 ---
 
+## 📚 Documentation stage (MJ Studio)
+
+Toute la documentation pour le rapport ENI Carthage est dans **`docs/`** :
+
+| Fichier | Description |
+|---------|-------------|
+| [`docs/INDEX_TRAVAIL_AGENT.md`](docs/INDEX_TRAVAIL_AGENT.md) | **Index principal** — commencer ici |
+| [`docs/rapport_de_stage.md`](docs/rapport_de_stage.md) | Rapport de stage complet |
+| [`docs/journal_de_stage.md`](docs/journal_de_stage.md) | Journal semaine par semaine |
+| [`docs/description_projet.md`](docs/description_projet.md) | Architecture + diagrammes |
+| [`docs/deploiement.md`](docs/deploiement.md) | Guide Vercel + Railway |
+| [`docs/etape2_validation_tests.md`](docs/etape2_validation_tests.md) | Tests et validation |
+
+---
+
 ## 🚀 Guide de Démarrage Rapide
 
 ### 1. Prérequis

@@ -2,9 +2,9 @@ name: CI Pipeline - MJ Studio RAG
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   build-and-test:
@@ -23,7 +23,7 @@ jobs:
             backend/package-lock.json
             frontend/package-lock.json
 
-      - name: Install & Typecheck Backend
+      - name: Install & Build Backend
         run: |
           cd backend
           npm ci
@@ -34,3 +34,23 @@ jobs:
           cd frontend
           npm ci
           npm run build
+
+      - name: Start Backend & Run Validation Script
+        env:
+          JWT_SECRET: ci_test_jwt_secret_for_github_actions_only
+          MOCK: 'true'
+        run: |
+          cd backend
+          npm start &
+          BACKEND_PID=$!
+          sleep 8
+          cd ..
+          node scripts/run-etape2-validation.mjs || (kill $BACKEND_PID 2>/dev/null; exit 1)
+          kill $BACKEND_PID 2>/dev/null || true
+
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: etape2-validation-log
+          path: docs/etape2_resultats_console.txt

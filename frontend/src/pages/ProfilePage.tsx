@@ -32,10 +32,14 @@ export default function ProfilePage() {
     toast.success('Profil mis à jour');
   };
 
-  const handleDelete = () => {
-    if (deleteConfirm === user?.email) {
+  const handleDelete = async () => {
+    if (deleteConfirm !== user?.email) return;
+    try {
+      await api.deleteMyAccount();
       toast.success('Compte supprimé');
       logout();
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Erreur lors de la suppression.');
     }
   };
 

@@ -12,8 +12,11 @@ import { sbGetUserByEmail, sbCreateUser } from '../services/supabaseStore';
 import { logAuditEvent, getAuditLogs } from '../services/auditLogger';
 import { securityHeadersMiddleware, authRateLimiter, apiRateLimiter, promptInjectionFilter } from '../middleware/securityMiddleware';
 import { generateTOTPSetup, verifyTOTPCode } from '../services/totpService';
-import { getUserRoleRecord, setUserRole, setUserStatus, getAllUserRoleRecords, UserRole } from '../services/roleStore';
+import { getUserRoleRecord, setUserRole, setUserStatus, getAllUserRoleRecords, deleteUserRoleRecord, UserRole } from '../services/roleStore';
+import { createPasswordResetToken, consumePasswordResetToken, revokePasswordResetTokens } from '../services/passwordResetStore';
+import { filterDocumentsForUser, getAccessibleDocumentIds, canAccessDocument, canModifyDocument } from '../services/documentAccess';
 import { getCachedQuery, setCachedQuery, clearQueryCache } from '../services/queryCache';
+import { sendPasswordResetEmail, IS_SMTP_CONFIGURED } from '../services/emailService';
 import { 
   createKnowledgeGap, 
   getKnowledgeGaps, 
@@ -32,10 +35,27 @@ const envResult = dotenv.config();
 dotenvExpand.expand(envResult);
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = Number(process.env.PORT) || 3001;
 const IS_MOCK = process.env.MOCK !== 'false';
-const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key_for_development_only_123!';
+const JWT_SECRET = process.env.JWT_SECRET || (IS_MOCK ? 'dev_only_jwt_secret_change_in_production' : '');
+if (!JWT_SECRET) {
+  console.error('[FATAL] JWT_SECRET est obligatoire en production (MOCK=false).');
+  process.exit(1);
+}
+if (IS_MOCK && !process.env.JWT_SECRET) {
+  console.warn('[WARN] JWT_SECRET par défaut utilisé — OK en dev, interdit en production.');
+}
+
+const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000').split(',').map(s => s.trim());
 const engine = new MockEngine();
+
+function getApiBaseUrl(req: Request): string {
+  if (process.env.API_BASE_URL) return process.env.API_BASE_URL.replace(/\/$/, '');
+  const host = req.get('host');
+  const proto = req.protocol || 'http';
+  return host ? `${proto}://${host}` : `http://localhost:${PORT}`;
+}
 
 // ─── Local User Store (fallback when Supabase is offline) ─────────────────────
 const LOCAL_USERS_FILE = path.join(__dirname, '../../data/local_users.json');
@@ -75,6 +95,14 @@ function updateUserLocal(email: string, updates: Partial<LocalUser>): boolean {
   return true;
 }
 
+function deleteUserLocal(email: string): boolean {
+  const users = loadLocalUsers();
+  const filtered = users.filter(u => u.email.toLowerCase() !== email.toLowerCase());
+  if (filtered.length === users.length) return false;
+  saveLocalUsers(filtered);
+  return true;
+}
+
 async function findUser(email: string): Promise<any | null> {
   // Try Supabase first
   try {
@@ -103,7 +131,16 @@ async function createUserLocal(email: string, passwordHash: string, name: string
 
 // ─── Middleware & Auth ────────────────────────────────────────────────────────
 app.use(securityHeadersMiddleware);
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || CORS_ORIGINS.includes('*') || CORS_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+}));
 app.use('/internal/upload/:id', express.raw({ type: '*/*', limit: '50mb' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.text({ limit: '50mb' }));
@@ -413,7 +450,7 @@ app.post('/auth/register', async (req: Request, res: Response) => {
   // Hash password
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(password, salt);
-  const role = 'editor'; // default role
+  const role = 'reader'; // default role — least privilege for new accounts
 
   // Create user (Supabase or local fallback)
   const newUser = await createUserLocal(email, passwordHash, name, role);
@@ -421,7 +458,9 @@ app.post('/auth/register', async (req: Request, res: Response) => {
     return apiError(res, 500, 'SERVER_ERROR', 'Erreur lors de la création du compte.');
   }
 
-  const { token, refreshToken } = issueTokens(newUser);
+  setUserRole(email, role as UserRole, 'system', req.ip || '127.0.0.1');
+
+  const { token, refreshToken } = issueTokens({ ...newUser, role });
   logAuditEvent('REGISTER', 'info', email, { name, role }, req.ip);
 
   res.status(201).json({
@@ -429,6 +468,83 @@ app.post('/auth/register', async (req: Request, res: Response) => {
     refreshToken,
     user: { email: newUser.email, name: newUser.name, role: newUser.role }
   });
+});
+
+app.post('/auth/forgot-password', authRateLimiter, async (req: Request, res: Response) => {
+  const { email } = req.body;
+  if (!email || typeof email !== 'string') {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Email requis.');
+  }
+
+  const user = await findUser(email);
+  // Réponse identique que l'email existe ou non (évite l'énumération)
+  const genericMessage = 'Si cet email existe, un lien de réinitialisation a été généré.';
+
+  if (!user) {
+    return res.json({ message: genericMessage });
+  }
+
+  const resetEntry = createPasswordResetToken(email);
+  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetEntry.token}`;
+
+  logAuditEvent('PASSWORD_RESET_REQUEST', 'info', email, { reset_requested: true }, req.ip);
+
+  const payload: Record<string, string> = { message: genericMessage };
+
+  // Tentative d'envoi réel si SMTP configuré
+  const emailResult = await sendPasswordResetEmail(email, resetUrl);
+
+  if (emailResult.sent) {
+    // Production : email envoyé, on ne divulgue pas le lien
+    payload.email_sent = 'true';
+  } else if (IS_MOCK || !IS_SMTP_CONFIGURED) {
+    // Dev/Mock : exposer le lien pour tests sans SMTP
+    payload.dev_reset_url = resetUrl;
+    payload.dev_token = resetEntry.token;
+    if (emailResult.error) {
+      payload.smtp_error = emailResult.error;
+    }
+  }
+
+  res.json(payload);
+});
+
+app.post('/auth/reset-password', authRateLimiter, async (req: Request, res: Response) => {
+  const { token, password } = req.body;
+  if (!token || !password || String(password).length < 8) {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Token et mot de passe (8 caractères min.) requis.');
+  }
+
+  const entry = consumePasswordResetToken(String(token));
+  if (!entry) {
+    return apiError(res, 400, 'INVALID_TOKEN', 'Lien de réinitialisation invalide ou expiré.');
+  }
+
+  const salt = bcrypt.genSaltSync(10);
+  const passwordHash = bcrypt.hashSync(String(password), salt);
+  const updated = updateUserLocal(entry.email, { password_hash: passwordHash, refresh_token: undefined });
+  if (!updated) {
+    return apiError(res, 404, 'NOT_FOUND', 'Utilisateur introuvable.');
+  }
+
+  revokePasswordResetTokens(entry.email);
+  logAuditEvent('PASSWORD_RESET_SUCCESS', 'info', entry.email, {}, req.ip);
+
+  res.json({ message: 'Mot de passe mis à jour. Vous pouvez vous connecter.' });
+});
+
+app.delete('/auth/me', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user) return apiError(res, 401, 'UNAUTHORIZED', 'Non authentifié.');
+  const email = req.user.email;
+
+  engine.removeDocumentsByUploader(email);
+  deleteUserLocal(email);
+  deleteUserRoleRecord(email);
+  revokePasswordResetTokens(email);
+
+  logAuditEvent('USER_DELETED', 'warning', email, { self_delete: true }, req.ip);
+
+  res.json({ message: 'Compte supprimé définitivement.' });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -496,11 +612,49 @@ app.post('/admin/users/status', authenticate, requireRoles(['admin']), async (re
   res.json({ success: true, user: updatedRecord });
 });
 
+app.post('/admin/users/delete', authenticate, requireRoles(['admin']), async (req: AuthenticatedRequest, res: Response) => {
+  const { email } = req.body;
+  if (!email || typeof email !== 'string') {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Email requis.');
+  }
+
+  const target = email.toLowerCase().trim();
+  if (target === req.user!.email.toLowerCase()) {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Vous ne pouvez pas supprimer votre propre compte depuis l\'admin (utilisez Profil).');
+  }
+
+  const exists = await findUser(target);
+  if (!exists) {
+    return apiError(res, 404, 'NOT_FOUND', 'Utilisateur introuvable.');
+  }
+
+  engine.removeDocumentsByUploader(target);
+  deleteUserLocal(target);
+  deleteUserRoleRecord(target);
+  revokePasswordResetTokens(target);
+
+  logAuditEvent('USER_DELETED', 'critical', req.user!.email, { deleted_user: target }, req.ip);
+
+  res.json({ success: true, message: `Utilisateur ${target} supprimé.` });
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // HEALTH
 // ─────────────────────────────────────────────────────────────────────────────
 app.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', version: '1.0.0', mock: IS_MOCK, timestamp: new Date().toISOString() });
+  const OCR_ENABLED = process.env.OCR_ENABLED !== 'false';
+  res.json({
+    status: 'ok',
+    version: '1.0.0',
+    mock: IS_MOCK,
+    timestamp: new Date().toISOString(),
+    features: {
+      ocr_enabled: OCR_ENABLED,
+      ocr_langs: process.env.OCR_LANGS || 'fra+eng',
+      smtp_configured: IS_SMTP_CONFIGURED,
+      email_provider: IS_SMTP_CONFIGURED ? (process.env.SMTP_HOST || 'custom') : 'dev_mode',
+    },
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -549,7 +703,9 @@ app.post('/query', authenticate, apiRateLimiter, promptInjectionFilter, async (r
     }
 
     // ── Cache MISS: Execute Hybrid Search & Reranking ─────────────────────────
-    const results = await engine.search(question.trim(), Number(top_k));
+    const allDocs = engine.getDocuments();
+    const allowedIds = getAccessibleDocumentIds(allDocs, req.user!.email, req.user!.role);
+    const results = await engine.search(question.trim(), Number(top_k), 0.15, allowedIds);
     const sources = results.map(r => ({
       document_id: r.chunk.document_id,
       document_name: r.chunk.document_name,
@@ -616,27 +772,34 @@ app.post('/query', authenticate, apiRateLimiter, promptInjectionFilter, async (r
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** GET /documents */
-app.get('/documents', authenticate, (req: Request, res: Response) => {
+app.get('/documents', authenticate, (req: AuthenticatedRequest, res: Response) => {
   const status = req.query.status as string | undefined;
   const limit = Math.min(Number(req.query.limit) || 50, 100);
-  const items = engine.getDocuments(status).slice(0, limit);
+  const all = engine.getDocuments(status);
+  const items = filterDocumentsForUser(all, req.user!.email, req.user!.role).slice(0, limit);
   res.json({ items, next_cursor: null, total: items.length });
 });
 
 /** GET /documents/:id */
-app.get('/documents/:id', authenticate, (req: Request, res: Response) => {
+app.get('/documents/:id', authenticate, (req: AuthenticatedRequest, res: Response) => {
   const doc = engine.getDocuments().find(d => d.document_id === req.params.id);
   if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+  if (!canAccessDocument(doc, req.user!.email, req.user!.role)) {
+    return apiError(res, 403, 'FORBIDDEN', 'Accès refusé à ce document.');
+  }
   res.json(doc);
 });
 
 /** GET /documents/:id/content */
-app.get('/documents/:id/content', authenticate, async (req: Request, res: Response) => {
+app.get('/documents/:id/content', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  const doc = engine.getDocuments().find(d => d.document_id === req.params.id);
+  if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+  if (!canAccessDocument(doc, req.user!.email, req.user!.role)) {
+    return apiError(res, 403, 'FORBIDDEN', 'Accès refusé à ce document.');
+  }
   const content = await engine.getDocumentContent(req.params.id);
-  const doc = await engine.getDocuments().find(d => d.document_id === req.params.id);
-  
   if (!content) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
-  res.json({ content, title: doc?.filename || 'Document' });
+  res.json({ content, title: doc?.name || 'Document' });
 });
 
 /** POST /documents/upload-url  –  returns a signed-like upload URL */
@@ -647,15 +810,23 @@ app.post('/documents/upload-url', authenticate, requireRoles(['admin', 'editor']
     return apiError(res, 400, 'VALIDATION_ERROR', 'Fichier trop volumineux (max 20 Mo).');
 
   const document_id = crypto.randomUUID();
-  const upload_url = `http://localhost:${PORT}/internal/upload/${document_id}?filename=${encodeURIComponent(filename)}&content_type=${encodeURIComponent(content_type || 'text/plain')}&parent_id=${parent_id || ''}&user=${encodeURIComponent(req.user?.email || 'user')}`;
+  const base = getApiBaseUrl(req);
+  const upload_url = `${base}/internal/upload/${document_id}?filename=${encodeURIComponent(filename)}&content_type=${encodeURIComponent(content_type || 'text/plain')}&parent_id=${parent_id || ''}`;
   res.status(201).json({ upload_url, document_id, expires_in: 300 });
 });
 
-/** PUT /internal/upload/:id  –  mock-S3 receiver */
-app.put('/internal/upload/:id', async (req: Request, res: Response) => {
+const ALLOWED_UPLOAD_EXTENSIONS = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.md', '.txt', '.csv'];
+
+/** PUT /internal/upload/:id  –  mock-S3 receiver (auth required) */
+app.put('/internal/upload/:id', authenticate, requireRoles(['admin', 'editor']), async (req: AuthenticatedRequest, res: Response) => {
   const filename = (req.query.filename as string) || 'document.txt';
   const contentType = (req.query.content_type as string) || 'text/plain';
   const parentId = (req.query.parent_id as string) || null;
+
+  const ext = '.' + (filename.split('.').pop() || '').toLowerCase();
+  if (!ALLOWED_UPLOAD_EXTENSIONS.includes(ext)) {
+    return apiError(res, 400, 'VALIDATION_ERROR', `Type de fichier non autorisé. Extensions acceptées : ${ALLOWED_UPLOAD_EXTENSIONS.join(', ')}`);
+  }
   
   let buffer: Buffer;
   if (Buffer.isBuffer(req.body)) {
@@ -668,8 +839,12 @@ app.put('/internal/upload/:id', async (req: Request, res: Response) => {
     buffer = Buffer.from([]);
   }
 
+  if (buffer.length > 20 * 1024 * 1024) {
+    return apiError(res, 400, 'VALIDATION_ERROR', 'Fichier trop volumineux (max 20 Mo).');
+  }
+
   try {
-    const uploadedBy = (req.query.user as string) || 'user';
+    const uploadedBy = req.user?.email || 'user';
     await engine.ingestDocument(filename, buffer, uploadedBy, contentType, parentId);
     clearQueryCache();
     res.sendStatus(200);
@@ -688,7 +863,12 @@ app.post('/documents/folders', authenticate, requireRoles(['admin', 'editor']), 
 });
 
 /** PUT /documents/:id */
-app.put('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+app.put('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req: AuthenticatedRequest, res: Response) => {
+  const doc = engine.getDocuments().find(d => d.document_id === req.params['id']);
+  if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+  if (!canModifyDocument(doc, req.user!.email, req.user!.role)) {
+    return apiError(res, 403, 'FORBIDDEN', 'Vous ne pouvez modifier que vos propres documents.');
+  }
   const { name, parent_id } = req.body;
   const updated = engine.updateDocument(req.params['id'], { 
     ...(name !== undefined && { name }), 
@@ -699,7 +879,12 @@ app.put('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req:
 });
 
 /** DELETE /documents/:id */
-app.delete('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+app.delete('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req: AuthenticatedRequest, res: Response) => {
+  const doc = engine.getDocuments().find(d => d.document_id === req.params['id']);
+  if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+  if (!canModifyDocument(doc, req.user!.email, req.user!.role)) {
+    return apiError(res, 403, 'FORBIDDEN', 'Vous ne pouvez supprimer que vos propres documents.');
+  }
   const removed = engine.removeDocument(req.params['id'] as string);
   if (!removed) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
   clearQueryCache();
@@ -707,12 +892,16 @@ app.delete('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (r
 });
 
 /** POST /documents/:id/reindex */
-app.post('/documents/:id/reindex', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+app.post('/documents/:id/reindex', authenticate, requireRoles(['admin', 'editor']), async (req: Request, res: Response) => {
   const id = req.params['id'] as string;
   const docs = engine.getDocuments();
   const doc = docs.find(d => d.document_id === id);
   if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
-  res.status(202).json({ status: 'indexing', document_id: id });
+  if (doc.is_folder) return apiError(res, 400, 'VALIDATION_ERROR', 'Impossible de réindexer un dossier.');
+  const ok = await engine.reindexDocument(id);
+  if (!ok) return apiError(res, 400, 'REINDEX_FAILED', 'Réindexation impossible (document sans chunks).');
+  clearQueryCache();
+  res.status(200).json({ status: 'indexed', document_id: id });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

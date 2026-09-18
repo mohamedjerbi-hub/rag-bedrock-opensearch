@@ -36,10 +36,10 @@
   },
   "editor@smartdocs.ai": {
     "email": "editor@smartdocs.ai",
-    "role": "reader",
+    "role": "editor",
     "active": true,
-    "assigned_by": "system",
-    "updated_at": "2026-08-28T02:35:12.946Z"
+    "assigned_by": "admin@smartdocs.ai",
+    "updated_at": "2026-08-28T03:21:40.795Z"
   },
   "reader@smartdocs.ai": {
     "email": "reader@smartdocs.ai",

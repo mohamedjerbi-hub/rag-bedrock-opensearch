@@ -5,7 +5,9 @@
     "role": "admin",
     "password_hash": "$2b$10$jaRxEy.ms6saoqU/2Ndyj./ZNLFfYFRPA3fhh2485DQrSDGU7glWq",
     "created_at": "2026-08-27T18:00:00.000Z",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHNtYXJ0ZG9jcy5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4Nzg4NDUwNywiZXhwIjoxNzg4NDg5MzA3fQ.1QHy18e6RiZMhns5eFMezq13ORJyMGuBJiPkTkquT-Y"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHNtYXJ0ZG9jcy5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4OTc0Mzk4MCwiZXhwIjoxNzkwMzQ4NzgwfQ.q7g33DE0CFWx6l2_cwI9DzBbIE8HQmP5DpGngcfAXqU",
+    "totp_secret": "6IY3V5T7TUSD3HKTZ7JT",
+    "totp_enabled": false
   },
   {
     "email": "admin@smartdocs.ai",
@@ -13,7 +15,7 @@
     "role": "admin",
     "password_hash": "$2b$10$jaRxEy.ms6saoqU/2Ndyj./ZNLFfYFRPA3fhh2485DQrSDGU7glWq",
     "created_at": "2026-08-27T18:00:00.000Z",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHNtYXJ0ZG9jcy5haSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzg3ODg2NTMwLCJleHAiOjE3ODg0OTEzMzB9.PvYjXQGFwHDys850HzkIx4MwBMiBkKnTLow4T800lGk"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHNtYXJ0ZG9jcy5haSIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzg3OTA5MDY4LCJleHAiOjE3ODg1MTM4Njh9.pErPR55yeRmvut3mZiTjNxllXm5wAHf986vm11Rpz9E"
   },
   {
     "email": "editor@smartdocs.com",
@@ -29,7 +31,7 @@
     "role": "editor",
     "password_hash": "$2b$10$jaRxEy.ms6saoqU/2Ndyj./ZNLFfYFRPA3fhh2485DQrSDGU7glWq",
     "created_at": "2026-08-27T18:00:00.000Z",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkaXRvckBzbWFydGRvY3MuYWkiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4Nzg4NjEzOSwiZXhwIjoxNzg4NDkwOTM5fQ.lCAL1cVsCb94ssK65KWMPOzS7gdISIx7B2bxNCJyM8Y"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkaXRvckBzbWFydGRvY3MuYWkiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NzkwODkyOCwiZXhwIjoxNzg4NTEzNzI4fQ.5jPfLP4FAcTx-ae1t0Qbq5fYN4qQc3aH8jsKBMJNwZA"
   },
   {
     "email": "auditor@smartdocs.com",
@@ -51,7 +53,7 @@
     "role": "reader",
     "password_hash": "$2b$10$jaRxEy.ms6saoqU/2Ndyj./ZNLFfYFRPA3fhh2485DQrSDGU7glWq",
     "created_at": "2026-08-27T18:00:00.000Z",
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlckBzbWFydGRvY3MuYWkiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4Nzg4NTA0MiwiZXhwIjoxNzg4NDg5ODQyfQ.wTidCpMIJv20ArJ5iFvI4S__Sp-L51SkDwiYXutbiaU",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlckBzbWFydGRvY3MuYWkiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NzkwODYxMCwiZXhwIjoxNzg4NTEzNDEwfQ.6U0gfl99v3azaK6RDZeGJXqGh0PC4augXjKFkrM_JyE",
     "totp_secret": "XY6WENTVHY74Q3PYG3I7",
     "totp_enabled": false
   }

@@ -159,7 +159,10 @@ export default function LoginPage() {
             )}
           </form>
 
-          <p className="text-center text-xs text-muted-foreground">
+          <p className="text-center text-xs text-muted-foreground space-y-2">
+            <Link to="/forgot-password" className="block text-primary font-semibold hover:underline">
+              Mot de passe oublié ?
+            </Link>
             Pas encore de compte ?{' '}
             <Link to="/register" className="text-primary font-bold hover:underline inline-flex items-center gap-1">
               S'inscrire <ArrowRight size={12} />

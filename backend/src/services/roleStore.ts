@@ -122,3 +122,12 @@ export function getAllUserRoleRecords(): UserRoleRecord[] {
   const records = readRoleRecords();
   return Object.values(records);
 }
+
+export function deleteUserRoleRecord(email: string): boolean {
+  const cleanEmail = email.toLowerCase().trim();
+  const records = readRoleRecords();
+  if (!records[cleanEmail]) return false;
+  delete records[cleanEmail];
+  writeRoleRecords(records);
+  return true;
+}

@@ -18,6 +18,8 @@ const AuditPage = lazy(() => import('./pages/AuditPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const GapManagementPage = lazy(() => import('./pages/GapManagementPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 
 function PageLoader() {
   return (
@@ -56,6 +58,8 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/app" element={<Navigate to="/chat" replace />} />
               <Route path="/" element={<Guard><Layout /></Guard>}>
                 <Route path="chat" element={<ChatPage />} />

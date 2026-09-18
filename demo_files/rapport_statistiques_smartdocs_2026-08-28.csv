@@ -1,0 +1,19 @@
+﻿Métrique,Valeur
+Documents Totaux,5
+Chunks Vectorisés,31
+Requêtes (30j),22
+Latence Moyenne (ms),28934
+Taux de Succès (%),73%
+Taux d'Information Absente (%),27%
+,
+Format Document,Nombre de Fichiers
+PDF,1
+DOCX,1
+XLSX,1
+MD / TXT,2
+,
+Document Source,Nombre de Citations
+politique_rh.pdf,17
+questions_de_test.md,9
+notes_de_frais.xlsx,6
+faq_support.md,5

@@ -1,0 +1,49 @@
+Summary,Issue Type,Epic Link,Description,Acceptance Criteria,Story Points,Sprint,Priority,Labels,Status
+Epic: Fondation MJ Studio RAG,Epic,,Application RAG entreprise ENI Carthage,,,Sprint 0,High,rag foundation,Done
+Epic: Authentification et RBAC,Epic,,Login JWT roles 2FA reset password,,,Sprint 2,High,auth security,Done
+Epic: Gestion documentaire,Epic,,Upload parse index dossiers,,,Sprint 3,High,documents,Done
+Epic: Moteur RAG Chat,Epic,,Query SSE citations hybride,,,Sprint 4,Highest,rag chat,Done
+Epic: Administration et Audit,Epic,,Dashboard stats users audit,,,Sprint 5,Medium,admin,Done
+Epic: Lacunes documentaires,Epic,,Signalements tickets workflow,,,Sprint 6,Medium,gaps,Done
+Epic: Deploiement et CI,Epic,,Vercel Railway GitHub Actions,,,Sprint 9,High,devops,Done
+Landing page publique,Story,Epic: Fondation MJ Studio RAG,Page accueil vitrine MJ Studio,Visiteur voit hero features stack signature; Responsive mobile,5,Sprint 1,High,frontend,Done
+Theme clair sombre,Story,Epic: Fondation MJ Studio RAG,Bascule theme persistant,Pas de flash; Contrastes WCAG AA,3,Sprint 1,Medium,ui,Done
+Routing public prive,Story,Epic: Fondation MJ Studio RAG,Routes Guard React,Pages privees redirigent vers login,3,Sprint 1,High,frontend,Done
+Inscription utilisateur,Story,Epic: Authentification et RBAC,POST register role reader,201 compte cree role reader par defaut,5,Sprint 2,High,auth,Done
+Connexion JWT,Story,Epic: Authentification et RBAC,Login refresh logout,JWT 24h refresh 7j deconnexion invalide refresh,8,Sprint 2,Highest,auth,Done
+Double authentification TOTP,Story,Epic: Authentification et RBAC,2FA setup verify login,QR code activation code 6 chiffres login bloque sans 2FA,8,Sprint 7,High,security,Done
+Mot de passe oublie,Story,Epic: Authentification et RBAC,Forgot reset password,Token 1h lien reset dev en MOCK email prod SMTP futur,5,Sprint 8,Medium,auth,Done
+Guards RBAC 4 roles,Story,Epic: Authentification et RBAC,admin editor auditor reader,Pages filtrees par role 403 API,5,Sprint 2,High,rbac,Done
+Upload PDF extraction,Story,Epic: Gestion documentaire,Parser unpdf page par page,Texte reel indexe pas simule min 50 chars,8,Sprint 3,Highest,parser,Done
+Upload Word DOCX,Story,Epic: Gestion documentaire,Mammoth extractRawText,Contenu Word indexe,5,Sprint 3,High,parser,Done
+Upload Excel XLSX,Story,Epic: Gestion documentaire,XLSX feuilles en-tetes,Tableaux linearises en chunks,5,Sprint 3,High,parser,Done
+Upload Markdown TXT,Story,Epic: Gestion documentaire,Texte brut UTF-8,MD indexe avec chunking paragraphes,3,Sprint 3,Medium,parser,Done
+Arborescence dossiers,Story,Epic: Gestion documentaire,CRUD folders breadcrumb,Editeur navigue cree renomme supprime,8,Sprint 3,Medium,documents,Done
+Reindexation document,Story,Epic: Gestion documentaire,reindexDocument re-vectorise,POST reindex recalcule embeddings,3,Sprint 8,Low,documents,Done
+Isolation documents utilisateur,Story,Epic: Gestion documentaire,filterDocumentsForUser,Reader voit system plus ses docs 403 autres,8,Sprint 7,High,security,Done
+Chat RAG streaming SSE,Story,Epic: Moteur RAG Chat,POST query SSE,Reponse mot par mot latence mesuree,13,Sprint 4,Highest,rag,Done
+Recherche hybride RRF,Story,Epic: Moteur RAG Chat,Vector BM25 fusion,Top chunks avant rerank,8,Sprint 4,High,rag,Done
+Rerank Cohere,Story,Epic: Moteur RAG Chat,rerank-multilingual-v3,Top 20 reduit a 5 pertinents,5,Sprint 4,Medium,cohere,Done
+Citations cliquables,Story,Epic: Moteur RAG Chat,Source panel DocumentViewer,Click badge ouvre extrait,5,Sprint 4,High,frontend,Done
+Reponse hors sujet,Story,Epic: Moteur RAG Chat,Guardrail pas de chunks,Phrase ne figure pas dans les documents,5,Sprint 4,High,rag,Done
+Cache requetes,Story,Epic: Moteur RAG Chat,queryCache 500 entrees,Question identique reponse rapide cached true,3,Sprint 4,Low,perf,Done
+Historique conversations,Story,Epic: Moteur RAG Chat,localStorage par user,Nouveau chat renommer supprimer persiste F5,5,Sprint 4,Medium,frontend,Done
+Signalement lacune,Story,Epic: Lacunes documentaires,POST api gaps ticket,Types priorite commentaire rate limit 5h,8,Sprint 6,High,gaps,Done
+Gestion signalements editeur,Story,Epic: Lacunes documentaires,GapManagementPage,Filtrer statut assigner commenter resoudre,8,Sprint 6,High,gaps,Done
+Notification resolution,Story,Epic: Lacunes documentaires,my-resolutions banner,User notifie quand ticket resolu,3,Sprint 6,Medium,gaps,Done
+Dashboard admin stats,Story,Epic: Administration et Audit,GET stats graphiques,Documents chunks requetes latence formats,8,Sprint 5,High,admin,Done
+Gestion roles utilisateurs,Story,Epic: Administration et Audit,promotion retrogradation suspension,Admin change role active sans auto-promotion,8,Sprint 5,High,admin,Done
+Suppression utilisateur,Story,Epic: Administration et Audit,delete user admin plus profil,Compte et docs user supprimes audit log,5,Sprint 8,Medium,admin,Done
+Journal audit export CSV,Story,Epic: Administration et Audit,AuditPage security plus RAG,Filtres export CSV deux onglets,5,Sprint 5,Medium,audit,Done
+Rate limiting API,Story,Epic: Authentification et RBAC,10 auth 120 api par min,429 avec Retry-After,3,Sprint 7,Medium,security,Done
+Anti injection prompt,Story,Epic: Moteur RAG Chat,promptInjectionFilter,Patterns malveillants bloques 400,5,Sprint 7,High,security,Done
+Upload securise auth whitelist,Story,Epic: Gestion documentaire,PUT internal upload JWT,401 sans token 400 mauvais type 20Mo max,5,Sprint 7,Highest,security,Done
+CORS configurable,Story,Epic: Deploiement et CI,CORS_ORIGINS env,Origines Vercel autorisees pas wildcard prod,3,Sprint 9,High,devops,Done
+Deploiement Vercel frontend,Story,Epic: Deploiement et CI,vercel.json SPA build,Push main redeploie auto,5,Sprint 9,High,devops,Done
+Deploiement Railway backend,Story,Epic: Deploiement et CI,railway.toml healthcheck,API publique health 200,5,Sprint 9,High,devops,Done
+CI GitHub Actions validation,Story,Epic: Deploiement et CI,build plus run-etape2-validation,Artifact log validation sur chaque PR,5,Sprint 9,High,ci,Done
+Script validation etape 2,Task,Epic: Deploiement et CI,run-etape2-validation.mjs,Tableau OK KO genere dans docs,3,Sprint 9,Medium,testing,Done
+Documentation rapport stage,Task,Epic: Deploiement et CI,rapport journal description,docs complets francais simple,8,Sprint 9,Medium,docs,Done
+Bug: Inscription role editor par defaut,Bug,Epic: Authentification et RBAC,Nouveau compte editor sans controle,Corrige role reader plus roleStore,2,Sprint 8,Highest,bug,Done
+Bug: Upload sans authentification,Bug,Epic: Gestion documentaire,PUT internal ouvert,Corrige JWT obligatoire,3,Sprint 8,Highest,bug,Done
+Bug: Reindex stub,Bug,Epic: Gestion documentaire,reindex 202 sans action,Corrige reindexDocument engine,2,Sprint 8,Medium,bug,Done

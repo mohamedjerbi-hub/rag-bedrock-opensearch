@@ -623,6 +623,17 @@ export class MockEngine {
     return true;
   }
 
+  public removeDocumentsByUploader(email: string): number {
+    const toRemove = Array.from(this.documents.values())
+      .filter(d => d.uploaded_by.toLowerCase() === email.toLowerCase())
+      .map(d => d.document_id);
+    let count = 0;
+    for (const id of toRemove) {
+      if (this.removeDocument(id)) count++;
+    }
+    return count;
+  }
+
   public removeDocument(id: string): boolean {
     if (!this.documents.has(id)) return false;
     const doc = this.documents.get(id);
@@ -636,6 +647,27 @@ export class MockEngine {
     }
     this._persist();
     sbRemoveDocument(id).catch(() => {});
+    return true;
+  }
+
+  /** Re-vectorise les chunks existants d'un document (sans re-parser le fichier source). */
+  public async reindexDocument(documentId: string): Promise<boolean> {
+    const doc = this.documents.get(documentId);
+    if (!doc || doc.is_folder) return false;
+
+    const docChunks = Array.from(this.chunks.values())
+      .filter(c => c.document_id === documentId)
+      .sort((a, b) => a.chunk_index - b.chunk_index);
+
+    if (docChunks.length === 0) return false;
+
+    this._updateDocStatus(documentId, 'vectorizing');
+    for (const chunk of docChunks) {
+      chunk.embedding = await getEmbedding(chunk.text);
+      this.chunks.set(chunk.chunk_id, chunk);
+    }
+    this._updateDocStatus(documentId, 'indexed', { chunk_count: docChunks.length });
+    this._persist();
     return true;
   }
 
@@ -662,7 +694,8 @@ export class MockEngine {
   public async search(
     query: string,
     topK = 5,
-    scoreThreshold = 0.15
+    scoreThreshold = 0.15,
+    allowedDocumentIds?: Set<string>
   ): Promise<{ chunk: StoredChunk; score: number }[]> {
     const qEmb = await getQueryEmbedding(query);
     const queryTokens = tokenize(query);
@@ -677,6 +710,7 @@ export class MockEngine {
       // ── In-memory vector search ───────────────────────────────────────
       const vectorScored: { chunk: StoredChunk; score: number }[] = [];
       for (const chunk of this.chunks.values()) {
+        if (allowedDocumentIds && !allowedDocumentIds.has(chunk.document_id)) continue;
         const score = cosineSim(qEmb, chunk.embedding);
         if (score >= scoreThreshold) {
           vectorScored.push({ chunk, score });

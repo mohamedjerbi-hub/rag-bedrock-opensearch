@@ -58,5 +58,17 @@
     "chunk_count": 5,
     "uploaded_by": "system",
     "uploaded_at": "2026-08-24T23:06:52.760Z"
+  },
+  {
+    "document_id": "865701bd-c15d-46e0-a13b-77d4395ed00b",
+    "name": "d1",
+    "is_folder": true,
+    "parent_id": null,
+    "size_bytes": 0,
+    "mime_type": "folder",
+    "status": "indexed",
+    "chunk_count": 0,
+    "uploaded_by": "editor@smartdocs.ai",
+    "uploaded_at": "2026-08-28T09:22:45.655Z"
   }
 ]

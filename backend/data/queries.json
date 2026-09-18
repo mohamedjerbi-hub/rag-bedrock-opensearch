@@ -1,5 +1,133 @@
 [
   {
+    "query_id": "f8a21b6d-6bb7-4ffb-aafe-cb11a3a7438c",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Vous pouvez contacter le support informatique de Northwind Analytics pour les problèmes IT.\n\n- Le support est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard, et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, vous pouvez appeler le 0800 112 112, 24/7.",
+    "latency_ms": 20138,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-09-18T15:06:58.256Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "75e812de-c8a2-4903-8466-6acdb562402b",
+    "question": "hello",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 791,
+    "user": "reader@smartdocs.ai",
+    "timestamp": "2026-08-28T09:21:09.770Z",
+    "sources": []
+  },
+  {
+    "query_id": "553002f0-d6ad-443d-bc0f-033bbe6c53e4",
+    "question": "Quelle est notre politique RH et congés ?",
+    "answer": "La politique RH et congés de Northwind Analytics est la suivante :\n\n- Chaque salarié à temps plein dispose de 25 jours ouvrés de congés payés par année civile, acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés se font via le portail RH, au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.\n- Les congés sont validés par le manager direct, puis contresignés par Claire Fontaine, Directrice des Ressources Humaines.\n- Des jours de congés exceptionnels sont accordés pour le mariage ou le PACS du salarié (4 jours ouvrés), la naissance ou l'adoption (3 jours ouvrés), le décès d'un proche au premier degré (3 jours ouvrés) et le déménagement (1 jour ouvré).\n- Le télétravail est ouvert à tous les salariés ayant validé leur période d'essai, avec un maximum de 3 jours par semaine. Le mardi est une journée de présence obligatoire sur site pour toutes les équipes.\n- Une indemnité forfaitaire de 30 € par mois est versée aux salariés télétravaillant au moins 8 jours dans le mois.",
+    "latency_ms": 209826,
+    "user": "reader@smartdocs.ai",
+    "timestamp": "2026-08-28T09:20:36.212Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.872
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.649
+      }
+    ]
+  },
+  {
+    "query_id": "2f861c49-d039-483b-914f-9050702d6410",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Vous pouvez contacter le support informatique de Northwind Analytics.\n\n- Le support informatique est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard, et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, vous pouvez appeler le 0800 112 112, disponible 24/7.",
+    "latency_ms": 45001,
+    "user": "reader@smartdocs.ai",
+    "timestamp": "2026-08-28T09:20:15.049Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "81b4dfb9-3632-492a-8bc5-72d6c98a4a56",
+    "question": "Quelle est notre politique RH et congés ?",
+    "answer": "Voici les informations que je peux vous fournir sur la politique RH et congés :\n\n## Congés payés\n- Chaque salarié à temps plein dispose de 25 jours ouvrés de congés payés par année civile, acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés se font via le portail RH, au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.\n- Les congés sont validés par le manager direct, puis contresignés par Claire Fontaine, Directrice des Ressources Humaines.\n\n## Jours de congés exceptionnels\n- Mariage/PACS du salarié : 4 jours ouvrés.\n- Naissance ou adoption : 3 jours ouvrés.\n- Décès d'un proche (1er degré) : 3 jours ouvrés.\n- Déménagement : 1 jour ouvré.\n\n## Télétravail\n- Le télétravail est ouvert à tous les salariés ayant validé leur période d'essai.\n- Maximum 3 jours de télétravail par semaine. Le mardi est une journée de présence obligatoire sur site pour toutes les équipes.\n- Toute connexion aux outils internes depuis l'extérieur des locaux doit passer par le VPN d'entreprise (voir la politique de sécurité informatique).\n- Une indemnité forfaitaire de 30 € par mois est versée aux salariés télétravaillant au moins 8 jours dans le mois.",
+    "latency_ms": 32473,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:25:14.557Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.872
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.649
+      }
+    ]
+  },
+  {
+    "query_id": "bc49ad7c-4f4d-4f86-99c4-88a6433a3b25",
+    "question": "Quelles sont les consignes de sécurité IT ?",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 12,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:24:28.889Z",
+    "sources": []
+  },
+  {
+    "query_id": "787483d1-cc67-4aac-a691-2148bc51f229",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Le support informatique est disponible du lundi au vendredi, de 8h00 à 18h00.\n\n- Pour les demandes standard, le délai de réponse est de 24 à 48 heures.\n- Pour les demandes urgentes (bloquantes), le délai de réponse est de moins de 2 heures.\n- En cas d'urgence ou d'incident de sécurité, appelez le 0800 112 112.",
+    "latency_ms": 12,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:24:15.212Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "f49b626e-78e8-4b38-a8fd-b33c42f97d31",
+    "question": "Quelles sont les consignes de sécurité IT ?",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 12,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:24:07.073Z",
+    "sources": []
+  },
+  {
+    "query_id": "d4811c51-4804-4b62-ae3b-32e1d1a9b8da",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Le support informatique est disponible du lundi au vendredi, de 8h00 à 18h00.\n\n- Pour les demandes standard, le délai de réponse est de 24 à 48 heures.\n- Pour les demandes urgentes (bloquantes), le délai de réponse est de moins de 2 heures.\n- En cas d'urgence ou d'incident de sécurité, appelez le 0800 112 112.",
+    "latency_ms": 15348,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:23:56.249Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "f0a49e11-a77b-4bcb-99a5-38c17ab719eb",
+    "question": "Quelles sont les consignes de sécurité IT ?",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 1667,
+    "user": "editor@smartdocs.ai",
+    "timestamp": "2026-08-28T03:23:25.309Z",
+    "sources": []
+  },
+  {
     "query_id": "cafebbe4-62ac-42e6-9f10-eb1ecf6558fa",
     "question": "hello",
     "answer": "Cette information ne figure pas dans les documents fournis.",

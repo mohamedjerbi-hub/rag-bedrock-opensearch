@@ -107,6 +107,33 @@ export const api = {
       body: JSON.stringify(body),
     }).then(r => handleResponse<any>(r)),
 
+  forgotPassword: (email: string) =>
+    fetch(`${API_BASE}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    }).then(r => handleResponse<{ message: string; dev_reset_url?: string; dev_token?: string }>(r)),
+
+  resetPassword: (token: string, password: string) =>
+    fetch(`${API_BASE}/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password }),
+    }).then(r => handleResponse<{ message: string }>(r)),
+
+  deleteMyAccount: () =>
+    fetch(`${API_BASE}/auth/me`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    }).then(r => handleResponse<{ message: string }>(r)),
+
+  deleteUser: (email: string) =>
+    fetch(`${API_BASE}/admin/users/delete`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ email }),
+    }).then(r => handleResponse<{ success: boolean; message: string }>(r)),
+
   setup2FA: () =>
     fetch(`${API_BASE}/auth/2fa/setup`, {
       method: 'POST',
@@ -223,6 +250,8 @@ export const api = {
       const xhr = new XMLHttpRequest();
       xhr.open('PUT', upload_url, true);
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      const token = localStorage.getItem('jwtToken');
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
       if (xhr.upload && onProgress) {
         xhr.upload.onprogress = (e) => {
