@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { CohereClient } from 'cohere-ai';
-import { OpenAIClient, AzureKeyCredential } from '@azure/openai';
 import { parseDocumentBuffer } from '../services/parser';
 import { getSupabaseClient } from '../services/supabaseClient';
 import {
@@ -19,18 +18,8 @@ function getCohereClient() {
   return cohere;
 }
 
-let azureOpenAI: OpenAIClient | null = null;
+let azureOpenAI: any = null;
 function getAzureOpenAIClient() {
-  if (!azureOpenAI && process.env.AZURE_OPENAI_ENDPOINT && process.env.AZURE_OPENAI_API_KEY) {
-    try {
-      azureOpenAI = new OpenAIClient(
-        process.env.AZURE_OPENAI_ENDPOINT,
-        new AzureKeyCredential(process.env.AZURE_OPENAI_API_KEY)
-      );
-    } catch (e) {
-      console.error('[Azure OpenAI] Client init error:', e);
-    }
-  }
   return azureOpenAI;
 }
 
@@ -389,10 +378,10 @@ async function generateAnswer(
 // ─── Main Engine Class ────────────────────────────────────────────────────────
 
 export class MockEngine {
-  private documents: Map<string, StoredDocument>;
-  private chunks: Map<string, StoredChunk>;
-  private remarks: Remark[];
-  private queries: StoredQuery[];
+  private documents: Map<string, StoredDocument> = new Map();
+  private chunks: Map<string, StoredChunk> = new Map();
+  private remarks: Remark[] = [];
+  private queries: StoredQuery[] = [];
 
   constructor() {
     ensureDataDir();
@@ -579,7 +568,10 @@ export class MockEngine {
     this.queries.unshift(fullQuery);
     if (this.queries.length > 500) this.queries = this.queries.slice(0, 500);
     this._persist();
-    sbLogQuery(fullQuery).catch(() => {});
+    sbLogQuery({
+      ...fullQuery,
+      answer: fullQuery.answer || ''
+    } as any).catch(() => {});
   }
 
   public async ingestDocument(

@@ -203,7 +203,7 @@ export function createKnowledgeGap(data: {
   // Sync to Supabase if connected
   const sb = getSupabaseClient();
   if (sb) {
-    sb.from('knowledge_gaps').insert([{
+    (sb.from('knowledge_gaps').insert([{
       id: newGap.id,
       ticket_number: newGap.ticket_number,
       user_id: newGap.user_id,
@@ -220,7 +220,7 @@ export function createKnowledgeGap(data: {
       status: newGap.status,
       created_at: newGap.created_at,
       updated_at: newGap.updated_at,
-    }]).then(({ error }) => {
+    }]) as any).then(({ error }: any) => {
       if (error) console.error('[KnowledgeGapStore] Supabase insert error:', error.message);
     }).catch(() => {});
   }
@@ -304,7 +304,7 @@ export function updateKnowledgeGap(
   // Sync to Supabase
   const sb = getSupabaseClient();
   if (sb) {
-    sb.from('knowledge_gaps').update({
+    (sb.from('knowledge_gaps').update({
       status: updatedGap.status,
       assigned_to: updatedGap.assigned_to,
       resolution_note: updatedGap.resolution_note,
@@ -312,7 +312,7 @@ export function updateKnowledgeGap(
       resolved_by: updatedGap.resolved_by,
       linked_doc_id: updatedGap.linked_doc_id,
       updated_at: updatedGap.updated_at,
-    }).eq('id', updatedGap.id).then(({ error }) => {
+    }).eq('id', updatedGap.id) as any).then(({ error }: any) => {
       if (error) console.error('[KnowledgeGapStore] Supabase update error:', error.message);
     }).catch(() => {});
   }
@@ -330,7 +330,7 @@ export function deleteKnowledgeGap(id: string): boolean {
 
   const sb = getSupabaseClient();
   if (sb) {
-    sb.from('knowledge_gaps').delete().eq('id', id).catch(() => {});
+    (sb.from('knowledge_gaps').delete().eq('id', id) as any).then(() => {}).catch(() => {});
   }
 
   return true;

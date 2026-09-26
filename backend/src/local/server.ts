@@ -792,12 +792,13 @@ app.get('/documents/:id', authenticate, (req: AuthenticatedRequest, res: Respons
 
 /** GET /documents/:id/content */
 app.get('/documents/:id/content', authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const doc = engine.getDocuments().find(d => d.document_id === req.params.id);
+  const docId = req.params.id as string;
+  const doc = engine.getDocuments().find(d => d.document_id === docId);
   if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
   if (!canAccessDocument(doc, req.user!.email, req.user!.role)) {
     return apiError(res, 403, 'FORBIDDEN', 'Accès refusé à ce document.');
   }
-  const content = await engine.getDocumentContent(req.params.id);
+  const content = await engine.getDocumentContent(docId);
   if (!content) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
   res.json({ content, title: doc?.name || 'Document' });
 });
@@ -864,13 +865,14 @@ app.post('/documents/folders', authenticate, requireRoles(['admin', 'editor']), 
 
 /** PUT /documents/:id */
 app.put('/documents/:id', authenticate, requireRoles(['admin', 'editor']), (req: AuthenticatedRequest, res: Response) => {
-  const doc = engine.getDocuments().find(d => d.document_id === req.params['id']);
+  const targetId = req.params['id'] as string;
+  const doc = engine.getDocuments().find(d => d.document_id === targetId);
   if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
   if (!canModifyDocument(doc, req.user!.email, req.user!.role)) {
     return apiError(res, 403, 'FORBIDDEN', 'Vous ne pouvez modifier que vos propres documents.');
   }
   const { name, parent_id } = req.body;
-  const updated = engine.updateDocument(req.params['id'], { 
+  const updated = engine.updateDocument(targetId, { 
     ...(name !== undefined && { name }), 
     ...(parent_id !== undefined && { parent_id: parent_id || null }) 
   });
@@ -1010,7 +1012,8 @@ app.get('/api/notifications/my-resolutions', authenticate, (req: Request, res: R
 // GET /api/gaps/:id - Get single gap detail with comments
 app.get('/api/gaps/:id', authenticate, (req: Request, res: Response) => {
   const user = (req as any).user;
-  const gap = getKnowledgeGapById(req.params.id);
+  const gapId = req.params.id as string;
+  const gap = getKnowledgeGapById(gapId);
 
   if (!gap) {
     return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
@@ -1028,7 +1031,8 @@ app.get('/api/gaps/:id', authenticate, (req: Request, res: Response) => {
 // PATCH /api/gaps/:id - Update status/assigned_to/resolution_note (Editor/Admin only)
 app.patch('/api/gaps/:id', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
   const user = (req as any).user;
-  const updated = updateKnowledgeGap(req.params.id, req.body, user.email);
+  const gapId = req.params.id as string;
+  const updated = updateKnowledgeGap(gapId, req.body, user.email);
 
   if (!updated) {
     return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
@@ -1040,7 +1044,8 @@ app.patch('/api/gaps/:id', authenticate, requireRoles(['admin', 'editor']), (req
 
 // DELETE /api/gaps/:id - Delete gap report (Admin only)
 app.delete('/api/gaps/:id', authenticate, requireRoles(['admin']), (req: Request, res: Response) => {
-  const success = deleteKnowledgeGap(req.params.id);
+  const gapId = req.params.id as string;
+  const success = deleteKnowledgeGap(gapId);
   if (!success) {
     return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
   }
@@ -1050,13 +1055,14 @@ app.delete('/api/gaps/:id', authenticate, requireRoles(['admin']), (req: Request
 // POST /api/gaps/:id/comments - Add internal comment (Editor/Admin only)
 app.post('/api/gaps/:id/comments', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
   const user = (req as any).user;
+  const gapId = req.params.id as string;
   const { body } = req.body;
 
   if (!body || typeof body !== 'string' || body.trim().length === 0) {
     return apiError(res, 400, 'VALIDATION_ERROR', 'Le contenu du commentaire est obligatoire.');
   }
 
-  const gap = getKnowledgeGapById(req.params.id);
+  const gap = getKnowledgeGapById(gapId);
   if (!gap) {
     return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
   }

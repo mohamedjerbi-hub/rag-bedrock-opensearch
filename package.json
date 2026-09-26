@@ -1,0 +1,9 @@
+{
+  "name": "rag-bedrock-opensearch-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd backend && npm install --legacy-peer-deps && npm run build",
+    "start": "cd backend && npm start"
+  }
+}

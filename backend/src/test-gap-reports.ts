@@ -61,7 +61,6 @@ async function runAcceptanceTests() {
     user_id: 'usr-1',
     user_email: user1Email,
     user_name: 'Utilisateur Test',
-    conversation_id: 'conv-101',
     ...parseCheck.data,
   });
 
@@ -92,6 +91,7 @@ async function runAcceptanceTests() {
     user_name: 'Autre Utilisateur',
     conversation_id: 'conv-999',
     question: 'Quelle est la politique de télétravail ?',
+    generated_answer: 'Information non disponible.',
     issue_type: 'reponse_imprecise',
     priority: 'basse',
     user_comment: 'Précisions manquantes sur les vendredis.',
@@ -158,6 +158,7 @@ async function runAcceptanceTests() {
       user_name: 'Spammer Test',
       conversation_id: 'conv-spam',
       question: `Question spam n°${i}`,
+      generated_answer: 'Réponse générée de test',
       issue_type: 'information_absente',
       priority: 'basse',
       user_comment: `Commentaire spam test n°${i}`,
