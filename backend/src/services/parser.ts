@@ -26,24 +26,35 @@ const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const OCR_ENABLED = process.env.OCR_ENABLED !== 'false'; // actif par défaut
 const OCR_LANGS = process.env.OCR_LANGS || 'fra+eng'; // langues Tesseract
 
+let sharedWorkerPromise: Promise<any> | null = null;
+
+async function getOcrWorker() {
+  if (!OCR_ENABLED) return null;
+  if (!sharedWorkerPromise) {
+    console.log(`[Parser/OCR] Initialisation du worker Tesseract.js persistant (${OCR_LANGS})…`);
+    sharedWorkerPromise = createWorker(OCR_LANGS).catch(err => {
+      console.warn('[Parser/OCR] Échec de l\'initialisation du worker Tesseract persistant :', err?.message || err);
+      sharedWorkerPromise = null;
+      return null;
+    });
+  }
+  return sharedWorkerPromise;
+}
+
 /**
- * Tente un OCR Tesseract sur un Buffer image/PDF page.
+ * Tente un OCR Tesseract sur un Buffer image/PDF page via worker persistant.
  * Retourne le texte extrait ou une chaîne vide en cas d'échec.
  */
 async function runOcr(imageBuffer: Buffer): Promise<string> {
   if (!OCR_ENABLED) return '';
-  let worker;
   try {
-    worker = await createWorker(OCR_LANGS);
+    const worker = await getOcrWorker();
+    if (!worker) return '';
     const { data } = await worker.recognize(imageBuffer);
     return (data.text || '').trim();
   } catch (err: any) {
     console.warn('[Parser/OCR] Tesseract échec :', err?.message || err);
     return '';
-  } finally {
-    if (worker) {
-      try { await worker.terminate(); } catch (_) {}
-    }
   }
 }
 

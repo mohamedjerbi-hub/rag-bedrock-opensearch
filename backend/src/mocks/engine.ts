@@ -337,30 +337,39 @@ async function generateAnswer(
       message: msg.content
     }));
 
+function withTimeout<T>(promise: Promise<T>, timeoutMs = 4500): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Timeout API (${timeoutMs}ms)`)), timeoutMs)
+    )
+  ]);
+}
+
     const modelsToTry = ['command-r-plus-08-2024', 'command-r-08-2024', 'command-r7b-12-2024'];
 
     for (const model of modelsToTry) {
       try {
-        const resp = await client.chat({
-          message: question,
-          model,
-          documents,
-          chatHistory,
-          preamble: SYSTEM_PROMPT,
-          temperature: 0.1,
-          maxTokens: 2500,
-        });
+        const resp = await withTimeout(
+          client.chat({
+            message: question,
+            model,
+            documents,
+            chatHistory,
+            preamble: SYSTEM_PROMPT,
+            temperature: 0.1,
+            maxTokens: 2500,
+          }),
+          4500
+        );
         if (resp?.text) return resp.text;
       } catch (err: any) {
-        // Handle rate limit / quota errors gracefully
         const msg = err?.message || '';
         if (msg.includes('402') || msg.toLowerCase().includes('credit')) {
-          return '❌ Crédits API épuisés. Veuillez recharger votre compte Cohere ou configurer Azure OpenAI.';
+          console.warn('[Cohere] Crédits épuisés, bascule immédiate sur les extraits bruts.');
+          break;
         }
-        if (msg.includes('429') || msg.toLowerCase().includes('rate')) {
-          await new Promise(r => setTimeout(r, 2000));
-        }
-        console.warn(`[Cohere] Modèle "${model}" indisponible (${msg}), essai du suivant…`);
+        console.warn(`[Cohere] Modèle "${model}" indisponible (${msg}), passage rapide au suivant…`);
       }
     }
   }
