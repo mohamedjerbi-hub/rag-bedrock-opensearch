@@ -16,9 +16,11 @@ export interface ParseResult {
   text: string;
   chunks: ExtractedChunk[];
   error?: string;
+  warning?: string;
 }
 
 const MIN_EXTRACT_CHARS = 50;
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 
 // ─── OCR Configuration ────────────────────────────────────────────────────────
 const OCR_ENABLED = process.env.OCR_ENABLED !== 'false'; // actif par défaut
@@ -201,12 +203,27 @@ export async function parseDocumentBuffer(
   mimeType?: string
 ): Promise<ParseResult> {
   const ext = (filename.split('.').pop() || '').toLowerCase();
+  const isImageFormat = IMAGE_EXTENSIONS.includes(ext) || Boolean(mimeType && mimeType.startsWith('image/'));
 
   try {
     let fullText = '';
     let rawChunks: ExtractedChunk[] = [];
+    let isImageEmpty = false;
 
-    if (ext === 'pdf' || mimeType === 'application/pdf') {
+    if (isImageFormat) {
+      console.log(`[Parser] Processing image "${filename}" via Tesseract OCR (${OCR_LANGS})…`);
+      const ocrText = await runOcr(buffer);
+      const cleanOcr = ocrText.trim();
+
+      if (cleanOcr.length > 0) {
+        fullText = cleanOcr;
+      } else {
+        console.warn(`[Parser/OCR] Image "${filename}" : aucun texte exploitable reconnu par l'OCR.`);
+        fullText = "Indexé avec texte incomplet ou vide";
+        isImageEmpty = true;
+      }
+
+    } else if (ext === 'pdf' || mimeType === 'application/pdf') {
       const result = await extractPdf(filename, buffer);
       fullText = result.text;
       rawChunks = result.chunks;
@@ -236,8 +253,8 @@ export async function parseDocumentBuffer(
 
     const cleanText = fullText.trim();
 
-    // Strict minimum content check
-    if (!cleanText || cleanText.length < MIN_EXTRACT_CHARS) {
+    // Strict minimum content check (skipped for images so unreadable images are indexed with warning)
+    if (!isImageFormat && (!cleanText || cleanText.length < MIN_EXTRACT_CHARS)) {
       return {
         success: false,
         text: '',
@@ -246,7 +263,7 @@ export async function parseDocumentBuffer(
       };
     }
 
-    // Build final chunks
+    // Build final chunks using standard smart chunking (900 chars, 150 overlap)
     const finalChunks = rawChunks.length > 0
       ? buildSmartChunksFromSections(rawChunks, filename)
       : buildSmartChunks(cleanText, filename);
@@ -254,7 +271,8 @@ export async function parseDocumentBuffer(
     return {
       success: true,
       text: cleanText,
-      chunks: finalChunks,
+      chunks: finalChunks.length > 0 ? finalChunks : [{ text: cleanText, chunkIndex: 0, filename }],
+      warning: isImageEmpty ? 'Indexé avec texte incomplet ou vide' : undefined,
     };
 
   } catch (err: any) {

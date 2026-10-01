@@ -260,3 +260,24 @@ export async function sbCreateUser(email: string, passwordHash: string, name: st
   }
   return data;
 }
+
+// ─── Storage ─────────────────────────────────────────────────────────────────
+
+export async function sbGetSignedUrl(filePath: string, expiresInSeconds = 300): Promise<string | null> {
+  const sb = getSupabaseClient();
+  if (!sb) return null;
+
+  const bucket = process.env.SUPABASE_STORAGE_BUCKET || 'documents';
+  try {
+    const { data, error } = await sb.storage.from(bucket).createSignedUrl(filePath, expiresInSeconds);
+    if (error || !data) {
+      console.warn(`[Supabase Storage] createSignedUrl warning (${filePath}):`, error?.message);
+      return null;
+    }
+    return data.signedUrl;
+  } catch (e: any) {
+    console.warn(`[Supabase Storage] Exception creating signed url:`, e?.message);
+    return null;
+  }
+}
+

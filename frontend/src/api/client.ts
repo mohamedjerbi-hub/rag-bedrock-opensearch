@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001').replace(/\/$/, '');
 
 function getHeaders(): Record<string, string> {
   const token = localStorage.getItem('jwtToken');
@@ -287,7 +287,43 @@ export const api = {
       body: JSON.stringify(data),
     }).then(r => handleResponse<void>(r));
   },
+
+  /** Signed URL & File Blob retrieval with client-side session caching */
+  getSignedUrl: (documentId: string): Promise<SignedUrlResponse> =>
+    fetch(`${API_BASE}/documents/${documentId}/signed-url`, {
+      headers: getHeaders(),
+    }).then(r => handleResponse<SignedUrlResponse>(r)),
+
+  fetchDocumentBlob: async (documentId: string, signedUrl: string): Promise<Blob> => {
+    if (blobCache.has(documentId)) {
+      return blobCache.get(documentId)!;
+    }
+    const res = await fetch(signedUrl);
+    if (!res.ok) {
+      throw new Error(`Impossible de télécharger le fichier source (${res.status})`);
+    }
+    const blob = await res.blob();
+    blobCache.set(documentId, blob);
+    return blob;
+  },
 };
+
+const blobCache = new Map<string, Blob>();
+
+export interface SignedUrlResponse {
+  signed_url: string;
+  expires_in: number;
+  size_exceeded: boolean;
+  document: {
+    document_id: string;
+    name: string;
+    mime_type: string;
+    size_bytes: number;
+    uploaded_by?: string;
+    uploaded_at?: string;
+  };
+}
+
 
 // ─── Shared types ─────────────────────────────────────────────────────────────
 

@@ -10,7 +10,7 @@ export interface PasswordResetToken {
 }
 
 const RESET_FILE = path.join(__dirname, '../../data/password_resets.json');
-const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 heure
+const TOKEN_TTL_MS = 30 * 60 * 1000; // 30 minutes
 
 function ensureDir() {
   const dir = path.dirname(RESET_FILE);

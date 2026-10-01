@@ -1,16 +1,25 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { Upload, FileText, CheckCircle2, XCircle, Loader2, Trash2, RefreshCw, Folder, FolderPlus, ChevronRight, Search, Edit2, Home, Eye } from 'lucide-react';
+import { Upload, FileText, CheckCircle2, XCircle, Loader2, Trash2, RefreshCw, Folder, FolderPlus, ChevronRight, Search, Edit2, Home, Eye, AlertTriangle } from 'lucide-react';
 import { api, DocumentItem } from '../api/client';
 import toast from 'react-hot-toast';
 import { formatDate, formatBytes, getErrorMessage } from '../lib/utils';
 import { SkeletonTable } from '../components/Skeleton';
 import { DocumentViewerModal } from '../components/DocumentViewerModal';
 
-const ACCEPTED_TYPES = ['.md', '.txt', '.pdf', '.docx', '.doc', '.xlsx', '.xls'];
+const ACCEPTED_TYPES = ['.md', '.txt', '.pdf', '.docx', '.doc', '.xlsx', '.xls', '.csv', '.jpg', '.jpeg', '.png', '.webp'];
 const MAX_SIZE_MB = 20;
 
-function StatusBadge({ status, isFolder }: { status: string; isFolder?: boolean }) {
+function StatusBadge({ status, errorMsg, isFolder }: { status: string; errorMsg?: string; isFolder?: boolean }) {
   if (isFolder) return null;
+  if (status === 'indexed' && errorMsg && errorMsg.includes('texte incomplet')) {
+    return (
+      <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border bg-amber-500/10 text-amber-600 border-amber-500/20" title={errorMsg}>
+        <AlertTriangle size={12} />
+        Indexé (texte incomplet ou vide)
+      </span>
+    );
+  }
+
   const cfg = {
     indexed: { label: 'Indexé', cls: 'bg-green-500/10 text-green-600 border-green-500/20', icon: CheckCircle2 },
     indexing: { label: 'Indexation…', cls: 'bg-amber-500/10 text-amber-600 border-amber-500/20', icon: Loader2, animate: true },
@@ -273,7 +282,7 @@ export default function DocumentsPage() {
             Glissez-déposez vos fichiers ici ou <span className="text-primary underline">parcourez</span>
           </p>
           <p className="text-xs text-muted-foreground">
-            Formats supportés : PDF, DOCX, XLSX, TXT, MD (Max {MAX_SIZE_MB} Mo)
+            Formats supportés : PDF, DOCX, XLSX, TXT, MD, CSV, JPG, PNG, WEBP (Max {MAX_SIZE_MB} Mo)
           </p>
         </div>
 
@@ -371,7 +380,7 @@ export default function DocumentsPage() {
                     </td>
 
                     <td className="py-4 px-6">
-                      <StatusBadge status={doc.status} isFolder={doc.is_folder} />
+                      <StatusBadge status={doc.status} errorMsg={doc.error_message} isFolder={doc.is_folder} />
                     </td>
 
                     <td className="py-4 px-6 text-xs text-muted-foreground font-mono">

@@ -1,5 +1,207 @@
 [
   {
+    "id": "957190cc-bba1-4069-a535-7ce331292bec",
+    "event_type": "REFRESH_TOKEN",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {},
+    "timestamp": "2026-09-28T14:31:29.272Z"
+  },
+  {
+    "id": "c689a3b4-c92d-4a96-8c9b-2062ebedf502",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "admin"
+    },
+    "timestamp": "2026-09-26T14:22:39.391Z"
+  },
+  {
+    "id": "08f21ec1-5310-4627-a46d-2ae62665eddd",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "0f3d429b-bbe8-489e-8ff7-55b9c687a913"
+    },
+    "timestamp": "2026-09-26T14:22:14.672Z"
+  },
+  {
+    "id": "d1bd28e9-8abc-4385-9a98-16567a62d54d",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "0f3d429b-bbe8-489e-8ff7-55b9c687a913"
+    },
+    "timestamp": "2026-09-26T14:22:14.640Z"
+  },
+  {
+    "id": "3083b0a9-5ecf-479d-9b66-667ef54e339f",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "admin"
+    },
+    "timestamp": "2026-09-26T14:22:08.000Z"
+  },
+  {
+    "id": "a998b1e9-f929-4bfc-9512-68702d7a5a51",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "0f3d429b-bbe8-489e-8ff7-55b9c687a913"
+    },
+    "timestamp": "2026-09-26T14:19:23.823Z"
+  },
+  {
+    "id": "e7c459cc-eccc-49b9-b16a-1eda40d71e3e",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "0f3d429b-bbe8-489e-8ff7-55b9c687a913"
+    },
+    "timestamp": "2026-09-26T14:19:23.804Z"
+  },
+  {
+    "id": "2adbb680-dbed-4bbf-bc04-00f2309f183c",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "d3456157-38cb-43be-bd14-3397616e05db"
+    },
+    "timestamp": "2026-09-26T14:19:08.802Z"
+  },
+  {
+    "id": "3344df5d-b907-4606-9e7d-c572153c3734",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "d3456157-38cb-43be-bd14-3397616e05db"
+    },
+    "timestamp": "2026-09-26T14:19:08.768Z"
+  },
+  {
+    "id": "07b34101-0a27-4d4e-a03c-56fc9e7f71d9",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "f2e7caf2-aa31-44a4-b346-cd184da31022"
+    },
+    "timestamp": "2026-09-26T14:19:01.675Z"
+  },
+  {
+    "id": "f2da3fd0-5e81-419c-a636-6d7ebcf0dce7",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "f2e7caf2-aa31-44a4-b346-cd184da31022"
+    },
+    "timestamp": "2026-09-26T14:19:01.651Z"
+  },
+  {
+    "id": "a27fd91c-65ca-4f05-8339-a3f1477fd09f",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "74a23b42-697f-4aa8-aa43-f00eef8d0055"
+    },
+    "timestamp": "2026-09-26T14:18:51.583Z"
+  },
+  {
+    "id": "01d2a0dc-0c7d-4446-9d4a-75dd25bbe5d8",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "74a23b42-697f-4aa8-aa43-f00eef8d0055"
+    },
+    "timestamp": "2026-09-26T14:18:51.552Z"
+  },
+  {
+    "id": "98d70d10-8a43-4797-9719-b07cc7a08693",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "df543acd-0000-4398-a384-d6a382059ef4"
+    },
+    "timestamp": "2026-09-26T14:18:42.436Z"
+  },
+  {
+    "id": "7adbae60-cd40-4034-98fa-05dcbf92e486",
+    "event_type": "DOC_UPLOAD",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "action": "signed_url_generated",
+      "document_id": "df543acd-0000-4398-a384-d6a382059ef4"
+    },
+    "timestamp": "2026-09-26T14:18:42.373Z"
+  },
+  {
+    "id": "cfae568d-0648-4dc1-b0fd-2dde53718de5",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin@smartdocs.com",
+    "ip_address": "::1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "admin"
+    },
+    "timestamp": "2026-09-26T14:15:07.728Z"
+  },
+  {
     "id": "4cd6e90c-5766-40b5-b3ce-ac018e0f704b",
     "event_type": "2FA_SETUP_INIT",
     "severity": "info",

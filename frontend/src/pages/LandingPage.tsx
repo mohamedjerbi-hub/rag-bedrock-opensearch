@@ -153,33 +153,11 @@ export default function LandingPage() {
                 href="#comment-ca-marche"
                 className="w-full sm:w-auto bg-secondary text-secondary-foreground border border-border px-7 py-3.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-colors flex items-center justify-center"
               >
-                Voir la démo
+                Comment ça marche
               </a>
             </div>
 
-            {/* Real Application Visual Screenshot */}
-            <div className="pt-8 max-w-4xl mx-auto">
-              <div className="rounded-2xl border border-border bg-card p-2 sm:p-3 shadow-2xl relative overflow-hidden group">
-                <div className="flex items-center gap-2 px-3 py-2 border-b border-border/80 bg-secondary/30 rounded-t-xl">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-red-400/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-400/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-green-400/80 inline-block" />
-                  </div>
-                  <div className="mx-auto text-[11px] font-mono text-muted-foreground bg-background/80 px-4 py-0.5 rounded-md border border-border/50">
-                    http://localhost:5173/chat
-                  </div>
-                </div>
-                <div className="overflow-hidden rounded-b-xl">
-                  <img
-                    src="/app-preview.png"
-                    alt="Aperçu réel de l'interface de chat MJ Studio RAG avec réponses synthétisées et volet de citations sourcées"
-                    className="w-full h-auto object-cover transform group-hover:scale-[1.01] transition-transform duration-300"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-            </div>
+
           </div>
         </section>
 

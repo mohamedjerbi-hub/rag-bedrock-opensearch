@@ -40,3 +40,5 @@ uploads/
 **/uploads/
 tmp/
 **/tmp/
+*.traineddata
+

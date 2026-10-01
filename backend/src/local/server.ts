@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 import path from 'path';
 import fs from 'fs';
 import { MockEngine } from '../mocks/engine';
-import { sbGetUserByEmail, sbCreateUser } from '../services/supabaseStore';
+import { sbGetUserByEmail, sbCreateUser, sbGetSignedUrl } from '../services/supabaseStore';
 import { logAuditEvent, getAuditLogs } from '../services/auditLogger';
 import { securityHeadersMiddleware, authRateLimiter, apiRateLimiter, promptInjectionFilter } from '../middleware/securityMiddleware';
 import { generateTOTPSetup, verifyTOTPCode } from '../services/totpService';
@@ -47,7 +47,7 @@ if (IS_MOCK && !process.env.JWT_SECRET) {
   console.warn('[WARN] JWT_SECRET par défaut utilisé — OK en dev, interdit en production.');
 }
 
-const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000').split(',').map(s => s.trim());
+const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000,https://rag-bedrock-opensearch.vercel.app').split(',').map(s => s.trim());
 const engine = new MockEngine();
 
 function getApiBaseUrl(req: Request): string {
@@ -497,8 +497,8 @@ app.post('/auth/forgot-password', authRateLimiter, async (req: Request, res: Res
   if (emailResult.sent) {
     // Production : email envoyé, on ne divulgue pas le lien
     payload.email_sent = 'true';
-  } else if (IS_MOCK || !IS_SMTP_CONFIGURED) {
-    // Dev/Mock : exposer le lien pour tests sans SMTP
+  } else if ((IS_MOCK || !IS_SMTP_CONFIGURED()) && process.env.NODE_ENV !== 'production') {
+    // Dev/Mock uniquement (jamais en production) : exposer le lien pour tests sans SMTP
     payload.dev_reset_url = resetUrl;
     payload.dev_token = resetEntry.token;
     if (emailResult.error) {
@@ -643,6 +643,7 @@ app.post('/admin/users/delete', authenticate, requireRoles(['admin']), async (re
 // ─────────────────────────────────────────────────────────────────────────────
 app.get('/health', (_req: Request, res: Response) => {
   const OCR_ENABLED = process.env.OCR_ENABLED !== 'false';
+  const isSmtpConfigured = IS_SMTP_CONFIGURED();
   res.json({
     status: 'ok',
     version: '1.0.0',
@@ -651,8 +652,8 @@ app.get('/health', (_req: Request, res: Response) => {
     features: {
       ocr_enabled: OCR_ENABLED,
       ocr_langs: process.env.OCR_LANGS || 'fra+eng',
-      smtp_configured: IS_SMTP_CONFIGURED,
-      email_provider: IS_SMTP_CONFIGURED ? (process.env.SMTP_HOST || 'custom') : 'dev_mode',
+      smtp_configured: isSmtpConfigured,
+      email_provider: isSmtpConfigured ? (process.env.SMTP_HOST || 'custom') : 'dev_mode',
     },
   });
 });
@@ -803,6 +804,103 @@ app.get('/documents/:id/content', authenticate, async (req: AuthenticatedRequest
   res.json({ content, title: doc?.name || 'Document' });
 });
 
+/** GET /documents/:id/signed-url  –  Generates a short-lived signed URL for Supabase storage or backend download */
+app.get('/documents/:id/signed-url', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  const docId = req.params.id as string;
+  const doc = engine.getDocuments().find(d => d.document_id === docId);
+  if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+
+  // Strict RLS & Role authorization check
+  if (!canAccessDocument(doc, req.user!.email, req.user!.role)) {
+    logAuditEvent('UNAUTHORIZED_ACCESS', 'warning', req.user!.email, { action: 'get_signed_url', document_id: docId });
+    return apiError(res, 403, 'FORBIDDEN', 'Accès refusé. Vous ne possédez pas les droits pour lire ce document.');
+  }
+
+  const MAX_PREVIEW_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
+  const sizeExceeded = (doc.size_bytes || 0) > MAX_PREVIEW_SIZE_BYTES;
+
+  // 1. Try Supabase Storage signed URL
+  const storagePath = (doc as any).storage_path || `${doc.document_id}/${doc.name}`;
+  let signedUrl = await sbGetSignedUrl(storagePath, 300);
+
+  // 2. Fallback for local / demo mode or if Supabase storage is not populated
+  if (!signedUrl) {
+    const base = getApiBaseUrl(req);
+    const downloadToken = jwt.sign(
+      { docId: doc.document_id, email: req.user!.email, role: req.user!.role },
+      JWT_SECRET,
+      { expiresIn: '5m' }
+    );
+    signedUrl = `${base}/documents/${doc.document_id}/download?token=${downloadToken}`;
+  }
+
+  logAuditEvent('DOC_UPLOAD', 'info', req.user!.email, { action: 'signed_url_generated', document_id: docId });
+
+  res.json({
+    signed_url: signedUrl,
+    expires_in: 300,
+    size_exceeded: sizeExceeded,
+    document: {
+      document_id: doc.document_id,
+      name: doc.name,
+      mime_type: doc.mime_type,
+      size_bytes: doc.size_bytes,
+      uploaded_by: doc.uploaded_by,
+      uploaded_at: doc.uploaded_at,
+    },
+  });
+});
+
+/** GET /documents/:id/download  –  Secure stream download endpoint for local files & fallback */
+app.get('/documents/:id/download', async (req: Request, res: Response) => {
+  const docId = req.params.id as string;
+  const token = (req.query.token as string) || (req.headers.authorization ? req.headers.authorization.split(' ')[1] : null);
+
+  if (!token) {
+    return apiError(res, 401, 'UNAUTHORIZED', 'Token d\'accès requis.');
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const doc = engine.getDocuments().find(d => d.document_id === docId);
+    if (!doc) return apiError(res, 404, 'NOT_FOUND', 'Document introuvable.');
+
+    if (decoded.email) {
+      const roleRecord = getUserRoleRecord(decoded.email);
+      if (!canAccessDocument(doc, decoded.email, roleRecord.role)) {
+        return apiError(res, 403, 'FORBIDDEN', 'Accès refusé à ce document.');
+      }
+    }
+
+    const buffer = await engine.getDocumentBuffer(docId);
+    if (!buffer) return apiError(res, 404, 'NOT_FOUND', 'Fichier source non disponible sur le serveur.');
+
+    const mimeMap: Record<string, string> = {
+      pdf: 'application/pdf',
+      docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      md: 'text/markdown; charset=utf-8',
+      txt: 'text/plain; charset=utf-8',
+      csv: 'text/csv; charset=utf-8',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+    };
+
+    const ext = (doc.name.split('.').pop() || '').toLowerCase();
+    const mime = mimeMap[ext] || doc.mime_type || 'application/octet-stream';
+
+    res.setHeader('Content-Type', mime);
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(doc.name)}"`);
+    res.setHeader('Cache-Control', 'private, max-age=300');
+    res.send(buffer);
+  } catch (e: any) {
+    return apiError(res, 401, 'UNAUTHORIZED', 'Jeton d\'accès expiré ou invalide.');
+  }
+});
+
+
 /** POST /documents/upload-url  –  returns a signed-like upload URL */
 app.post('/documents/upload-url', authenticate, requireRoles(['admin', 'editor']), (req: AuthenticatedRequest, res: Response) => {
   const { filename, content_type, size, parent_id } = req.body;
@@ -816,7 +914,7 @@ app.post('/documents/upload-url', authenticate, requireRoles(['admin', 'editor']
   res.status(201).json({ upload_url, document_id, expires_in: 300 });
 });
 
-const ALLOWED_UPLOAD_EXTENSIONS = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.md', '.txt', '.csv'];
+const ALLOWED_UPLOAD_EXTENSIONS = ['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.md', '.txt', '.csv', '.jpg', '.jpeg', '.png', '.webp'];
 
 /** PUT /internal/upload/:id  –  mock-S3 receiver (auth required) */
 app.put('/internal/upload/:id', authenticate, requireRoles(['admin', 'editor']), async (req: AuthenticatedRequest, res: Response) => {
@@ -1085,10 +1183,10 @@ app.use((req: Request, res: Response) => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Start
-// ─────────────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`✅ [RAG Backend] Serveur démarré sur http://localhost:${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  console.log(`✅ [RAG Backend] Serveur démarré sur http://${HOST}:${PORT}`);
   console.log(`   Base de données : Supabase`);
   console.log(`   Documents       : ${engine.getDocuments().length} chargés`);
 });

@@ -15,10 +15,16 @@ export default function ChatPage() {
   const [streamingId, setStreamingId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<Record<string, 'up' | 'down'>>({});
-  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(null);
+  const [viewerParams, setViewerParams] = useState<{
+    documentId: string;
+    page?: number;
+    excerpt?: string;
+    documentName?: string;
+  } | null>(null);
 
   // Source detail drawer
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+
 
   // Gap Report Modal State
   const [isGapModalOpen, setIsGapModalOpen] = useState(false);
@@ -306,12 +312,20 @@ export default function ChatPage() {
 
                                   return (
                                     <button
-                                      onClick={() => setSelectedSource(source)}
+                                      onClick={() => {
+                                        setSelectedSource(source);
+                                        setViewerParams({
+                                          documentId: source.document_id,
+                                          page: source.page,
+                                          excerpt: source.excerpt,
+                                          documentName: source.document_name,
+                                        });
+                                      }}
                                       className={`inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold rounded mx-0.5 align-text-top transition-colors ${selectedSource?.document_id === source.document_id
                                           ? 'bg-primary text-primary-foreground'
                                           : 'bg-primary/15 text-primary hover:bg-primary hover:text-primary-foreground'
                                         }`}
-                                      title={source.document_name}
+                                      title={`Voir la source : ${source.document_name} (Page ${source.page || 1})`}
                                     >
                                       {idx + 1}
                                     </button>
@@ -398,7 +412,15 @@ export default function ChatPage() {
                             {msg.sources.map((src, i) => (
                               <button
                                 key={i}
-                                onClick={() => setSelectedSource(src)}
+                                onClick={() => {
+                                  setSelectedSource(src);
+                                  setViewerParams({
+                                    documentId: src.document_id,
+                                    page: src.page,
+                                    excerpt: src.excerpt,
+                                    documentName: src.document_name,
+                                  });
+                                }}
                                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedSource?.document_name === src.document_name
                                     ? 'bg-primary/10 border-primary text-primary font-semibold'
                                     : 'bg-secondary/40 border-border text-muted-foreground hover:text-foreground'
@@ -412,6 +434,7 @@ export default function ChatPage() {
                           </div>
                         )}
                       </div>
+
                     )}
                   </div>
 
@@ -469,8 +492,11 @@ export default function ChatPage() {
         </div>
 
         <DocumentViewerModal
-          documentId={selectedDocumentId}
-          onClose={() => setSelectedDocumentId(null)}
+          documentId={viewerParams?.documentId || null}
+          page={viewerParams?.page}
+          excerpt={viewerParams?.excerpt}
+          documentName={viewerParams?.documentName}
+          onClose={() => setViewerParams(null)}
         />
       </div>
 
@@ -522,15 +548,21 @@ export default function ChatPage() {
 
             <div className="pt-3">
               <button
-                className="w-full py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl font-medium transition-colors flex items-center justify-center gap-1.5"
-                onClick={() => setSelectedDocumentId(selectedSource.document_id)}
+                className="w-full py-2 bg-primary text-primary-foreground hover:bg-primary/90 border border-border rounded-xl font-medium transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                onClick={() => setViewerParams({
+                  documentId: selectedSource.document_id,
+                  page: selectedSource.page,
+                  excerpt: selectedSource.excerpt,
+                  documentName: selectedSource.document_name
+                })}
               >
-                <Eye size={13} /> Lire le document complet
+                <Eye size={13} /> Aperçu interactif du document
               </button>
             </div>
           </div>
         </div>
       )}
+
 
       <KnowledgeGapModal
         isOpen={isGapModalOpen}

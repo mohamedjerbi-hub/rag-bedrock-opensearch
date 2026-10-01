@@ -435,7 +435,7 @@ export class MockEngine {
       console.log('[Engine] Dossier demo_files introuvable, pas de seed.');
       return;
     }
-    const supportedExts = ['.pdf', '.docx', '.xlsx', '.md', '.txt', '.csv'];
+    const supportedExts = ['.pdf', '.docx', '.xlsx', '.md', '.txt', '.csv', '.jpg', '.jpeg', '.png', '.webp'];
     const files = fs.readdirSync(demoDir).filter(f =>
       supportedExts.some(ext => f.toLowerCase().endsWith(ext)) && !f.startsWith('.')
     );
@@ -455,6 +455,10 @@ export class MockEngine {
             md: 'text/markdown',
             txt: 'text/plain',
             csv: 'text/csv',
+            jpg: 'image/jpeg',
+            jpeg: 'image/jpeg',
+            png: 'image/png',
+            webp: 'image/webp',
           };
           const mimeType = mimeMap[ext] || 'application/octet-stream';
           await this._ingestBuffer(file, buffer, 'system', mimeType, null);
@@ -486,7 +490,6 @@ export class MockEngine {
   ): Promise<string> {
     const document_id = crypto.randomUUID();
 
-    // Step 1: Create document record in pending state
     const doc: StoredDocument = {
       document_id,
       name,
@@ -502,7 +505,17 @@ export class MockEngine {
     this.documents.set(document_id, doc);
     await sbUpsertDocument(doc as any);
 
+    // Persist raw buffer locally for download/preview
+    try {
+      const uploadsDir = path.join(__dirname, '../../data/uploads');
+      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+      fs.writeFileSync(path.join(uploadsDir, document_id), buffer);
+    } catch (e: any) {
+      console.warn('[Engine] Warning saving upload buffer locally:', e?.message);
+    }
+
     // Step 2: Extraction phase
+
     this._updateDocStatus(document_id, 'extracting');
     console.log(`[Engine] 📄 Extraction de "${name}"…`);
 
@@ -548,10 +561,14 @@ export class MockEngine {
     }
 
     // Step 5: Mark as indexed
-    this._updateDocStatus(document_id, 'indexed', { chunk_count: parseResult.chunks.length });
+    const extraDocProps = {
+      chunk_count: parseResult.chunks.length,
+      ...(parseResult.warning ? { error_message: parseResult.warning } : {}),
+    };
+    this._updateDocStatus(document_id, 'indexed', extraDocProps);
 
     // Persist to Supabase
-    await sbUpsertDocument({ ...doc, status: 'indexed', chunk_count: parseResult.chunks.length } as any);
+    await sbUpsertDocument({ ...doc, status: 'indexed', ...extraDocProps } as any);
     await sbInsertChunks(chunksToInsertSb);
 
     console.log(`[Engine] ✅ "${name}" indexé : ${parseResult.chunks.length} chunks.`);
@@ -679,6 +696,30 @@ export class MockEngine {
     return chunks.map(c => c.text).join('\n');
   }
 
+  public async getDocumentBuffer(documentId: string): Promise<Buffer | null> {
+    const uploadsDir = path.join(__dirname, '../../data/uploads');
+    const uploadPath = path.join(uploadsDir, documentId);
+    if (fs.existsSync(uploadPath)) {
+      try {
+        return fs.readFileSync(uploadPath);
+      } catch (_) {}
+    }
+
+    const doc = this.documents.get(documentId);
+    if (doc && doc.name) {
+      const demoDir = path.join(__dirname, '../../../demo_files');
+      const demoPath = path.join(demoDir, doc.name);
+      if (fs.existsSync(demoPath)) {
+        try {
+          return fs.readFileSync(demoPath);
+        } catch (_) {}
+      }
+    }
+
+    return null;
+  }
+
+
   /**
    * Hybrid search: vector similarity + keyword scoring, fused via RRF,
    * then reranked by Cohere. Returns top-5 most relevant chunks.
@@ -778,7 +819,8 @@ export class MockEngine {
       pdf: docs.filter(d => d.name.toLowerCase().endsWith('.pdf') || d.mime_type.includes('pdf')).length,
       docx: docs.filter(d => d.name.toLowerCase().endsWith('.docx') || d.name.toLowerCase().endsWith('.doc')).length,
       xlsx: docs.filter(d => d.name.toLowerCase().endsWith('.xlsx') || d.name.toLowerCase().endsWith('.xls')).length,
-      text: docs.filter(d => d.name.toLowerCase().endsWith('.md') || d.name.toLowerCase().endsWith('.txt')).length,
+      text: docs.filter(d => d.name.toLowerCase().endsWith('.md') || d.name.toLowerCase().endsWith('.txt') || d.name.toLowerCase().endsWith('.csv')).length,
+      image: docs.filter(d => ['jpg', 'jpeg', 'png', 'webp'].some(ext => d.name.toLowerCase().endsWith('.' + ext)) || d.mime_type.startsWith('image/')).length,
     };
 
     // Top sources cited

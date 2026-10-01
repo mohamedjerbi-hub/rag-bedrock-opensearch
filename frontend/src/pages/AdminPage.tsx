@@ -80,18 +80,20 @@ function TrafficBarChart({ data }: { data: { date: string; count: number }[] }) 
 }
 
 // ─── Format Donut Chart SVG ───────────────────────────────────────────────────
-function FormatsDonutChart({ formats }: { formats: { pdf: number; docx: number; xlsx: number; text: number } }) {
-  const total = (formats.pdf + formats.docx + formats.xlsx + formats.text) || 1;
+function FormatsDonutChart({ formats }: { formats: { pdf: number; docx: number; xlsx: number; text: number; image?: number } }) {
+  const total = (formats.pdf + formats.docx + formats.xlsx + formats.text + (formats.image || 0)) || 1;
   const pdfPct = Math.round((formats.pdf / total) * 100);
   const docxPct = Math.round((formats.docx / total) * 100);
   const xlsxPct = Math.round((formats.xlsx / total) * 100);
   const textPct = Math.round((formats.text / total) * 100);
+  const imagePct = Math.round(((formats.image || 0) / total) * 100);
 
   const items = [
     { label: 'PDF', val: formats.pdf, pct: pdfPct, color: 'text-red-500 bg-red-500' },
     { label: 'DOCX', val: formats.docx, pct: docxPct, color: 'text-blue-500 bg-blue-500' },
     { label: 'XLSX', val: formats.xlsx, pct: xlsxPct, color: 'text-emerald-500 bg-emerald-500' },
     { label: 'MD/TXT', val: formats.text, pct: textPct, color: 'text-purple-500 bg-purple-500' },
+    { label: 'Images', val: formats.image || 0, pct: imagePct, color: 'text-amber-500 bg-amber-500' },
   ];
 
   return (
@@ -106,7 +108,7 @@ function FormatsDonutChart({ formats }: { formats: { pdf: number; docx: number; 
               const strokeDasharray = `${item.pct} ${100 - item.pct}`;
               const strokeDashoffset = -offset;
               offset += item.pct;
-              const strokeColors = ['#ef4444', '#3b82f6', '#10b981', '#a855f7'];
+              const strokeColors = ['#ef4444', '#3b82f6', '#10b981', '#a855f7', '#f59e0b'];
               return (
                 <circle
                   key={idx}
@@ -256,6 +258,7 @@ export default function AdminPage() {
       ['DOCX', stats.document_formats?.docx || 0],
       ['XLSX', stats.document_formats?.xlsx || 0],
       ['MD / TXT', stats.document_formats?.text || 0],
+      ['Images (JPG, PNG, WEBP)', stats.document_formats?.image || 0],
       ['', ''],
       ['Document Source', 'Nombre de Citations'],
       ...(stats.top_sources || []).map(s => [s.name, s.count]),

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, KeyRound } from 'lucide-react';
+import { Mail, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../api/client';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [devLink, setDevLink] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,13 +15,9 @@ export default function ForgotPasswordPage() {
       return;
     }
     setIsLoading(true);
-    setDevLink('');
     try {
       const res = await api.forgotPassword(email.trim());
       toast.success(res.message || 'Demande envoyée.');
-      if (res.dev_reset_url) {
-        setDevLink(res.dev_reset_url);
-      }
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Erreur.');
     } finally {
@@ -38,7 +33,7 @@ export default function ForgotPasswordPage() {
             <img src="/logo-mj.svg" alt="MJ Studio" className="w-12 h-12 rounded-2xl mx-auto" />
             <h1 className="text-xl font-bold">Mot de passe oublié</h1>
             <p className="text-sm text-muted-foreground">
-              Entrez votre email. En mode développement, le lien s'affiche ci-dessous.
+              Entrez votre adresse email. Un lien de réinitialisation vous sera envoyé.
             </p>
           </div>
 
@@ -62,18 +57,6 @@ export default function ForgotPasswordPage() {
               {isLoading ? 'Envoi…' : 'Envoyer le lien'}
             </button>
           </form>
-
-          {devLink && (
-            <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 text-xs space-y-2">
-              <p className="font-semibold flex items-center gap-1"><KeyRound size={14} /> Lien dev (MOCK) :</p>
-              <Link
-                to={devLink.includes('/reset-password') ? devLink.slice(devLink.indexOf('/reset-password')) : '/reset-password'}
-                className="text-primary break-all underline"
-              >
-                Ouvrir la page de réinitialisation
-              </Link>
-            </div>
-          )}
 
           <Link to="/login" className="flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground">
             <ArrowLeft size={14} /> Retour à la connexion

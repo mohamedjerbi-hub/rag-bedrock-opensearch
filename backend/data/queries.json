@@ -1,5 +1,55 @@
 [
   {
+    "query_id": "ed1faad3-ac47-454c-a5c4-ed9aa1a51dea",
+    "question": "donne moi l'objecti et une resume de la fichier notes de frais.xlsx",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 2126,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-09-26T14:23:27.704Z",
+    "sources": []
+  },
+  {
+    "query_id": "3b629567-f3b9-4b2c-b802-30f5a1188442",
+    "question": "Quelle est notre politique RH et congés ?",
+    "answer": "La politique RH et congés de Northwind Analytics est la suivante :\n\n- Chaque salarié à temps plein dispose de 25 jours ouvrés de congés payés par année civile, acquis à raison de 2,08 jours par mois travaillé.\n- Les demandes de congés se font via le portail RH, au minimum 15 jours calendaires avant le départ.\n- Pour toute absence de plus de 10 jours ouvrés consécutifs, le délai de préavis passe à 30 jours calendaires.\n- Le report de congés est limité à 5 jours maximum sur l'année suivante, à utiliser avant le 31 mars.\n- Les congés sont validés par le manager direct, puis contresignés par Claire Fontaine, Directrice des Ressources Humaines.\n- Des jours de congés exceptionnels sont accordés pour le mariage/PACS du salarié (4 jours ouvrés), la naissance ou l'adoption (3 jours ouvrés), le décès d'un proche (3 jours ouvrés) et le déménagement (1 jour ouvré).\n- Le télétravail est ouvert à tous les salariés ayant validé leur période d'essai.\n- Le maximum de jours de télétravail par semaine est de 3 jours. Le mardi est une journée de présence obligatoire sur site pour toutes les équipes.\n- Toute connexion aux outils internes depuis l'extérieur des locaux doit passer par le VPN d'entreprise.\n- Une indemnité forfaitaire de 30 € par mois est versée aux salariés télétravaillant au moins 8 jours dans le mois.",
+    "latency_ms": 38662,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-09-26T14:19:01.814Z",
+    "sources": [
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.872
+      },
+      {
+        "document_name": "politique_rh.pdf",
+        "score": 0.649
+      }
+    ]
+  },
+  {
+    "query_id": "267241f9-ea78-47af-b2bd-73bd240cecfe",
+    "question": "Qui contacter pour un problème IT ?",
+    "answer": "Vous pouvez contacter le support informatique de Northwind Analytics.\n\n- Le support informatique est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard, et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, appelez le 0800 112 112.",
+    "latency_ms": 191678,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-09-26T14:18:54.486Z",
+    "sources": [
+      {
+        "document_name": "faq_support.md",
+        "score": 0.611
+      }
+    ]
+  },
+  {
+    "query_id": "713479b0-f709-4eea-aa87-336d8d25bd75",
+    "question": "Quelles sont les consignes de sécurité IT ?",
+    "answer": "Cette information ne figure pas dans les documents fournis.",
+    "latency_ms": 12899,
+    "user": "admin@smartdocs.com",
+    "timestamp": "2026-09-26T14:15:30.359Z",
+    "sources": []
+  },
+  {
     "query_id": "f8a21b6d-6bb7-4ffb-aafe-cb11a3a7438c",
     "question": "Qui contacter pour un problème IT ?",
     "answer": "Vous pouvez contacter le support informatique de Northwind Analytics pour les problèmes IT.\n\n- Le support est disponible du lundi au vendredi, de 8h00 à 18h00.\n- Les délais de réponse sont de 24 à 48 heures pour les demandes standard, et de moins de 2 heures pour les demandes urgentes.\n- En cas d'urgence ou d'incident de sécurité, vous pouvez appeler le 0800 112 112, 24/7.",

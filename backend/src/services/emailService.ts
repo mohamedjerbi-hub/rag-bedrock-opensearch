@@ -14,33 +14,50 @@
 
 import nodemailer, { Transporter } from 'nodemailer';
 
-// ─── Configuration ─────────────────────────────────────────────────────────────
+// ─── Configuration (lazy — lue à chaque appel pour garantir que dotenv est déjà chargé) ─────
 
-const SMTP_HOST = process.env.SMTP_HOST || '';
-const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587', 10);
-const SMTP_USER = process.env.SMTP_USER || '';
-const SMTP_PASS = process.env.SMTP_PASS || '';
-const SMTP_FROM = process.env.SMTP_FROM || `"MJ Studio RAG" <noreply@mjstudio.io>`;
-const IS_SMTP_CONFIGURED = Boolean(SMTP_HOST && SMTP_USER && SMTP_PASS);
+function getSmtpConfig() {
+  return {
+    host: process.env.SMTP_HOST || '',
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.SMTP_FROM || `"MJ Studio RAG" <noreply@mjstudio.io>`,
+    get configured() {
+      return Boolean(this.host && this.user && this.pass);
+    },
+  };
+}
+
+// IS_SMTP_CONFIGURED — évalué dynamiquement (utilisé dans server.ts)
+export function IS_SMTP_CONFIGURED(): boolean {
+  return getSmtpConfig().configured;
+}
 
 // ─── Transporter Singleton ─────────────────────────────────────────────────────
 
 let _transporter: Transporter | null = null;
+let _lastConfig = '';
 
 function getTransporter(): Transporter {
-  if (!_transporter) {
+  const cfg = getSmtpConfig();
+  const cfgKey = `${cfg.host}:${cfg.port}:${cfg.user}`;
+
+  // Recrée le transporter si la config a changé (ex: rechargement env)
+  if (!_transporter || cfgKey !== _lastConfig) {
     _transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      secure: SMTP_PORT === 465, // true pour 465 (SSL), false pour 587 (STARTTLS)
+      host: cfg.host,
+      port: cfg.port,
+      secure: cfg.port === 465, // true pour 465 (SSL), false pour 587 (STARTTLS)
       auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
+        user: cfg.user,
+        pass: cfg.pass,
       },
       tls: {
         rejectUnauthorized: process.env.NODE_ENV === 'production',
       },
     });
+    _lastConfig = cfgKey;
   }
   return _transporter;
 }
@@ -89,7 +106,7 @@ function buildPasswordResetEmail(resetUrl: string, userEmail: string): { subject
               </p>
               <p style="margin:0 0 28px;color:#94a3b8;font-size:15px;line-height:1.6;">
                 Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe.
-                Ce lien est valide pendant <strong style="color:#e2e8f0;">1 heure</strong>.
+                Ce lien est valide pendant <strong style="color:#e2e8f0;">30 minutes</strong>.
               </p>
               <!-- CTA Button -->
               <table cellpadding="0" cellspacing="0" width="100%">
@@ -144,7 +161,7 @@ Bonjour,
 
 Une demande de réinitialisation a été effectuée pour : ${userEmail}
 
-Lien de réinitialisation (valide 1 heure) :
+Lien de réinitialisation (valide 30 minutes) :
 ${resetUrl}
 
 Si vous n'avez pas fait cette demande, ignorez cet email.
@@ -172,7 +189,7 @@ export async function sendPasswordResetEmail(
   toEmail: string,
   resetUrl: string
 ): Promise<EmailResult> {
-  if (!IS_SMTP_CONFIGURED) {
+  if (!IS_SMTP_CONFIGURED()) {
     console.log(`[EmailService] Mode dev — SMTP non configuré. Lien reset : ${resetUrl}`);
     return { sent: false, dev_mode: true };
   }
@@ -180,9 +197,10 @@ export async function sendPasswordResetEmail(
   try {
     const { subject, html, text } = buildPasswordResetEmail(resetUrl, toEmail);
     const transporter = getTransporter();
+    const cfg = getSmtpConfig();
 
     await transporter.sendMail({
-      from: SMTP_FROM,
+      from: cfg.from,
       to: toEmail,
       subject,
       html,
@@ -201,7 +219,7 @@ export async function sendPasswordResetEmail(
  * Vérifie la connexion SMTP (healthcheck).
  */
 export async function checkSmtpConnection(): Promise<{ ok: boolean; configured: boolean; error?: string }> {
-  if (!IS_SMTP_CONFIGURED) {
+  if (!IS_SMTP_CONFIGURED()) {
     return { ok: false, configured: false };
   }
   try {
@@ -211,5 +229,3 @@ export async function checkSmtpConnection(): Promise<{ ok: boolean; configured: 
     return { ok: false, configured: true, error: err?.message };
   }
 }
-
-export { IS_SMTP_CONFIGURED };
