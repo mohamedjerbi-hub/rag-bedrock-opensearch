@@ -98,9 +98,9 @@ export default function LoginPage() {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="nom@entreprise.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/30 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all"
+                    className="w-full pl-10 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all"
                   />
-                  <User size={16} className="absolute left-3.5 top-3 text-muted-foreground" />
+                  <User size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 </div>
 
                 <div className="relative">
@@ -109,9 +109,9 @@ export default function LoginPage() {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder="Mot de passe"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/30 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all"
+                    className="w-full pl-10 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all"
                   />
-                  <Lock size={16} className="absolute left-3.5 top-3 text-muted-foreground" />
+                  <Lock size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 </div>
               </>
             ) : (
@@ -123,7 +123,7 @@ export default function LoginPage() {
                   onChange={e => setTotpCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
                   autoFocus
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-secondary/30 border-2 border-primary text-foreground text-center font-mono text-xl tracking-[0.4em] focus:outline-none transition-all"
+                  className="w-full pl-10 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border-2 border-primary text-foreground text-center font-mono text-xl tracking-[0.4em] focus:outline-none transition-all"
                 />
                 <ShieldCheck size={18} className="absolute left-3.5 top-3.5 text-primary" />
               </div>
@@ -138,7 +138,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 px-4 bg-primary text-primary-foreground font-bold text-xs rounded-xl hover:bg-primary/90 transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full min-h-[44px] px-4 bg-primary text-primary-foreground font-bold text-xs rounded-xl hover:bg-primary/90 transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {requires2FA ? <CheckCircle2 size={15} /> : <KeyRound size={15} />}
               {isLoading
@@ -152,19 +152,19 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setRequires2FA(false); setError(''); }}
-                className="w-full text-center text-xs text-muted-foreground hover:text-foreground underline pt-1"
+                className="w-full min-h-[44px] flex items-center justify-center text-xs text-muted-foreground hover:text-foreground underline"
               >
-                ← Retour au mot de passe
+                Retour au mot de passe
               </button>
             )}
           </form>
 
           <p className="text-center text-xs text-muted-foreground space-y-2">
-            <Link to="/forgot-password" className="block text-primary font-semibold hover:underline">
+            <Link to="/forgot-password" className="block text-primary font-semibold hover:underline p-1">
               Mot de passe oublié ?
             </Link>
             Pas encore de compte ?{' '}
-            <Link to="/register" className="text-primary font-bold hover:underline inline-flex items-center gap-1">
+            <Link to="/register" className="text-primary font-bold hover:underline inline-flex items-center gap-1 p-1">
               S'inscrire <ArrowRight size={12} />
             </Link>
           </p>

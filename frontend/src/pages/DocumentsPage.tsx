@@ -244,13 +244,13 @@ export default function DocumentsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleCreateFolder}
-            className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 min-h-[44px] bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl text-xs font-semibold transition-colors shadow-sm"
           >
             <FolderPlus size={16} /> Nouveau Dossier
           </button>
           <button
             onClick={fetchDocuments}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl text-xs font-semibold transition-colors shadow-sm"
           >
             <RefreshCw size={16} /> Actualiser
           </button>
@@ -263,8 +263,8 @@ export default function DocumentsPage() {
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
-        className={`relative p-6 border-2 border-dashed rounded-2xl transition-all text-center ${
-          isDragging ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-border/80 bg-background hover:border-primary/40'
+        className={`relative p-8 border-2 border-dashed rounded-2xl transition-all text-center ${
+          isDragging ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-border bg-card hover:border-primary/40'
         }`}
       >
         <input
@@ -275,7 +275,7 @@ export default function DocumentsPage() {
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
         <div className="flex flex-col items-center gap-2">
-          <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-1">
             <Upload size={22} />
           </div>
           <p className="font-semibold text-foreground text-sm">
@@ -301,15 +301,15 @@ export default function DocumentsPage() {
       </div>
 
       {/* Breadcrumb & Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-background border border-border/80 p-4 rounded-2xl shadow-sm shrink-0">
-        <div className="flex items-center gap-1 text-sm font-medium overflow-x-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card border border-border p-4 rounded-2xl shadow-sm shrink-0">
+        <div className="flex items-center gap-1 text-xs font-medium overflow-x-auto">
           {breadcrumb.map((item, idx) => (
             <div key={item.id || 'root'} className="flex items-center gap-1">
               {idx > 0 && <ChevronRight size={14} className="text-muted-foreground" />}
               <button
                 onClick={() => setCurrentFolderId(item.id)}
-                className={`hover:text-primary transition-colors flex items-center gap-1.5 ${
-                  currentFolderId === item.id ? 'font-bold text-primary' : 'text-muted-foreground'
+                className={`hover:text-primary transition-colors flex items-center gap-1.5 px-2.5 min-h-[44px] rounded-xl ${
+                  currentFolderId === item.id ? 'font-bold text-primary bg-primary/10' : 'text-muted-foreground'
                 }`}
               >
                 {idx === 0 ? <Home size={16} /> : <Folder size={16} />}
@@ -319,23 +319,23 @@ export default function DocumentsPage() {
           ))}
         </div>
 
-        <div className="relative min-w-[240px]">
+        <div className="relative min-w-[260px]">
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Rechercher un document…"
-            className="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-border rounded-xl text-xs focus:outline-none focus:border-primary text-foreground"
+            className="w-full pl-10 pr-4 min-h-[44px] bg-secondary/30 border border-border rounded-xl text-xs focus:outline-none focus:border-primary text-foreground"
           />
-          <Search size={14} className="absolute left-3 top-2.5 text-muted-foreground" />
+          <Search size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
         </div>
       </div>
 
       {/* Documents Table */}
-      <div className="bg-background border border-border rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col min-h-[350px]">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col min-h-[350px]">
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-left text-sm">
-            <thead className="bg-secondary/40 border-b border-border text-muted-foreground text-xs uppercase font-semibold">
+            <thead className="bg-secondary/40 border-b border-border text-muted-foreground text-xs font-semibold">
               <tr>
                 <th className="py-3.5 px-6">Nom</th>
                 <th className="py-3.5 px-6">Taille</th>
@@ -348,7 +348,7 @@ export default function DocumentsPage() {
             <tbody className="divide-y divide-border/60">
               {currentItems.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-muted-foreground">
+                  <td colSpan={6} className="py-12 text-center text-muted-foreground text-xs">
                     Aucun document présent dans ce dossier.
                   </td>
                 </tr>
@@ -365,12 +365,12 @@ export default function DocumentsPage() {
                         {doc.is_folder ? (
                           <button
                             onClick={() => setCurrentFolderId(doc.document_id)}
-                            className="font-bold hover:text-primary transition-colors text-left"
+                            className="font-bold hover:text-primary transition-colors text-left text-sm"
                           >
                             {doc.name}
                           </button>
                         ) : (
-                          <span className="truncate max-w-[280px]">{doc.name}</span>
+                          <span className="truncate max-w-[280px] text-sm">{doc.name}</span>
                         )}
                       </div>
                     </td>
@@ -392,29 +392,29 @@ export default function DocumentsPage() {
                     </td>
 
                     <td className="py-4 px-6 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
                         {!doc.is_folder && doc.status === 'indexed' && (
                           <button
                             onClick={() => setSelectedDocumentId(doc.document_id)}
-                            className="p-1.5 hover:bg-primary/10 hover:text-primary text-muted-foreground rounded-lg transition-colors"
+                            className="w-11 h-11 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-muted-foreground rounded-xl transition-colors"
                             title="Consulter le document"
                           >
-                            <Eye size={15} />
+                            <Eye size={16} />
                           </button>
                         )}
                         <button
                           onClick={() => handleRename(doc)}
-                          className="p-1.5 hover:bg-secondary text-muted-foreground rounded-lg transition-colors"
+                          className="w-11 h-11 flex items-center justify-center hover:bg-secondary text-muted-foreground rounded-xl transition-colors"
                           title="Renommer"
                         >
-                          <Edit2 size={15} />
+                          <Edit2 size={16} />
                         </button>
                         <button
                           onClick={() => handleDelete(doc)}
-                          className="p-1.5 hover:bg-red-500/10 hover:text-red-600 text-muted-foreground rounded-lg transition-colors"
+                          className="w-11 h-11 flex items-center justify-center hover:bg-red-500/10 hover:text-red-600 text-muted-foreground rounded-xl transition-colors"
                           title="Supprimer"
                         >
-                          <Trash2 size={15} />
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     </td>

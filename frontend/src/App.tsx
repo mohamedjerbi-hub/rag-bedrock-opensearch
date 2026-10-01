@@ -11,12 +11,10 @@ import { SkeletonTable } from './components/Skeleton';
 import type { UserRole } from './auth/AuthProvider';
 
 // Route Code Splitting for optimal bundle performance
-const LandingPage = lazy(() => import('./pages/LandingPage'));
 const DocumentsPage = lazy(() => import('./pages/DocumentsPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AuditPage = lazy(() => import('./pages/AuditPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
 const GapManagementPage = lazy(() => import('./pages/GapManagementPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
@@ -54,13 +52,11 @@ export default function App() {
         <Router>
           <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/about" element={<AboutPage />} />
+              <Route path="/" element={<Navigate to="/chat" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
-              <Route path="/app" element={<Navigate to="/chat" replace />} />
               <Route path="/" element={<Guard><Layout /></Guard>}>
                 <Route path="chat" element={<ChatPage />} />
                 <Route path="documents" element={<Guard roles={['admin', 'editor']}><DocumentsPage /></Guard>} />
@@ -69,7 +65,7 @@ export default function App() {
                 <Route path="audit" element={<Guard roles={['admin', 'auditor']}><AuditPage /></Guard>} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<Navigate to="/chat" replace />} />
             </Routes>
           </Suspense>
         </Router>

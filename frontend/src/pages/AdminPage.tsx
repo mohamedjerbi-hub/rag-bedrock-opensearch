@@ -299,16 +299,16 @@ export default function AdminPage() {
           {activeTab === 'stats' && (
             <button
               onClick={handleExportStatsCSV}
-              className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl font-medium text-sm transition-colors"
+              className="flex items-center gap-2 px-4 min-h-[44px] bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-xl font-semibold text-xs transition-colors shadow-sm"
             >
-              <Download size={14} /> Exporter Rapport CSV
+              <Download size={15} /> Exporter Rapport CSV
             </button>
           )}
           <button
             onClick={loadData}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-medium text-sm transition-colors"
+            className="flex items-center gap-2 px-4 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-semibold text-xs transition-colors shadow-sm"
           >
-            <RefreshCw size={14} /> Actualiser
+            <RefreshCw size={15} /> Actualiser
           </button>
         </div>
       </div>
@@ -317,13 +317,13 @@ export default function AdminPage() {
       <div className="flex border-b border-border mb-6 shrink-0">
         <button
           onClick={() => setActiveTab('users')}
-          className={`flex items-center gap-2 px-6 py-3 font-semibold text-sm border-b-2 transition-all ${activeTab === 'users' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+          className={`flex items-center gap-2 px-6 min-h-[44px] font-semibold text-xs border-b-2 transition-all ${activeTab === 'users' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           <Users size={16} /> Annuaire des Utilisateurs & Rôles ({users.length})
         </button>
         <button
           onClick={() => setActiveTab('stats')}
-          className={`flex items-center gap-2 px-6 py-3 font-semibold text-sm border-b-2 transition-all ${activeTab === 'stats' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+          className={`flex items-center gap-2 px-6 min-h-[44px] font-semibold text-xs border-b-2 transition-all ${activeTab === 'stats' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           <BarChart3 size={16} /> Statistiques & Analyse RAG
         </button>
@@ -333,7 +333,7 @@ export default function AdminPage() {
         <>
           {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 shrink-0">
-            <div className="p-4 rounded-2xl border border-border bg-background shadow-sm">
+            <div className="p-4 rounded-2xl border border-border bg-card shadow-sm">
               <p className="text-xs text-muted-foreground font-medium mb-1">Total Utilisateurs</p>
               <p className="text-2xl font-bold text-foreground">{users.length}</p>
             </div>
@@ -356,28 +356,28 @@ export default function AdminPage() {
           </div>
 
           {/* User Management Section */}
-          <div className="bg-background border border-border rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col min-h-[400px]">
+          <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col min-h-[400px]">
             <div className="p-5 border-b border-border bg-secondary/20 flex flex-wrap gap-4 items-center justify-between">
               <h2 className="font-bold text-base text-foreground flex items-center gap-2">
                 <Users size={18} className="text-primary" /> Annuaire des utilisateurs
               </h2>
 
               <div className="flex flex-wrap gap-3">
-                <div className="relative min-w-[220px]">
+                <div className="relative min-w-[240px]">
                   <input
                     type="text"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     placeholder="Rechercher nom, email..."
-                    className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-xl text-xs focus:outline-none focus:border-primary"
+                    className="w-full pl-10 pr-4 min-h-[44px] bg-background border border-border rounded-xl text-xs focus:outline-none focus:border-primary text-foreground"
                   />
-                  <Search size={14} className="absolute left-3 top-2.5 text-muted-foreground" />
+                  <Search size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 </div>
 
                 <select
                   value={roleFilter}
                   onChange={e => setRoleFilter(e.target.value)}
-                  className="px-3 py-2 bg-background border border-border rounded-xl text-xs focus:outline-none focus:border-primary text-foreground"
+                  className="px-3.5 min-h-[44px] bg-background border border-border rounded-xl text-xs focus:outline-none focus:border-primary text-foreground font-medium"
                 >
                   <option value="">Tous les rôles</option>
                   <option value="admin">Administrateur</option>
@@ -390,7 +390,7 @@ export default function AdminPage() {
 
             <div className="overflow-x-auto flex-1">
               <table className="w-full text-left text-sm">
-                <thead className="bg-secondary/40 border-b border-border text-muted-foreground text-xs uppercase font-semibold">
+                <thead className="bg-secondary/40 border-b border-border text-muted-foreground text-xs font-semibold">
                   <tr>
                     <th className="py-3.5 px-6">Utilisateur</th>
                     <th className="py-3.5 px-6">Rôle Actuel</th>
@@ -403,7 +403,7 @@ export default function AdminPage() {
                 <tbody className="divide-y divide-border/60">
                   {filteredUsers.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-12 text-center text-muted-foreground">
+                      <td colSpan={6} className="py-12 text-center text-muted-foreground text-xs">
                         Aucun utilisateur ne correspond à votre recherche.
                       </td>
                     </tr>
@@ -416,7 +416,7 @@ export default function AdminPage() {
                               {u.name?.[0]?.toUpperCase() || 'U'}
                             </div>
                             <div>
-                              <p className="font-semibold text-foreground">{u.name}</p>
+                              <p className="font-semibold text-foreground text-sm">{u.name}</p>
                               <p className="text-xs text-muted-foreground">{u.email}</p>
                             </div>
                           </div>
@@ -431,7 +431,7 @@ export default function AdminPage() {
                             value={u.role}
                             disabled={updatingUser === u.email}
                             onChange={e => handleRoleChange(u.email, e.target.value)}
-                            className="px-3 py-1.5 bg-secondary/30 border border-border rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground"
+                            className="px-3 min-h-[44px] bg-secondary/30 border border-border rounded-xl text-xs font-medium focus:outline-none focus:border-primary text-foreground"
                           >
                             <option value="admin">Administrateur</option>
                             <option value="editor">Éditeur</option>
@@ -462,24 +462,26 @@ export default function AdminPage() {
                           )}
                         </td>
 
-                        <td className="py-4 px-6 flex flex-wrap gap-2">
-                          <button
-                            onClick={() => handleStatusToggle(u.email, u.active)}
-                            disabled={updatingUser === u.email}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center gap-1.5 ${u.active ? 'bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20' : 'bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20'}`}
-                          >
-                            <Power size={13} />
-                            {u.active ? 'Suspendre' : 'Réactiver'}
-                          </button>
-                          <button
-                            onClick={() => handleDeleteUser(u.email)}
-                            disabled={updatingUser === u.email}
-                            className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 text-red-600 hover:bg-red-500/10 flex items-center gap-1.5"
-                            title="Supprimer définitivement"
-                          >
-                            <Trash2 size={13} />
-                            Supprimer
-                          </button>
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleStatusToggle(u.email, u.active)}
+                              disabled={updatingUser === u.email}
+                              className={`px-3 min-h-[44px] rounded-xl text-xs font-semibold border transition-all flex items-center gap-1.5 ${u.active ? 'bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20' : 'bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20'}`}
+                            >
+                              <Power size={14} />
+                              {u.active ? 'Suspendre' : 'Réactiver'}
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(u.email)}
+                              disabled={updatingUser === u.email}
+                              className="px-3 min-h-[44px] rounded-xl text-xs font-semibold border border-red-500/30 text-red-600 hover:bg-red-500/10 flex items-center gap-1.5"
+                              title="Supprimer définitivement"
+                            >
+                              <Trash2 size={14} />
+                              Supprimer
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

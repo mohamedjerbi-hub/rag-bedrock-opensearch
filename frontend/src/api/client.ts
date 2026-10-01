@@ -344,6 +344,7 @@ export interface DocumentItem {
   size_bytes: number;
   mime_type: string;
   status: 'pending' | 'indexing' | 'indexed' | 'failed';
+  error_message?: string;
   chunk_count: number;
   uploaded_by: string;
   uploaded_at: string;
@@ -355,7 +356,7 @@ export interface StatsData {
   queries_30d: number;
   avg_latency_ms: number;
   queries_by_day: { date: string; count: number }[];
-  document_formats?: { pdf: number; docx: number; xlsx: number; text: number };
+  document_formats?: { pdf: number; docx: number; xlsx: number; text: number; image?: number };
   top_sources?: { name: string; count: number }[];
   success_rate?: number;
   unresolved_rate?: number;

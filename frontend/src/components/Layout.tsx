@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
-import { MessageSquare, FileText, BarChart3, Eye, PanelLeftClose, PanelLeft, LogOut, Info, AlertCircle } from 'lucide-react';
+import { MessageSquare, FileText, BarChart3, Eye, PanelLeftClose, PanelLeft, LogOut, AlertCircle, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SidebarChatHistory from './SidebarChatHistory';
 import { ThemeToggle } from './ThemeToggle';
@@ -30,32 +30,63 @@ export default function Layout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground font-sans">
+      {/* Mobile Top Header (screen width < 768px) */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-background border-b border-border z-40 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/chat')}>
+          <img src="/logo-mj.svg" alt="Logo" className="w-7 h-7 rounded-lg" />
+          <span className="font-bold text-sm tracking-tight text-foreground">MJ Studio RAG</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="w-11 h-11 flex items-center justify-center rounded-xl bg-secondary text-foreground border border-border"
+            aria-label="Toggle navigation"
+          >
+            {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Sidebar Overlay on Mobile */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Sidebar */}
       <AnimatePresence initial={false}>
         {isSidebarOpen && (
           <motion.aside
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 260, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="flex flex-col border-r border-border/60 bg-secondary/20 shrink-0 overflow-hidden"
+            initial={{ x: -280, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -280, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 35 }}
+            className="fixed md:static inset-y-0 left-0 z-50 w-[270px] flex flex-col border-r border-border bg-card shrink-0 overflow-hidden shadow-xl md:shadow-none"
           >
-            <div className="w-[260px] h-full flex flex-col">
-              {/* Logo MJ Studio Header */}
-              <div className="px-4 py-4 flex items-center justify-between shrink-0 border-b border-border/50">
-                <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/chat')}>
-                  <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-7 h-7 rounded-lg shadow-sm" />
+            <div className="w-full h-full flex flex-col">
+              {/* Header */}
+              <div className="px-5 py-4 flex items-center justify-between shrink-0 border-b border-border">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/chat')}>
+                  <img src="/logo-mj.svg" alt="MJ Studio Logo" className="w-8 h-8 rounded-lg" />
                   <div>
-                    <h1 className="font-bold text-foreground tracking-tight text-sm leading-tight">MJ Studio</h1>
-                    <p className="text-[10px] text-muted-foreground font-mono leading-none">RAG Engine</p>
+                    <h1 className="font-bold text-foreground text-sm tracking-tight leading-tight">MJ Studio</h1>
+                    <p className="text-[11px] text-muted-foreground font-mono leading-none mt-0.5">RAG Enterprise</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="hidden md:flex items-center gap-1">
                   <ThemeToggle />
                   <button
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-1 text-muted-foreground hover:bg-secondary rounded-md transition-colors"
+                    className="w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
                     title="Masquer le menu"
                   >
                     <PanelLeftClose size={16} />
@@ -63,52 +94,45 @@ export default function Layout() {
                 </div>
               </div>
 
-              {/* Dynamic Middle Section (Chat History if on Chat, else empty space) */}
+              {/* Dynamic Middle Section */}
               <div className="flex-1 overflow-hidden">
                 {isChat && <SidebarChatHistory />}
               </div>
 
-              {/* Bottom section: App Nav & Profile + Footer */}
-              <div className="p-3 border-t border-border/50 space-y-2 bg-background/50">
-                <nav className="space-y-1 mb-1">
+              {/* Bottom section: App Nav & Profile */}
+              <div className="p-4 border-t border-border space-y-3 bg-muted/20">
+                <nav className="space-y-1">
                   {navItems.map(item => (
                     <NavLink
                       key={item.to}
                       to={item.to}
+                      onClick={() => {
+                        if (window.innerWidth < 768) setIsSidebarOpen(false);
+                      }}
                       className={({ isActive }) =>
-                        `flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                        `flex items-center gap-3 px-3.5 min-h-[44px] rounded-xl text-xs font-semibold transition-all ${
                           isActive
-                            ? 'bg-primary/10 text-primary border-l-2 border-primary shadow-sm'
-                            : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
+                            ? 'bg-primary text-primary-foreground shadow-sm'
+                            : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                         }`
                       }
                     >
-                      <item.icon size={15} />
+                      <item.icon size={17} />
                       {item.label}
                     </NavLink>
                   ))}
-                  <NavLink
-                    to="/about"
-                    className={({ isActive }) =>
-                      `flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
-                        isActive
-                          ? 'bg-primary/10 text-primary border-l-2 border-primary shadow-sm'
-                          : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
-                      }`
-                    }
-                  >
-                    <Info size={15} />
-                    À propos
-                  </NavLink>
                 </nav>
 
-                {/* User row */}
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary/30 border border-border/40">
+                {/* User Row */}
+                <div className="flex items-center gap-2 p-2 min-h-[44px] rounded-xl bg-secondary/50 border border-border">
                   <NavLink
                     to="/profile"
-                    className="flex items-center gap-2 flex-1 min-w-0"
+                    onClick={() => {
+                      if (window.innerWidth < 768) setIsSidebarOpen(false);
+                    }}
+                    className="flex items-center gap-2.5 flex-1 min-w-0"
                   >
-                    <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0">
                       {user?.name?.[0]?.toUpperCase() ?? '?'}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -118,16 +142,15 @@ export default function Layout() {
                   </NavLink>
                   <button
                     onClick={handleLogout}
-                    className="p-1 rounded-md text-muted-foreground hover:text-red-500 transition-colors shrink-0"
+                    className="w-11 h-11 flex items-center justify-center rounded-lg text-muted-foreground hover:text-red-500 transition-colors shrink-0"
                     title="Se déconnecter"
                   >
-                    <LogOut size={14} />
+                    <LogOut size={16} />
                   </button>
                 </div>
 
-                {/* Footer Brand Line */}
-                <p className="text-[10px] text-center font-mono text-muted-foreground pt-1 opacity-70">
-                  MJ Studio — Mohamed Jerbi · 2026
+                <p className="text-[10px] text-center font-mono text-muted-foreground pt-1">
+                  MJ Studio RAG Platform 2026
                 </p>
               </div>
             </div>
@@ -135,15 +158,15 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col min-w-0 relative bg-background">
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-w-0 relative bg-background pt-14 md:pt-0">
         {!isSidebarOpen && (
           <motion.button
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            exit={{ opacity: 0, x: -10 }}
             onClick={() => setIsSidebarOpen(true)}
-            className="absolute top-3 left-3 z-50 p-1.5 bg-background border border-border shadow-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            className="hidden md:flex absolute top-3 left-3 z-30 w-11 h-11 items-center justify-center bg-card border border-border shadow-sm rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
             title="Afficher le menu"
           >
             <PanelLeft size={18} />

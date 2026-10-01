@@ -65,16 +65,16 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative group">
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Prénom Nom"
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-secondary/20 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:bg-background transition-all"
+                className="w-full pl-12 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all text-sm"
               />
-              <User size={18} className="absolute left-4 top-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <User size={18} className="absolute left-4 top-3.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
             </div>
 
             <div className="relative group">
@@ -83,9 +83,9 @@ export default function RegisterPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="nom@entreprise.com"
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-secondary/20 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:bg-background transition-all"
+                className="w-full pl-12 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all text-sm"
               />
-              <Mail size={18} className="absolute left-4 top-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Mail size={18} className="absolute left-4 top-3.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
             </div>
 
             <div className="relative group">
@@ -94,9 +94,9 @@ export default function RegisterPage() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="Mot de passe"
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-secondary/20 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:bg-background transition-all"
+                className="w-full pl-12 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all text-sm"
               />
-              <Lock size={18} className="absolute left-4 top-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Lock size={18} className="absolute left-4 top-3.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
             </div>
 
             <div className="relative group">
@@ -105,16 +105,16 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
                 placeholder="Confirmer le mot de passe"
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-secondary/20 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary focus:bg-background transition-all"
+                className="w-full pl-12 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all text-sm"
               />
-              <Lock size={18} className="absolute left-4 top-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Lock size={18} className="absolute left-4 top-3.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
             </div>
 
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-sm text-error bg-error/10 rounded-xl px-4 py-3 border border-error/20"
+                className="text-xs text-error bg-error/10 rounded-xl px-4 py-3 border border-error/20"
               >
                 {error}
               </motion.div>
@@ -123,42 +123,35 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-primary text-primary-foreground font-semibold rounded-2xl hover:bg-primary/90 focus:ring-4 focus:ring-primary/20 transition-all shadow-lg shadow-primary/25 mt-2 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group"
+              className="w-full min-h-[44px] px-4 bg-primary text-primary-foreground font-bold text-xs rounded-xl hover:bg-primary/90 transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <KeyRound size={18} className="group-hover:rotate-12 transition-transform" /> 
-              {isLoading ? 'Création en cours...' : 'Créer mon compte'}
+              <KeyRound size={16} /> 
+              {isLoading ? 'Création en cours…' : 'Créer mon compte'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-8">
+          <p className="text-center text-xs text-muted-foreground mt-6">
             Déjà inscrit ?{' '}
-            <Link to="/login" className="text-primary font-medium hover:underline inline-flex items-center gap-1 group">
-              Se connecter <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <Link to="/login" className="text-primary font-semibold hover:underline inline-flex items-center gap-1 p-1">
+              Se connecter <ArrowRight size={13} />
             </Link>
           </p>
         </motion.div>
       </div>
 
-      {/* Right side: Dynamic Visuals (Premium) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-secondary overflow-hidden items-center justify-center">
-        {/* Dynamic mesh gradients */}
-        <div className="absolute inset-0 opacity-50 mix-blend-overlay pointer-events-none">
-           <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] rounded-full bg-primary/40 blur-[120px] animate-pulse-slow" />
-           <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] rounded-full bg-accent/30 blur-[100px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-        </div>
-        
-        {/* Glassmorphism card overlay */}
-        <div className="relative z-10 max-w-lg p-10 rounded-3xl bg-background/20 backdrop-blur-2xl border border-white/10 shadow-2xl">
-          <h2 className="text-3xl font-bold text-white mb-4">L'avenir de la recherche documentaire</h2>
-          <p className="text-white/80 text-lg leading-relaxed mb-6">
-            Posez vos questions naturellement. Notre IA parcourt des milliers de documents, synthétise les réponses et vous fournit des sources traçables en quelques millisecondes.
+      {/* Right side: Clean Corporate Information Card */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-secondary border-l border-border p-12 items-center justify-center">
+        <div className="relative z-10 max-w-lg p-8 rounded-2xl bg-card border border-border shadow-xl">
+          <h2 className="text-2xl font-bold text-foreground mb-3">Recherche documentaire avancée</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+            Posez vos questions naturellement. Notre système RAG hybride (Vectoriel + BM25) interroge vos bases de connaissances et cite précisément chaque source.
           </p>
-          <div className="flex gap-4">
-            <div className="px-4 py-2 rounded-full bg-white/10 border border-white/10 text-white text-sm font-medium backdrop-blur-md">
-              ✨ Sécurisé
+          <div className="flex gap-3">
+            <div className="px-3.5 min-h-[36px] flex items-center justify-center rounded-xl bg-secondary text-foreground text-xs font-semibold border border-border">
+              Sécurisé & Conforme
             </div>
-            <div className="px-4 py-2 rounded-full bg-white/10 border border-white/10 text-white text-sm font-medium backdrop-blur-md">
-              ⚡ Ultra-rapide
+            <div className="px-3.5 min-h-[36px] flex items-center justify-center rounded-xl bg-secondary text-foreground text-xs font-semibold border border-border">
+              Reranking Cohere
             </div>
           </div>
         </div>

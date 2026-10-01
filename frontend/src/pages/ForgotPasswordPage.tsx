@@ -39,26 +39,26 @@ export default function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="votre@email.com"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-card text-sm"
+                className="w-full pl-10 pr-4 min-h-[44px] rounded-xl border border-border bg-card text-sm focus:outline-none focus:border-primary transition-all"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm disabled:opacity-50"
+              className="w-full min-h-[44px] rounded-xl bg-primary text-primary-foreground font-bold text-xs disabled:opacity-50 hover:bg-primary/90 transition-all shadow-sm"
             >
               {isLoading ? 'Envoi…' : 'Envoyer le lien'}
             </button>
           </form>
 
-          <Link to="/login" className="flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          <Link to="/login" className="flex items-center justify-center gap-1.5 min-h-[44px] rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft size={14} /> Retour à la connexion
           </Link>
         </div>

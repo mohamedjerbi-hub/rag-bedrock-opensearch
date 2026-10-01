@@ -200,9 +200,9 @@ export default function GapManagementPage() {
 
         <button
           onClick={() => { fetchGaps(); fetchStats(); }}
-          className="self-start sm:self-auto px-3.5 py-2 rounded-xl bg-secondary border border-border text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors flex items-center gap-2"
+          className="self-start sm:self-auto px-4 min-h-[44px] rounded-xl bg-secondary border border-border text-xs font-semibold text-foreground hover:bg-secondary/80 transition-colors flex items-center gap-2 shadow-sm"
         >
-          <RefreshCw size={14} /> Actualiser
+          <RefreshCw size={15} /> Actualiser
         </button>
       </div>
 
@@ -264,9 +264,9 @@ export default function GapManagementPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher par ticket #GAP-, question, commentaire ou utilisateur..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl bg-secondary/30 border border-border text-foreground text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+              className="w-full pl-10 pr-4 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary"
             />
-            <Search size={16} className="absolute left-3 top-2.5 text-muted-foreground" />
+            <Search size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
           </div>
 
           {/* Select Filters */}
@@ -274,7 +274,7 @@ export default function GapManagementPage() {
             <select
               value={selectedStatus}
               onChange={e => setSelectedStatus(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-secondary/30 border border-border text-foreground text-xs focus:outline-none"
+              className="px-3 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-xs font-medium focus:outline-none focus:border-primary"
             >
               <option value="all">Tous statuts</option>
               <option value="nouveau">Nouveau</option>
@@ -287,7 +287,7 @@ export default function GapManagementPage() {
             <select
               value={selectedPriority}
               onChange={e => setSelectedPriority(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-secondary/30 border border-border text-foreground text-xs focus:outline-none"
+              className="px-3 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-xs font-medium focus:outline-none focus:border-primary"
             >
               <option value="all">Toutes priorités</option>
               <option value="basse">Basse</option>
@@ -299,7 +299,7 @@ export default function GapManagementPage() {
             <select
               value={selectedType}
               onChange={e => setSelectedType(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-secondary/30 border border-border text-foreground text-xs focus:outline-none"
+              className="px-3 min-h-[44px] rounded-xl bg-secondary/30 border border-border text-foreground text-xs font-medium focus:outline-none focus:border-primary"
             >
               <option value="all">Toutes natures</option>
               <option value="information_absente">Information absente</option>
@@ -309,12 +309,12 @@ export default function GapManagementPage() {
               <option value="mauvais_document_cite">Mauvais document cité</option>
             </select>
 
-            <label className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary/30 border border-border cursor-pointer select-none text-xs text-foreground">
+            <label className="flex items-center gap-2 px-3.5 min-h-[44px] rounded-xl bg-secondary/30 border border-border cursor-pointer select-none text-xs text-foreground font-medium">
               <input
                 type="checkbox"
                 checked={unassignedOnly}
                 onChange={e => setUnassignedOnly(e.target.checked)}
-                className="w-3.5 h-3.5 rounded text-primary border-border"
+                className="w-4 h-4 rounded text-primary border-border"
               />
               <span>Non assignés</span>
             </label>

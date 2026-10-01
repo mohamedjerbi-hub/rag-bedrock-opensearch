@@ -265,7 +265,7 @@ export default function ChatPage() {
                     <button
                       key={q}
                       onClick={() => setInput(q)}
-                      className="text-left p-3.5 rounded-xl border border-border bg-card hover:border-primary/40 hover:bg-secondary/40 text-xs font-medium text-muted-foreground hover:text-foreground transition-all duration-200"
+                      className="text-left p-3.5 min-h-[44px] flex items-center rounded-xl border border-border bg-card hover:border-primary/40 hover:bg-secondary text-xs font-semibold text-muted-foreground hover:text-foreground transition-all duration-200"
                     >
                       {q}
                     </button>
@@ -285,8 +285,8 @@ export default function ChatPage() {
                   className={`flex gap-4 w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0 mt-1">
-                      <Bot size={14} />
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0 mt-1">
+                      <Bot size={15} />
                     </div>
                   )}
 
@@ -321,7 +321,7 @@ export default function ChatPage() {
                                           documentName: source.document_name,
                                         });
                                       }}
-                                      className={`inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold rounded mx-0.5 align-text-top transition-colors ${selectedSource?.document_id === source.document_id
+                                      className={`inline-flex items-center justify-center min-w-[24px] h-6 px-1 text-[11px] font-bold rounded mx-0.5 align-text-top transition-colors ${selectedSource?.document_id === source.document_id
                                           ? 'bg-primary text-primary-foreground'
                                           : 'bg-primary/15 text-primary hover:bg-primary hover:text-primary-foreground'
                                         }`}
@@ -344,52 +344,52 @@ export default function ChatPage() {
                     {/* Footer Actions for Assistant Message */}
                     {msg.role === 'assistant' && msg.content && !isStreaming && (
                       <div className="flex flex-col gap-2.5 w-full pt-1">
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground flex-wrap gap-2">
+                          <div className="flex items-center gap-1">
                             <button
                               onClick={() => handleCopy(msg.id, msg.content)}
-                              className="p-1 hover:text-foreground transition-colors rounded"
+                              className="w-11 h-11 flex items-center justify-center hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                               title="Copier"
                             >
-                              {copiedId === msg.id ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                              {copiedId === msg.id ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
                             </button>
                             {lastUserMsg && (
                               <button
                                 onClick={() => handleRegenerate(lastUserMsg)}
-                                className="p-1 hover:text-foreground transition-colors rounded"
+                                className="w-11 h-11 flex items-center justify-center hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                                 title="Régénérer"
                               >
-                                <RefreshCw size={14} />
+                                <RefreshCw size={16} />
                               </button>
                             )}
-                            <div className="h-3 w-[1px] bg-border mx-1" />
+                            <div className="h-4 w-[1px] bg-border mx-1" />
                             <button
                               onClick={() => handleFeedback(msg.id, 'up')}
-                              className={`p-1 transition-colors rounded ${feedbackState[msg.id] === 'up' ? 'text-primary' : 'hover:text-foreground'}`}
+                              className={`w-11 h-11 flex items-center justify-center transition-colors rounded-lg hover:bg-secondary ${feedbackState[msg.id] === 'up' ? 'text-primary' : 'hover:text-foreground'}`}
                               title="Bonne réponse"
                             >
-                              <ThumbsUp size={14} />
+                              <ThumbsUp size={16} />
                             </button>
                             <button
                               onClick={() => handleFeedback(msg.id, 'down')}
-                              className={`p-1 transition-colors rounded ${feedbackState[msg.id] === 'down' ? 'text-red-500' : 'hover:text-foreground'}`}
+                              className={`w-11 h-11 flex items-center justify-center transition-colors rounded-lg hover:bg-secondary ${feedbackState[msg.id] === 'down' ? 'text-red-500' : 'hover:text-foreground'}`}
                               title="Réponse imprécise"
                             >
-                              <ThumbsDown size={14} />
+                              <ThumbsDown size={16} />
                             </button>
-                            <div className="h-3 w-[1px] bg-border mx-1" />
+                            <div className="h-4 w-[1px] bg-border mx-1" />
                             <button
                               onClick={() => handleOpenGapModal(msg, lastUserMsg)}
-                              className="p-1 hover:text-amber-600 transition-colors rounded text-muted-foreground flex items-center gap-1 text-[11px] font-medium"
+                              className="px-3 min-h-[44px] hover:text-amber-600 transition-colors rounded-lg text-muted-foreground flex items-center gap-1.5 text-xs font-semibold hover:bg-amber-500/10"
                               title="Signaler un manque d'information"
                             >
-                              <PlusCircle size={13} className="text-amber-500" />
+                              <PlusCircle size={15} className="text-amber-500" />
                               <span>Réponse incomplète ?</span>
                             </button>
                           </div>
 
                           {msg.cached ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full font-mono">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full font-mono">
                               ⚡ Cache ({msg.latency_ms}ms)
                             </span>
                           ) : msg.latency_ms ? (
@@ -421,12 +421,12 @@ export default function ChatPage() {
                                     documentName: src.document_name,
                                   });
                                 }}
-                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedSource?.document_name === src.document_name
+                                className={`flex items-center gap-2 px-3 min-h-[44px] rounded-xl text-xs border transition-colors ${selectedSource?.document_name === src.document_name
                                     ? 'bg-primary/10 border-primary text-primary font-semibold'
                                     : 'bg-secondary/40 border-border text-muted-foreground hover:text-foreground'
                                   }`}
                               >
-                                <FileText size={12} />
+                                <FileText size={14} />
                                 <span className="truncate max-w-[160px]">{src.document_name}</span>
                                 <span className="text-[10px] font-mono font-bold opacity-70">[{i + 1}]</span>
                               </button>
@@ -439,8 +439,8 @@ export default function ChatPage() {
                   </div>
 
                   {msg.role === 'user' && (
-                    <div className="w-7 h-7 rounded-lg bg-secondary border border-border text-foreground flex items-center justify-center shrink-0 mt-1">
-                      <User size={14} />
+                    <div className="w-8 h-8 rounded-lg bg-secondary border border-border text-foreground flex items-center justify-center shrink-0 mt-1">
+                      <User size={15} />
                     </div>
                   )}
                 </div>
@@ -455,9 +455,9 @@ export default function ChatPage() {
           <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10">
             <button
               onClick={stopGenerating}
-              className="flex items-center gap-2 px-3.5 py-1.5 bg-background border border-border text-foreground text-xs font-semibold rounded-full shadow-md hover:bg-secondary transition-all"
+              className="flex items-center gap-2 px-4 min-h-[44px] bg-background border border-border text-foreground text-xs font-semibold rounded-full shadow-md hover:bg-secondary transition-all"
             >
-              <Square size={12} fill="currentColor" /> Interrompre la génération
+              <Square size={13} fill="currentColor" /> Interrompre la génération
             </button>
           </div>
         )}
@@ -465,7 +465,7 @@ export default function ChatPage() {
         {/* Input Bar */}
         <div className="px-4 md:px-8 py-4 bg-background border-t border-border shrink-0">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-            <div className="relative flex items-center bg-secondary/30 border border-border rounded-xl px-4 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+            <div className="relative flex items-center bg-secondary/30 border border-border rounded-2xl px-4 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -474,15 +474,15 @@ export default function ChatPage() {
                 placeholder="Posez une question sur vos documents d'entreprise…"
                 rows={1}
                 disabled={isLoading}
-                className="flex-1 bg-transparent resize-none text-foreground placeholder:text-muted-foreground focus:outline-none text-sm leading-relaxed max-h-[160px] overflow-y-auto disabled:opacity-50 py-1"
-                style={{ minHeight: '26px' }}
+                className="flex-1 bg-transparent resize-none text-foreground placeholder:text-muted-foreground focus:outline-none text-sm leading-relaxed max-h-[160px] overflow-y-auto disabled:opacity-50 py-2"
+                style={{ minHeight: '36px' }}
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm ml-2"
+                className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm ml-2"
               >
-                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+                {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
               </button>
             </div>
             <p className="text-center text-[10px] text-muted-foreground mt-2 font-mono">
@@ -548,7 +548,7 @@ export default function ChatPage() {
 
             <div className="pt-3">
               <button
-                className="w-full py-2 bg-primary text-primary-foreground hover:bg-primary/90 border border-border rounded-xl font-medium transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                className="w-full min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90 border border-border rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                 onClick={() => setViewerParams({
                   documentId: selectedSource.document_id,
                   page: selectedSource.page,
@@ -556,7 +556,7 @@ export default function ChatPage() {
                   documentName: selectedSource.document_name
                 })}
               >
-                <Eye size={13} /> Aperçu interactif du document
+                <Eye size={14} /> Aperçu interactif du document
               </button>
             </div>
           </div>

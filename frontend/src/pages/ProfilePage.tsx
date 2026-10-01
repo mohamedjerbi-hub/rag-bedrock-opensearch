@@ -121,21 +121,21 @@ export default function ProfilePage() {
 
               <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-border/50">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Nom d'affichage</label>
+                  <label className="block text-xs font-semibold text-foreground mb-1.5">Nom d'affichage</label>
                   <input
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
+                    className="w-full px-4 min-h-[44px] rounded-xl border border-border bg-secondary/10 focus:outline-none focus:border-primary transition-all text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Adresse e-mail</label>
+                  <label className="block text-xs font-semibold text-foreground mb-1.5">Adresse e-mail</label>
                   <input
                     type="email"
                     value={user?.email}
                     disabled
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-secondary/30 text-muted-foreground cursor-not-allowed text-sm"
+                    className="w-full px-4 min-h-[44px] rounded-xl border border-border bg-secondary/30 text-muted-foreground cursor-not-allowed text-sm"
                   />
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function ProfilePage() {
               <div className="flex justify-end pt-2">
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm"
+                  className="px-5 min-h-[44px] bg-primary text-primary-foreground rounded-xl text-xs font-bold hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm"
                 >
                   <Save size={16} /> Sauvegarder
                 </button>
@@ -152,7 +152,7 @@ export default function ProfilePage() {
           </section>
 
           {/* Sécurité & Double Authentification (2FA) */}
-          <section className="bg-background border border-border rounded-2xl overflow-hidden shadow-sm">
+          <section className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-border/50 bg-secondary/20 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Lock className="text-primary" size={20} />
@@ -172,7 +172,7 @@ export default function ProfilePage() {
                 <button
                   onClick={handleStart2FASetup}
                   disabled={isLoading2FA}
-                  className="px-5 py-2.5 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm text-sm"
+                  className="px-5 min-h-[44px] bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm text-xs"
                 >
                   <QrCode size={18} /> Activer la double authentification (2FA)
                 </button>
@@ -194,7 +194,7 @@ export default function ProfilePage() {
                       Ouvrez votre application Google Authenticator ou Authy et scannez le code ci-dessous :
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-6 bg-background p-4 rounded-xl border border-border">
+                    <div className="flex flex-col sm:flex-row items-center gap-6 bg-card p-4 rounded-xl border border-border">
                       {qrCodeDataUrl ? (
                         <img src={qrCodeDataUrl} alt="2FA QR Code" className="w-40 h-40 object-contain rounded-lg border" />
                       ) : (
@@ -220,12 +220,12 @@ export default function ProfilePage() {
                           value={verifyCode}
                           onChange={e => setVerifyCode(e.target.value.replace(/\D/g, ''))}
                           placeholder="000000"
-                          className="flex-1 px-4 py-2 text-center text-lg font-mono font-bold tracking-widest rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary"
+                          className="flex-1 px-4 min-h-[44px] text-center text-lg font-mono font-bold tracking-widest rounded-xl border border-border bg-card focus:border-primary focus:outline-none"
                         />
                         <button
                           onClick={handleVerifyAndEnable2FA}
                           disabled={isLoading2FA}
-                          className="px-4 py-2 bg-primary text-primary-foreground font-semibold rounded-xl text-sm hover:bg-primary/90 transition-all shadow-sm"
+                          className="px-4 min-h-[44px] bg-primary text-primary-foreground font-bold rounded-xl text-xs hover:bg-primary/90 transition-all shadow-sm"
                         >
                           {isLoading2FA ? 'Vérification…' : 'Activer le 2FA'}
                         </button>
@@ -257,12 +257,12 @@ export default function ProfilePage() {
                         value={verifyCode}
                         onChange={e => setVerifyCode(e.target.value.replace(/\D/g, ''))}
                         placeholder="000000"
-                        className="flex-1 px-3 py-2 text-center text-base font-mono font-bold tracking-widest rounded-xl border border-border bg-background"
+                        className="flex-1 px-3 min-h-[44px] text-center text-base font-mono font-bold tracking-widest rounded-xl border border-border bg-card"
                       />
                       <button
                         onClick={handleDisable2FA}
                         disabled={isLoading2FA}
-                        className="px-4 py-2 bg-error text-error-foreground font-semibold rounded-xl text-xs hover:bg-error/90 transition-all"
+                        className="px-4 min-h-[44px] bg-error text-error-foreground font-bold rounded-xl text-xs hover:bg-error/90 transition-all"
                       >
                         {isLoading2FA ? 'Désactivation…' : 'Désactiver 2FA'}
                       </button>
@@ -274,39 +274,39 @@ export default function ProfilePage() {
           </section>
 
           {/* Préférences */}
-          <section className="bg-background border border-border rounded-2xl overflow-hidden shadow-sm">
+          <section className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-border/50 bg-secondary/20">
               <h2 className="font-semibold text-lg">Préférences de l'application</h2>
             </div>
             <div className="p-6 space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-3">Apparence</label>
+                  <label className="block text-xs font-semibold text-foreground mb-3">Apparence</label>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setTheme('light')}
-                      className={`flex-1 flex flex-col items-center justify-center gap-2 py-4 rounded-xl border transition-all ${theme === 'light' ? 'border-primary bg-primary/5 text-primary shadow-sm' : 'border-border text-muted-foreground hover:bg-secondary/50'}`}
+                      className={`flex-1 flex flex-col items-center justify-center gap-2 min-h-[64px] py-4 rounded-xl border transition-all ${theme === 'light' ? 'border-primary bg-primary/5 text-primary shadow-sm font-bold' : 'border-border text-muted-foreground hover:bg-secondary/50'}`}
                     >
                       <Sun size={24} />
-                      <span className="text-sm font-medium">Clair</span>
+                      <span className="text-xs font-semibold">Clair</span>
                     </button>
                     <button
                       onClick={() => setTheme('dark')}
-                      className={`flex-1 flex flex-col items-center justify-center gap-2 py-4 rounded-xl border transition-all ${theme === 'dark' ? 'border-primary bg-primary/5 text-primary shadow-sm' : 'border-border text-muted-foreground hover:bg-secondary/50'}`}
+                      className={`flex-1 flex flex-col items-center justify-center gap-2 min-h-[64px] py-4 rounded-xl border transition-all ${theme === 'dark' ? 'border-primary bg-primary/5 text-primary shadow-sm font-bold' : 'border-border text-muted-foreground hover:bg-secondary/50'}`}
                     >
                       <Moon size={24} />
-                      <span className="text-sm font-medium">Sombre</span>
+                      <span className="text-xs font-semibold">Sombre</span>
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">Langue de l'interface</label>
+                  <label className="block text-xs font-semibold text-foreground mb-1.5">Langue de l'interface</label>
                   <div className="relative">
                     <select
                       value={language}
                       onChange={e => setLanguage(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10 text-foreground appearance-none focus:ring-2 focus:ring-primary/40 focus:border-primary text-sm"
+                      className="w-full px-4 min-h-[44px] rounded-xl border border-border bg-secondary/10 text-foreground appearance-none focus:border-primary text-xs font-medium"
                     >
                       <option value="fr">Français (FR)</option>
                       <option value="en">English (US)</option>
@@ -319,20 +319,20 @@ export default function ProfilePage() {
           </section>
 
           {/* Zone de danger */}
-          <section className="bg-background border border-error/20 rounded-2xl overflow-hidden shadow-sm">
+          <section className="bg-card border border-error/20 rounded-2xl overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-error/20 bg-error/5">
               <h2 className="font-semibold text-lg text-error flex items-center gap-2">
                 <Trash2 size={20} /> Zone de danger
               </h2>
             </div>
             <div className="p-6 space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 La suppression de votre compte est définitive. Toutes vos données seront définitivement effacées.
               </p>
               {!isDeleting ? (
                 <button
                   onClick={() => setIsDeleting(true)}
-                  className="px-4 py-2 bg-error/10 text-error border border-error/20 rounded-xl text-sm font-medium hover:bg-error/20 transition-colors"
+                  className="px-4 min-h-[44px] bg-error/10 text-error border border-error/20 rounded-xl text-xs font-bold hover:bg-error/20 transition-colors"
                 >
                   Supprimer mon compte
                 </button>
@@ -346,19 +346,19 @@ export default function ProfilePage() {
                     value={deleteConfirm}
                     onChange={e => setDeleteConfirm(e.target.value)}
                     placeholder={user?.email}
-                    className="w-full px-3 py-2 rounded-lg border border-border text-sm"
+                    className="w-full px-3 min-h-[44px] rounded-xl border border-border text-xs bg-background"
                   />
                   <div className="flex gap-2">
                     <button
                       onClick={handleDelete}
                       disabled={deleteConfirm !== user?.email}
-                      className="px-3 py-1.5 bg-error text-error-foreground rounded-lg text-xs font-bold disabled:opacity-50"
+                      className="px-4 min-h-[44px] bg-error text-error-foreground rounded-xl text-xs font-bold disabled:opacity-50"
                     >
                       Confirmer la suppression
                     </button>
                     <button
                       onClick={() => { setIsDeleting(false); setDeleteConfirm(''); }}
-                      className="px-3 py-1.5 bg-secondary text-foreground rounded-lg text-xs"
+                      className="px-4 min-h-[44px] bg-secondary text-foreground rounded-xl text-xs font-semibold"
                     >
                       Annuler
                     </button>

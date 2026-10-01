@@ -47,7 +47,7 @@ export default function SidebarChatHistory() {
       <div className="p-3">
         <button
           onClick={addConversation}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-border bg-background hover:bg-secondary/80 text-foreground transition-all text-sm font-medium shadow-sm"
+          className="w-full flex items-center justify-center gap-2 px-4 min-h-[44px] rounded-xl border border-border bg-background hover:bg-secondary text-foreground transition-all text-sm font-semibold shadow-sm"
         >
           <Plus size={16} />
           Nouveau Chat
@@ -59,13 +59,13 @@ export default function SidebarChatHistory() {
           <div
             key={c.id}
             onClick={() => setActiveId(c.id)}
-            className={`group flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer transition-all text-xs ${
+            className={`group flex items-center justify-between px-3 min-h-[44px] py-1.5 rounded-xl cursor-pointer transition-all text-xs ${
               c.id === activeId
                 ? 'bg-secondary text-foreground font-medium shadow-sm border border-border'
                 : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground'
             }`}
           >
-            <div className="flex items-start gap-2.5 flex-1 min-w-0 py-1">
+            <div className="flex items-start gap-2.5 flex-1 min-w-0 py-0.5">
               <Clock size={14} className={`mt-0.5 shrink-0 ${c.id === activeId ? 'text-primary' : 'opacity-60'}`} />
               {editingId === c.id ? (
                 <div className="flex items-center gap-1 flex-1">
@@ -77,11 +77,11 @@ export default function SidebarChatHistory() {
                       if (e.key === 'Enter') saveRename(c.id);
                       if (e.key === 'Escape') setEditingId(null);
                     }}
-                    className="flex-1 bg-background text-foreground border border-border rounded px-2 py-1 text-xs focus:outline-none"
+                    className="flex-1 bg-background text-foreground border border-border rounded px-2 min-h-[36px] text-xs focus:outline-none"
                     onClick={e => e.stopPropagation()}
                   />
-                  <button onClick={() => saveRename(c.id)} className="text-green-500 p-1"><Check size={14} /></button>
-                  <button onClick={() => setEditingId(null)} className="text-red-500 p-1"><X size={14} /></button>
+                  <button onClick={() => saveRename(c.id)} className="text-green-500 min-h-[36px] min-w-[36px] flex items-center justify-center"><Check size={14} /></button>
+                  <button onClick={() => setEditingId(null)} className="text-red-500 min-h-[36px] min-w-[36px] flex items-center justify-center"><X size={14} /></button>
                 </div>
               ) : (
                 <div className="flex flex-col flex-1 min-w-0 leading-tight">
@@ -95,11 +95,11 @@ export default function SidebarChatHistory() {
 
             {c.id === activeId && editingId !== c.id && (
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-1">
-                <button onClick={(e) => startRename(c, e)} className="p-1 hover:bg-black/10 rounded transition-colors text-muted-foreground hover:text-foreground" title="Renommer">
-                  <Edit2 size={12} />
+                <button onClick={(e) => startRename(c, e)} className="w-8 h-8 flex items-center justify-center hover:bg-black/10 rounded transition-colors text-muted-foreground hover:text-foreground" title="Renommer">
+                  <Edit2 size={13} />
                 </button>
-                <button onClick={(e) => deleteConversation(c.id, e)} className="p-1 hover:bg-red-500/20 text-red-500 rounded transition-colors" title="Supprimer">
-                  <Trash2 size={12} />
+                <button onClick={(e) => deleteConversation(c.id, e)} className="w-8 h-8 flex items-center justify-center hover:bg-red-500/20 text-red-500 rounded transition-colors" title="Supprimer">
+                  <Trash2 size={13} />
                 </button>
               </div>
             )}

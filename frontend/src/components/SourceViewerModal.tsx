@@ -314,17 +314,17 @@ export function SourceViewerModal({
                 <>
                   <button
                     onClick={handleDownloadOriginal}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border text-xs font-medium transition-all"
+                    className="flex items-center gap-1.5 px-4 min-h-[44px] rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border text-xs font-semibold transition-all shadow-sm"
                     title="Télécharger l'original"
                   >
-                    <Download size={14} />
+                    <Download size={15} />
                     <span className="hidden sm:inline">Télécharger</span>
                   </button>
                   <a
                     href={signedData.signed_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
                     title="Ouvrir dans un nouvel onglet"
                   >
                     <ExternalLink size={17} />
@@ -334,7 +334,7 @@ export function SourceViewerModal({
               <div className="w-[1px] h-5 bg-border mx-1" />
               <button
                 onClick={onClose}
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-xl transition-colors"
+                className="w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary rounded-xl transition-colors"
               >
                 <X size={18} />
               </button>
@@ -413,14 +413,14 @@ export function SourceViewerModal({
             ) : fileExt === 'pdf' && fileBlob ? (
               <div className="flex flex-col items-center flex-1 space-y-4">
                 {/* PDF Controls */}
-                <div className="sticky top-0 z-20 flex items-center gap-2 bg-card/90 backdrop-blur border border-border px-4 py-2 rounded-2xl shadow-md text-xs font-medium">
+                <div className="sticky top-0 z-20 flex items-center gap-2 bg-card/90 backdrop-blur border border-border px-4 min-h-[44px] rounded-2xl shadow-md text-xs font-medium">
                   <button
                     disabled={pdfPageNumber <= 1}
                     onClick={() => setPdfPageNumber(p => Math.max(1, p - 1))}
-                    className="p-1.5 rounded-lg hover:bg-secondary disabled:opacity-30 transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-secondary disabled:opacity-30 transition-colors"
                     title="Page précédente"
                   >
-                    <ChevronLeft size={16} />
+                    <ChevronLeft size={18} />
                   </button>
                   <span className="font-mono px-2">
                     Page <strong>{pdfPageNumber}</strong> sur {numPages}
@@ -428,33 +428,33 @@ export function SourceViewerModal({
                   <button
                     disabled={pdfPageNumber >= numPages}
                     onClick={() => setPdfPageNumber(p => Math.min(numPages, p + 1))}
-                    className="p-1.5 rounded-lg hover:bg-secondary disabled:opacity-30 transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-secondary disabled:opacity-30 transition-colors"
                     title="Page suivante"
                   >
-                    <ChevronRight size={16} />
+                    <ChevronRight size={18} />
                   </button>
-                  <div className="w-[1px] h-4 bg-border mx-1" />
+                  <div className="w-[1px] h-5 bg-border mx-1" />
                   <button
                     onClick={() => setPdfScale(s => Math.max(0.6, s - 0.15))}
-                    className="p-1.5 rounded-lg hover:bg-secondary transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-secondary transition-colors"
                     title="Zoom arrière"
                   >
-                    <ZoomOut size={16} />
+                    <ZoomOut size={18} />
                   </button>
-                  <span className="font-mono text-[11px]">{Math.round(pdfScale * 100)}%</span>
+                  <span className="font-mono text-[11px] font-bold">{Math.round(pdfScale * 100)}%</span>
                   <button
                     onClick={() => setPdfScale(s => Math.min(2.0, s + 0.15))}
-                    className="p-1.5 rounded-lg hover:bg-secondary transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-secondary transition-colors"
                     title="Zoom avant"
                   >
-                    <ZoomIn size={16} />
+                    <ZoomIn size={18} />
                   </button>
                   <button
                     onClick={() => setPdfScale(1.0)}
-                    className="p-1.5 rounded-lg hover:bg-secondary transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-secondary transition-colors"
                     title="Réinitialiser"
                   >
-                    <RotateCcw size={15} />
+                    <RotateCcw size={17} />
                   </button>
                 </div>
 
@@ -491,7 +491,7 @@ export function SourceViewerModal({
                       <button
                         key={s.name}
                         onClick={() => setActiveSheetIdx(idx)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                        className={`px-4 min-h-[44px] rounded-xl text-xs font-bold transition-all ${
                           activeSheetIdx === idx
                             ? 'bg-emerald-600 text-white shadow-sm'
                             : 'bg-secondary text-muted-foreground hover:text-foreground'
