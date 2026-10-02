@@ -24,7 +24,6 @@ export function getCachedQuery(question: string): CachedQueryEntry | null {
   const entry = cacheStore.get(key);
   if (entry) {
     entry.hitCount++;
-    console.log(`[QueryCache] ⚡ CACHE HIT pour: "${question}" (Hit #${entry.hitCount})`);
     return entry;
   }
   return null;
@@ -46,8 +45,6 @@ export function setCachedQuery(question: string, answer: string, sources: any[])
     timestamp: new Date().toISOString(),
     hitCount: 0,
   });
-
-  console.log(`[QueryCache] 💾 Réponse mise en cache pour: "${question}"`);
 }
 
 export function clearQueryCache(): void {

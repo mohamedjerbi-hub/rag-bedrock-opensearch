@@ -42,3 +42,12 @@ tmp/
 **/tmp/
 *.traineddata
 
+# Backend runtime data (generated at startup, not to be committed)
+backend/data/audit_logs.json
+backend/data/local_users.json
+backend/data/user_roles.json
+backend/data/docs.json
+backend/data/chunks.json
+backend/data/queries.json
+backend/data/remarks.json
+backend/data/password_reset_tokens.json

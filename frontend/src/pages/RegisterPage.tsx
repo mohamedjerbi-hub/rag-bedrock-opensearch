@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { User, Lock, KeyRound, Mail, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../api/client';
+import { getErrorMessage, validateEmail, validatePassword } from '../lib/utils';
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -20,11 +21,11 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (!name.trim() || !email.trim() || !password) {
-      setError('Veuillez remplir tous les champs.');
-      return;
-    }
-
+    if (!name.trim()) { setError('Veuillez saisir votre nom.'); return; }
+    const emailErr = validateEmail(email);
+    if (emailErr) { setError(emailErr); return; }
+    const pwErr = validatePassword(password);
+    if (pwErr) { setError(pwErr); return; }
     if (password !== confirmPassword) {
       setError('Les mots de passe ne correspondent pas.');
       return;
@@ -36,8 +37,8 @@ export default function RegisterPage() {
       login(response.user, response.token);
       toast.success(`Bienvenue ${response.user.name}, votre compte a été créé avec succès.`);
       navigate('/chat');
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la création du compte.');
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Erreur lors de la création du compte.'));
     } finally {
       setIsLoading(false);
     }

@@ -33,8 +33,8 @@ export function getErrorMessage(err: unknown, fallback = 'Une erreur est survenu
   if (!err) return fallback;
   if (typeof err === 'string') return err;
   if (err instanceof Error) return err.message;
-  if (typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') {
-    return (err as any).message;
+  if (typeof err === 'object' && 'message' in err && typeof (err as Record<string, unknown>).message === 'string') {
+    return (err as Record<string, unknown>).message as string;
   }
   return fallback;
 }
@@ -43,3 +43,22 @@ export function getErrorMessage(err: unknown, fallback = 'Une erreur est survenu
 export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
+
+/** Validate email format — basic RFC-compliant check */
+export function validateEmail(email: string): string | null {
+  if (!email.trim()) return 'Email requis.';
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.trim())) return 'Adresse email invalide.';
+  return null;
+}
+
+/**
+ * Validate password strength.
+ * Minimum 8 characters — matches the backend constraint on /auth/reset-password.
+ */
+export function validatePassword(password: string): string | null {
+  if (!password) return 'Mot de passe requis.';
+  if (password.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+  return null;
+}
+

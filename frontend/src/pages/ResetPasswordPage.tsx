@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Lock, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../api/client';
+import { validatePassword } from '../lib/utils';
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
@@ -18,10 +19,8 @@ export default function ResetPasswordPage() {
       toast.error('Lien invalide (token manquant).');
       return;
     }
-    if (password.length < 8) {
-      toast.error('Minimum 8 caractères.');
-      return;
-    }
+    const pwErr = validatePassword(password);
+    if (pwErr) { toast.error(pwErr); return; }
     if (password !== confirm) {
       toast.error('Les mots de passe ne correspondent pas.');
       return;

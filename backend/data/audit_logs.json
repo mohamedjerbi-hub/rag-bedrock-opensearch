@@ -1,5 +1,317 @@
 [
   {
+    "id": "59c1e840-1aca-49ce-935d-0586cde51ba6",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "auditor_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:50.599Z"
+  },
+  {
+    "id": "0e8a8ba0-8dce-4ac0-ac28-6c8e1adba3a4",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "reader_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:43.219Z"
+  },
+  {
+    "id": "cf9a0652-dd67-4f5a-95bc-3d606221d6dc",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "editor_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:35.923Z"
+  },
+  {
+    "id": "ed498fde-8228-4273-933d-e4c8c73d50b3",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:28.538Z"
+  },
+  {
+    "id": "a0958818-19c7-44ac-b085-2fb8fb628fcc",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "reader_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Reader",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:21.214Z"
+  },
+  {
+    "id": "6acbc2eb-a4ee-4d11-a5e9-ebadff179980",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "reader_audit_1790899011723@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:21.209Z"
+  },
+  {
+    "id": "f771b0f0-b8fc-4572-b4dc-585bc39a0b72",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "auditor_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Auditor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:13.907Z"
+  },
+  {
+    "id": "5acf24c1-12f7-4394-ad64-87867add510d",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "auditor_audit_1790899011723@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:13.900Z"
+  },
+  {
+    "id": "75df4307-d513-4a29-a951-660fd0ef7732",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "editor_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Editor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:06.567Z"
+  },
+  {
+    "id": "33951c8a-ea13-478d-9f64-8b543e952624",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "editor_audit_1790899011723@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:57:06.541Z"
+  },
+  {
+    "id": "14e04203-6bb3-449f-beaa-619f3f61e3d2",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "admin_audit_1790899011723@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Admin",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:59.113Z"
+  },
+  {
+    "id": "cb57a6ee-26f7-46f5-a7cf-2e6906c37508",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "admin_audit_1790899011723@mjstudio.io",
+      "previous_role": "admin",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:59.105Z"
+  },
+  {
+    "id": "feabffcd-8446-4e19-8e59-b8e889b40a40",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "audit_auditor_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:24.510Z"
+  },
+  {
+    "id": "e0a2f29e-ac70-4cee-809d-51cf85157c4e",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "audit_reader_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:17.221Z"
+  },
+  {
+    "id": "e36859a4-7897-41ac-973e-3d36f25218e7",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "audit_editor_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:09.964Z"
+  },
+  {
+    "id": "7f841c69-b8e4-4b4e-8316-1bc90c83bd26",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "audit_admin_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:56:02.336Z"
+  },
+  {
+    "id": "553557ad-048d-4c2a-9d31-915066902099",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "audit_reader_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Reader",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:54.888Z"
+  },
+  {
+    "id": "7fec9555-988c-4d63-a402-6d55a4412617",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "audit_reader_1790898925805@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:54.882Z"
+  },
+  {
+    "id": "4b1a764e-6c62-4f17-a054-e3aef83c48fd",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "audit_auditor_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Auditor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:47.661Z"
+  },
+  {
+    "id": "9e10903f-260f-415d-ada7-cf616a4bfcf6",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "audit_auditor_1790898925805@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:47.657Z"
+  },
+  {
+    "id": "b43ffba5-91d0-43da-a0a5-b109e644571a",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "audit_editor_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Editor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:40.443Z"
+  },
+  {
+    "id": "932bc789-2d18-4388-8a31-9e5e45f64a64",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "audit_editor_1790898925805@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:40.439Z"
+  },
+  {
+    "id": "7c9242f7-2a6c-45e4-beef-ff78b8d2fa96",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "audit_admin_1790898925805@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Admin",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:33.222Z"
+  },
+  {
+    "id": "3ab5959e-cd9b-414a-bd62-de6bf764e627",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "audit_admin_1790898925805@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-01T23:55:33.202Z"
+  },
+  {
     "id": "957190cc-bba1-4069-a535-7ce331292bec",
     "event_type": "REFRESH_TOKEN",
     "severity": "info",

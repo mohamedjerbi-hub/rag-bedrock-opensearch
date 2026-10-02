@@ -411,11 +411,11 @@ export class MockEngine {
             for (const d of sbDocs) {
               this.documents.set(d.document_id, d as any);
             }
-            console.log(`[Engine] ✅ ${sbDocs.length} document(s) chargés depuis Supabase.`);
-          } else if (this.documents.size === 0) {
-            this._seedDemoFiles();
-          } else {
-            console.log(`[Engine] ${this.documents.size} document(s) chargés depuis la base locale.`);
+            if (sbDocs.length > 0) {
+              console.log(`[Engine] ${sbDocs.length} document(s) chargés depuis Supabase.`);
+            } else if (this.documents.size === 0) {
+              this._seedDemoFiles();
+            }
           }
         } catch (e: any) {
           console.error('[Engine] Supabase init error:', e?.message);
@@ -425,8 +425,6 @@ export class MockEngine {
     } else {
       if (this.documents.size === 0) {
         this._seedDemoFiles();
-      } else {
-        console.log(`[Engine] ${this.documents.size} document(s) chargés depuis la base locale.`);
       }
     }
   }
@@ -471,13 +469,12 @@ export class MockEngine {
           };
           const mimeType = mimeMap[ext] || 'application/octet-stream';
           await this._ingestBuffer(file, buffer, 'system', mimeType, null);
-          console.log(`  ✅ ${file}`);
         } catch (e: any) {
-          console.error(`  ❌ ${file}: ${e?.message}`);
+          console.error(`  [Engine] Seed error ${file}: ${e?.message}`);
         }
       }
       this._persist();
-      console.log('[Engine] Indexation demo_files terminée.');
+      console.log(`[Engine] Seed demo_files: ${files.length} fichier(s) indexé(s).`);
     })().catch(console.error);
   }
 
@@ -526,7 +523,6 @@ export class MockEngine {
     // Step 2: Extraction phase
 
     this._updateDocStatus(document_id, 'extracting');
-    console.log(`[Engine] 📄 Extraction de "${name}"…`);
 
     const parseResult = await parseDocumentBuffer(name, buffer, mimeType);
 
@@ -535,21 +531,19 @@ export class MockEngine {
         error_message: parseResult.error,
         chunk_count: 0,
       });
-      console.error(`[Engine] ❌ Extraction échouée pour "${name}": ${parseResult.error}`);
+      console.error(`[Engine] Extraction échouée pour "${name}": ${parseResult.error}`);
       this._persist();
       return document_id;
     }
 
     // Step 3: Chunking phase
     this._updateDocStatus(document_id, 'chunking');
-    console.log(`[Engine] ✂️  Découpage de "${name}" → ${parseResult.chunks.length} chunks…`);
 
     // Small delay to let status propagate
     await new Promise(r => setTimeout(r, 50));
 
     // Step 4: Vectorization phase
     this._updateDocStatus(document_id, 'vectorizing');
-    console.log(`[Engine] 🔢 Vectorisation de "${name}"…`);
 
     const chunksToInsertSb: any[] = [];
     for (let i = 0; i < parseResult.chunks.length; i++) {
@@ -580,7 +574,6 @@ export class MockEngine {
     await sbUpsertDocument({ ...doc, status: 'indexed', ...extraDocProps } as any);
     await sbInsertChunks(chunksToInsertSb);
 
-    console.log(`[Engine] ✅ "${name}" indexé : ${parseResult.chunks.length} chunks.`);
     return document_id;
   }
 

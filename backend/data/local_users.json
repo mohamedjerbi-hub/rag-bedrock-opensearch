@@ -56,5 +56,69 @@
     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlckBzbWFydGRvY3MuYWkiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NzkwODYxMCwiZXhwIjoxNzg4NTEzNDEwfQ.6U0gfl99v3azaK6RDZeGJXqGh0PC4augXjKFkrM_JyE",
     "totp_secret": "XY6WENTVHY74Q3PYG3I7",
     "totp_enabled": false
+  },
+  {
+    "email": "audit_admin_1790898925805@mjstudio.io",
+    "name": "Audit Admin",
+    "role": "reader",
+    "password_hash": "$2b$10$4GTiBwR2cUHIKO/93V1qn.ZxCfoo0vFFogSROFARUzi03O1PI5vhG",
+    "created_at": "2026-10-01T23:55:33.192Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0X2FkbWluXzE3OTA4OTg5MjU4MDVAbWpzdHVkaW8uaW8iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc5MDg5ODk2MiwiZXhwIjoxNzkxNTAzNzYyfQ.6t-qhpzB3pu25QTc0W9YD2arLwtJZDxkUeceIM-ObhQ"
+  },
+  {
+    "email": "audit_editor_1790898925805@mjstudio.io",
+    "name": "Audit Editor",
+    "role": "reader",
+    "password_hash": "$2b$10$Jda/VPO75XPsc2vdB2dOkutafB1SoS26NIAJ0n6q67fq/coohp/D2",
+    "created_at": "2026-10-01T23:55:40.436Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0X2VkaXRvcl8xNzkwODk4OTI1ODA1QG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTA4OTg5NjksImV4cCI6MTc5MTUwMzc2OX0._GGhFDfAsHcYiaVd-W6lFzZuLDjC969MFQz40pagrgI"
+  },
+  {
+    "email": "audit_auditor_1790898925805@mjstudio.io",
+    "name": "Audit Auditor",
+    "role": "reader",
+    "password_hash": "$2b$10$0AXyY9soWGGCMFdy77Lpa.6wYdFojRlnc0upjmUGth1drZHwhTr5q",
+    "created_at": "2026-10-01T23:55:47.648Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0X2F1ZGl0b3JfMTc5MDg5ODkyNTgwNUBtanN0dWRpby5pbyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzkwODk4OTg0LCJleHAiOjE3OTE1MDM3ODR9.VK-x7AoA7ORmgZprK_-KFlvkMDDc6TsVTGSNFVwIZy4"
+  },
+  {
+    "email": "audit_reader_1790898925805@mjstudio.io",
+    "name": "Audit Reader",
+    "role": "reader",
+    "password_hash": "$2b$10$eG/h.9xKLkzp577CxnqczOGSzr6SPq.vT4aK21ReleoVaqGJR9I4G",
+    "created_at": "2026-10-01T23:55:54.879Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0X3JlYWRlcl8xNzkwODk4OTI1ODA1QG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTA4OTg5NzcsImV4cCI6MTc5MTUwMzc3N30.emA2ryI6YnXfvbHEFppjIXyNQDzfV-Za23ijOvUtlTg"
+  },
+  {
+    "email": "admin_audit_1790899011723@mjstudio.io",
+    "name": "Audit Admin",
+    "role": "reader",
+    "password_hash": "$2b$10$8ev9vtopVcWZ9vEqutEBIOUwmYVXfvZ30DLyofK9w2TZobi6FC1fq",
+    "created_at": "2026-10-01T23:56:59.099Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluX2F1ZGl0XzE3OTA4OTkwMTE3MjNAbWpzdHVkaW8uaW8iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc5MDg5OTA0OCwiZXhwIjoxNzkxNTAzODQ4fQ.9v6aH2HsN7zCeE3Qd_YzAIKBuyZ4hay-StIE2JTiDFE"
+  },
+  {
+    "email": "editor_audit_1790899011723@mjstudio.io",
+    "name": "Audit Editor",
+    "role": "reader",
+    "password_hash": "$2b$10$o0Dy2.38HeeexhA80AwmJ.VmRxfNfGR5ZdDjWMOcsYlIjr8zUTZqa",
+    "created_at": "2026-10-01T23:57:06.538Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkaXRvcl9hdWRpdF8xNzkwODk5MDExNzIzQG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTA4OTkwNTUsImV4cCI6MTc5MTUwMzg1NX0.aM0wY4i6X1XFuPBhHycg3ZOtqZQHeQwIYeg35ydhYxo"
+  },
+  {
+    "email": "auditor_audit_1790899011723@mjstudio.io",
+    "name": "Audit Auditor",
+    "role": "reader",
+    "password_hash": "$2b$10$dL6b3Xa81UoUdfbrR2NeUOCJbRh9RtARooqoZTtN1SoSu90xtkWI6",
+    "created_at": "2026-10-01T23:57:13.895Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0b3JfYXVkaXRfMTc5MDg5OTAxMTcyM0BtanN0dWRpby5pbyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzkwODk5MDcwLCJleHAiOjE3OTE1MDM4NzB9.g9cVq8RwF0aGRheSoRqVOi6e_PgUNMM9tsC_4nCBkw4"
+  },
+  {
+    "email": "reader_audit_1790899011723@mjstudio.io",
+    "name": "Audit Reader",
+    "role": "reader",
+    "password_hash": "$2b$10$eTGa8.nQHNLKn21jXKgMAuxBNayBhTNPmeH0GHL4ZsAqSyiyfSkv6",
+    "created_at": "2026-10-01T23:57:21.195Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlcl9hdWRpdF8xNzkwODk5MDExNzIzQG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTA4OTkwNjMsImV4cCI6MTc5MTUwMzg2M30.8zFA2jraNjoCyHhrytyPMnikupx_SncMPbaE7kjOxYk"
   }
 ]

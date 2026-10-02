@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { User, Lock, ArrowRight, ShieldCheck, CheckCircle2, KeyRound } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../api/client';
-import { getErrorMessage } from '../lib/utils';
+import { getErrorMessage, validateEmail, validatePassword } from '../lib/utils';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -43,10 +43,10 @@ export default function LoginPage() {
       return;
     }
 
-    if (!email.trim() || !password) {
-      setError('Veuillez saisir votre email et mot de passe.');
-      return;
-    }
+    const emailErr = validateEmail(email);
+    if (emailErr) { setError(emailErr); return; }
+    const pwErr = validatePassword(password);
+    if (pwErr) { setError(pwErr); return; }
 
     setIsLoading(true);
     try {

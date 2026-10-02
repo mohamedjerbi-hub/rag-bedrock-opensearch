@@ -47,5 +47,61 @@
     "active": true,
     "assigned_by": "system",
     "updated_at": "2026-08-28T02:35:12.948Z"
+  },
+  "audit_admin_1790898925805@mjstudio.io": {
+    "email": "audit_admin_1790898925805@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:55:33.199Z"
+  },
+  "audit_editor_1790898925805@mjstudio.io": {
+    "email": "audit_editor_1790898925805@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:55:40.438Z"
+  },
+  "audit_auditor_1790898925805@mjstudio.io": {
+    "email": "audit_auditor_1790898925805@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:55:47.656Z"
+  },
+  "audit_reader_1790898925805@mjstudio.io": {
+    "email": "audit_reader_1790898925805@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:55:54.882Z"
+  },
+  "admin_audit_1790899011723@mjstudio.io": {
+    "email": "admin_audit_1790899011723@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:56:59.103Z"
+  },
+  "editor_audit_1790899011723@mjstudio.io": {
+    "email": "editor_audit_1790899011723@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:57:06.541Z"
+  },
+  "auditor_audit_1790899011723@mjstudio.io": {
+    "email": "auditor_audit_1790899011723@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:57:13.899Z"
+  },
+  "reader_audit_1790899011723@mjstudio.io": {
+    "email": "reader_audit_1790899011723@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-01T23:57:21.208Z"
   }
 }

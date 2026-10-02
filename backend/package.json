@@ -20,7 +20,6 @@
     "@azure/openai": "^2.0.0",
     "@opensearch-project/opensearch": "^3.6.0",
     "@supabase/supabase-js": "^2.112.3",
-    "aws-serverless-express": "^3.4.0",
     "bcryptjs": "^3.0.3",
     "cohere-ai": "^8.0.0",
     "cors": "^2.8.6",
@@ -41,7 +40,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/aws-serverless-express": "^3.3.10",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
