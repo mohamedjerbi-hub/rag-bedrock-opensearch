@@ -1,4 +1,30 @@
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001').replace(/\/$/, '');
+export function getApiBaseUrl(): string {
+  // 1. Check window runtime override (e.g. injected at runtime)
+  if (typeof window !== 'undefined' && (window as any).__API_BASE_URL__) {
+    return String((window as any).__API_BASE_URL__).trim().replace(/\/$/, '');
+  }
+
+  // 2. Read Vite build-time environment variable
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    return envUrl.trim().replace(/\/$/, '');
+  }
+
+  // 3. Check if running in production (Vercel or non-localhost domain)
+  const isProduction = import.meta.env.PROD || (
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1'
+  );
+
+  if (isProduction) {
+    console.warn('[API Client] ⚠️ VITE_API_BASE_URL est manquant ou vide en production. Assurez-vous d\'avoir défini VITE_API_BASE_URL dans Vercel.');
+  }
+
+  return 'http://localhost:3001';
+}
+
+const API_BASE = getApiBaseUrl();
 
 function getHeaders(): Record<string, string> {
   const token = localStorage.getItem('jwtToken');
