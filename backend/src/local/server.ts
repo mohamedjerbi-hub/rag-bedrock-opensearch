@@ -168,7 +168,14 @@ async function createUserLocal(email: string, passwordHash: string, name: string
 // ─── Middleware & Auth ────────────────────────────────────────────────────────
 app.use(securityHeadersMiddleware);
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
+// Handle preflight OPTIONS requests for all routes in Express 5 safely
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.method === 'OPTIONS') {
+    return cors(corsOptions)(req, res, next);
+  }
+  next();
+});
 app.use('/internal/upload/:id', express.raw({ type: '*/*', limit: '50mb' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.text({ limit: '50mb' }));
