@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { CohereClient } from 'cohere-ai';
+import { AzureOpenAI } from 'openai';
 import { parseDocumentBuffer } from '../services/parser';
 import { getSupabaseClient } from '../services/supabaseClient';
 import {
@@ -18,8 +19,22 @@ function getCohereClient() {
   return cohere;
 }
 
-let azureOpenAI: any = null;
-function getAzureOpenAIClient() {
+let azureOpenAI: AzureOpenAI | null = null;
+function getAzureOpenAIClient(): AzureOpenAI | null {
+  const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
+  const apiKey = process.env.AZURE_OPENAI_API_KEY;
+  if (!azureOpenAI && endpoint && apiKey && !endpoint.includes('your-resource') && apiKey.trim() !== '') {
+    try {
+      azureOpenAI = new AzureOpenAI({
+        endpoint,
+        apiKey,
+        apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-06-01',
+      });
+      console.log('[Azure OpenAI] ✅ Client initialisé ->', endpoint);
+    } catch (e: any) {
+      console.error('[Azure OpenAI] ❌ Erreur init:', e?.message);
+    }
+  }
   return azureOpenAI;
 }
 
@@ -114,7 +129,10 @@ async function getEmbedding(text: string): Promise<number[]> {
   if (azure) {
     try {
       const deployment = process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT || 'text-embedding-3-small';
-      const result = await azure.getEmbeddings(deployment, [text]);
+      const result = await azure.embeddings.create({
+        model: deployment,
+        input: text
+      });
       if (result.data?.[0]?.embedding) return result.data[0].embedding;
     } catch (e: any) {
       console.error('[Azure OpenAI] Embedding error:', e?.message);
@@ -145,7 +163,10 @@ async function getQueryEmbedding(text: string): Promise<number[]> {
   if (azure) {
     try {
       const deployment = process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT || 'text-embedding-3-small';
-      const result = await azure.getEmbeddings(deployment, [text]);
+      const result = await azure.embeddings.create({
+        model: deployment,
+        input: text
+      });
       if (result.data?.[0]?.embedding) return result.data[0].embedding;
     } catch (e: any) {
       console.error('[Azure OpenAI] Query embedding error:', e?.message);
@@ -312,9 +333,11 @@ async function generateAnswer(
         { role: 'user' as const, content: userMessage }
       ];
 
-      const resp = await azure.getChatCompletions(deployment, messages, {
+      const resp = await azure.chat.completions.create({
+        model: deployment,
+        messages,
         temperature: 0.1,
-        maxTokens: 2500,
+        max_tokens: 2500,
       });
 
       if (resp.choices[0]?.message?.content) {

@@ -30,6 +30,7 @@
     "mammoth": "^1.12.1",
     "multer": "^2.2.0",
     "nodemailer": "^6.10.1",
+    "openai": "^7.27.0",
     "otplib": "^13.5.0",
     "pdf-parse": "^2.4.5",
     "qrcode": "^1.5.4",
