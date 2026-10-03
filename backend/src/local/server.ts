@@ -47,7 +47,43 @@ if (IS_MOCK && !process.env.JWT_SECRET) {
   console.warn('[WARN] JWT_SECRET par défaut utilisé — OK en dev, interdit en production.');
 }
 
-const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000,https://rag-bedrock-opensearch.vercel.app').split(',').map(s => s.trim());
+const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000,https://rag-bedrock-opensearch.vercel.app')
+  .split(',')
+  .map(s => s.trim());
+
+function isOriginAllowed(origin: string | undefined): boolean {
+  // 1. Allow server-to-server, mobile apps, or curl requests (no Origin header)
+  if (!origin) return true;
+
+  // 2. Allow wildcard if explicitly set
+  if (CORS_ORIGINS.includes('*')) return true;
+
+  // 3. Allow exact matches from CORS_ORIGINS
+  if (CORS_ORIGINS.includes(origin)) return true;
+
+  // 4. Dynamically allow all Vercel production & preview deployments (*.vercel.app)
+  if (/^https:\/\/([a-zA-Z0-9-]+\.)*vercel\.app$/i.test(origin)) return true;
+
+  // 5. Allow local development ports
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return true;
+
+  return false;
+}
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (isOriginAllowed(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 204,
+};
+
 const engine = new MockEngine();
 
 function getApiBaseUrl(req: Request): string {
@@ -131,16 +167,8 @@ async function createUserLocal(email: string, passwordHash: string, name: string
 
 // ─── Middleware & Auth ────────────────────────────────────────────────────────
 app.use(securityHeadersMiddleware);
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || CORS_ORIGINS.includes('*') || CORS_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use('/internal/upload/:id', express.raw({ type: '*/*', limit: '50mb' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.text({ limit: '50mb' }));
