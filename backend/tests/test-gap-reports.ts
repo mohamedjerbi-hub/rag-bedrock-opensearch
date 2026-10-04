@@ -8,7 +8,7 @@ import {
   getKnowledgeGapStats, 
   checkUserGapRateLimit,
   createGapSchema
-} from './services/knowledgeGapStore';
+} from '../src/services/knowledgeGapStore';
 
 async function runAcceptanceTests() {
   console.log('======================================================================');

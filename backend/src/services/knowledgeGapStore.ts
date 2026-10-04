@@ -125,10 +125,19 @@ function writeComments(comments: KnowledgeGapComment[]) {
   fs.writeFileSync(COMMENTS_FILE, JSON.stringify(comments, null, 2), 'utf-8');
 }
 
-// Generate sequential ticket number #GAP-000101
+// Generate date-based ticket number GAP-AAAAMMJJ-XXXX
 function generateTicketNumber(existingGaps: KnowledgeGap[]): string {
-  const nextNum = existingGaps.length + 101;
-  return `#GAP-${String(nextNum).padStart(6, '0')}`;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const dateStr = `${year}${month}${day}`;
+
+  const todayPrefix = `GAP-${dateStr}-`;
+  const todayGaps = existingGaps.filter(g => g.ticket_number && g.ticket_number.startsWith(todayPrefix));
+  const seq = String(todayGaps.length + 1).padStart(4, '0');
+
+  return `GAP-${dateStr}-${seq}`;
 }
 
 // Simple Levenshtein-based similarity for grouping similar questions
