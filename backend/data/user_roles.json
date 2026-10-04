@@ -103,5 +103,33 @@
     "active": true,
     "assigned_by": "system",
     "updated_at": "2026-10-01T23:57:21.208Z"
+  },
+  "admin_audit_1791075094185@mjstudio.io": {
+    "email": "admin_audit_1791075094185@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-04T00:51:41.502Z"
+  },
+  "editor_audit_1791075094185@mjstudio.io": {
+    "email": "editor_audit_1791075094185@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-04T00:51:48.680Z"
+  },
+  "auditor_audit_1791075094185@mjstudio.io": {
+    "email": "auditor_audit_1791075094185@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-04T00:51:55.844Z"
+  },
+  "reader_audit_1791075094185@mjstudio.io": {
+    "email": "reader_audit_1791075094185@mjstudio.io",
+    "role": "reader",
+    "active": true,
+    "assigned_by": "system",
+    "updated_at": "2026-10-04T00:52:03.013Z"
   }
 }

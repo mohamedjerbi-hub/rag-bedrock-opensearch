@@ -120,5 +120,37 @@
     "password_hash": "$2b$10$eTGa8.nQHNLKn21jXKgMAuxBNayBhTNPmeH0GHL4ZsAqSyiyfSkv6",
     "created_at": "2026-10-01T23:57:21.195Z",
     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlcl9hdWRpdF8xNzkwODk5MDExNzIzQG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTA4OTkwNjMsImV4cCI6MTc5MTUwMzg2M30.8zFA2jraNjoCyHhrytyPMnikupx_SncMPbaE7kjOxYk"
+  },
+  {
+    "email": "admin_audit_1791075094185@mjstudio.io",
+    "name": "Audit Admin",
+    "role": "reader",
+    "password_hash": "$2b$10$veZvC4yVKhHiMlXsNjN.zeIn7HGhI9jtRns/apC9vQTD8vFwBY3p6",
+    "created_at": "2026-10-04T00:51:41.496Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluX2F1ZGl0XzE3OTEwNzUwOTQxODVAbWpzdHVkaW8uaW8iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc5MTA3NTEzMSwiZXhwIjoxNzkxNjc5OTMxfQ.jM2GBjCY1eJ0J9c55SiktUFCquytdNlEuYb65LMCwYM"
+  },
+  {
+    "email": "editor_audit_1791075094185@mjstudio.io",
+    "name": "Audit Editor",
+    "role": "reader",
+    "password_hash": "$2b$10$2zLV3RoH2ROWHNXN93iS8e8NGPIYwzvwABTne4FUJ/rmVFLBtt.K2",
+    "created_at": "2026-10-04T00:51:48.679Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkaXRvcl9hdWRpdF8xNzkxMDc1MDk0MTg1QG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTEwNzUxMzgsImV4cCI6MTc5MTY3OTkzOH0.wPLBPPfJuQaP1TitwhTV6LMul4iayxYP2NAscjSs22c"
+  },
+  {
+    "email": "auditor_audit_1791075094185@mjstudio.io",
+    "name": "Audit Auditor",
+    "role": "reader",
+    "password_hash": "$2b$10$tZN8EijvxJwe5Q.lMZKSxuj2INxzBin032ADFICYJUAuRorxM5nwi",
+    "created_at": "2026-10-04T00:51:55.842Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF1ZGl0b3JfYXVkaXRfMTc5MTA3NTA5NDE4NUBtanN0dWRpby5pbyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzkxMDc1MTUyLCJleHAiOjE3OTE2Nzk5NTJ9.PhOqCgjLglx8ZFmd2jwHFi60wZSNhhUyN5XDdXKy_XA"
+  },
+  {
+    "email": "reader_audit_1791075094185@mjstudio.io",
+    "name": "Audit Reader",
+    "role": "reader",
+    "password_hash": "$2b$10$P0ziGz1I1G4bzaM5zxMzCux9IHAuMiiSCuB5EW261li4SPOzw9zn6",
+    "created_at": "2026-10-04T00:52:02.998Z",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlYWRlcl9hdWRpdF8xNzkxMDc1MDk0MTg1QG1qc3R1ZGlvLmlvIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3OTEwNzUxNDUsImV4cCI6MTc5MTY3OTk0NX0.NfXQDx0CSKZctrJDayHM5rbtDlTxXPQ14XRcsQLkTQE"
   }
 ]

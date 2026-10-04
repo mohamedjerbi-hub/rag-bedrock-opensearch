@@ -1,5 +1,161 @@
 [
   {
+    "id": "2c7d4471-5036-481e-ab60-2869a3982e8b",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "auditor_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:32.664Z"
+  },
+  {
+    "id": "aef6db3f-036a-4422-b28d-db3ff364e867",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "reader_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:25.514Z"
+  },
+  {
+    "id": "e11e7609-98ff-4119-b27c-016ab38b2355",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "editor_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:18.337Z"
+  },
+  {
+    "id": "9659e66f-afc9-4f8f-941e-1130e68c8cd9",
+    "event_type": "LOGIN_SUCCESS",
+    "severity": "info",
+    "user_email": "admin_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:11.173Z"
+  },
+  {
+    "id": "60e3cdeb-8e49-4d9a-9af7-bc399851d374",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "reader_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Reader",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:03.019Z"
+  },
+  {
+    "id": "baea19d2-81ab-4c8e-bd9b-41a191b517d8",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "reader_audit_1791075094185@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-04T00:52:03.014Z"
+  },
+  {
+    "id": "07db87fe-a77d-4cf6-b800-17e782e1728d",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "auditor_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Auditor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:55.847Z"
+  },
+  {
+    "id": "70811bc8-dc7f-44ef-9442-1429fc03ea16",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "auditor_audit_1791075094185@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:55.844Z"
+  },
+  {
+    "id": "c555c220-d970-4242-bc8e-28de41553b20",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "editor_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Editor",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:48.683Z"
+  },
+  {
+    "id": "3b8f7381-3920-4a5b-921b-1bfa04c3a182",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "editor_audit_1791075094185@mjstudio.io",
+      "previous_role": "reader",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:48.680Z"
+  },
+  {
+    "id": "b036359f-dbeb-4caa-9b60-113afbb7b766",
+    "event_type": "REGISTER",
+    "severity": "info",
+    "user_email": "admin_audit_1791075094185@mjstudio.io",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "name": "Audit Admin",
+      "role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:41.511Z"
+  },
+  {
+    "id": "41540b76-2413-4343-aa41-97ec8013e62b",
+    "event_type": "USER_ROLE_CHANGE",
+    "severity": "warning",
+    "user_email": "system",
+    "ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "details": {
+      "target_user": "admin_audit_1791075094185@mjstudio.io",
+      "previous_role": "admin",
+      "new_role": "reader"
+    },
+    "timestamp": "2026-10-04T00:51:41.503Z"
+  },
+  {
     "id": "59c1e840-1aca-49ce-935d-0586cde51ba6",
     "event_type": "LOGIN_SUCCESS",
     "severity": "info",

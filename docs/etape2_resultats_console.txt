@@ -1,0 +1,7 @@
+============================================================
+VALIDATION ÉTAPE 2 — MJ Studio RAG
+Date : 2026-10-03T18:33:55.252Z
+============================================================
+
+ERREUR : Backend inaccessible sur http://localhost:3001
+Lancez : cd backend && npm run dev
