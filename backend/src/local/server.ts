@@ -1108,15 +1108,15 @@ app.post('/api/gaps', authenticate, (req: Request, res: Response) => {
   });
 });
 
-// GET /api/gaps - Get gaps (Strict RLS: standard users see ONLY their own gaps; Editor/Admin see all)
+// GET /api/gaps - Get gaps (Strict RLS: standard users see ONLY their own gaps; Editor/Admin/Auditor see all)
 app.get('/api/gaps', authenticate, (req: Request, res: Response) => {
   const user = (req as any).user;
-  const isElevated = user.role === 'admin' || user.role === 'editor';
+  const isElevated = user.role === 'admin' || user.role === 'editor' || user.role === 'auditor';
 
   const filters: any = {};
 
   if (!isElevated) {
-    // RLS Enforcement: Force user_email filter for non-editors/admins
+    // RLS Enforcement: Force user_email filter for non-editors/admins/auditors
     filters.user_email = user.email;
   } else {
     if (req.query.status) filters.status = req.query.status as any;
@@ -1130,8 +1130,8 @@ app.get('/api/gaps', authenticate, (req: Request, res: Response) => {
   res.json({ items });
 });
 
-// GET /api/gaps/stats/summary - Summary metrics for Admin/Editor
-app.get('/api/gaps/stats/summary', authenticate, requireRoles(['admin', 'editor']), (req: Request, res: Response) => {
+// GET /api/gaps/stats/summary - Summary metrics for Admin/Editor/Auditor
+app.get('/api/gaps/stats/summary', authenticate, requireRoles(['admin', 'editor', 'auditor']), (req: Request, res: Response) => {
   res.json(getKnowledgeGapStats());
 });
 
@@ -1152,7 +1152,7 @@ app.get('/api/gaps/:id', authenticate, (req: Request, res: Response) => {
     return apiError(res, 404, 'NOT_FOUND', 'Signalement introuvable.');
   }
 
-  const isElevated = user.role === 'admin' || user.role === 'editor';
+  const isElevated = user.role === 'admin' || user.role === 'editor' || user.role === 'auditor';
   if (!isElevated && gap.user_email.toLowerCase() !== user.email.toLowerCase()) {
     return apiError(res, 403, 'FORBIDDEN', 'Vous n\'avez pas accès à ce signalement.');
   }
