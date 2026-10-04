@@ -51,3 +51,8 @@ backend/data/chunks.json
 backend/data/queries.json
 backend/data/remarks.json
 backend/data/password_reset_tokens.json
+backend/data/knowledge_gaps.json
+
+# Temporary files
+extracted_pdf_text.txt
+*.pdf
