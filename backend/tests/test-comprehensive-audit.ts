@@ -1,7 +1,7 @@
 import http from 'http';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { parseDocumentBuffer } from './services/parser';
+import { parseDocumentBuffer } from '../src/services/parser';
 import * as XLSX from 'xlsx';
 
 const HOST = 'localhost';
@@ -280,6 +280,10 @@ async function runAudit() {
 
   console.log('5.1 Matrice d\'autorisation RBAC (API Endpoints) :');
   const rbacTests = [
+    { role: 'Reader', token: readerToken, path: '/stats', method: 'GET', expected: 403 },
+    { role: 'Auditor', token: auditorToken, path: '/stats', method: 'GET', expected: 403 },
+    { role: 'Editor', token: editorToken, path: '/stats', method: 'GET', expected: 403 },
+    { role: 'Admin', token: adminToken, path: '/stats', method: 'GET', expected: 200 },
     { role: 'Reader', token: readerToken, path: '/admin/users', method: 'GET', expected: 403 },
     { role: 'Reader', token: readerToken, path: '/audit/security-logs', method: 'GET', expected: 403 },
     { role: 'Auditor', token: auditorToken, path: '/audit/security-logs', method: 'GET', expected: 200 },

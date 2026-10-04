@@ -1043,7 +1043,7 @@ app.post('/documents/:id/reindex', authenticate, requireRoles(['admin', 'editor'
 // STATS  &  HISTORY
 // ─────────────────────────────────────────────────────────────────────────────
 
-app.get('/stats', authenticate, (req: Request, res: Response) => {
+app.get('/stats', authenticate, requireRoles(['admin']), (req: Request, res: Response) => {
   res.json(engine.getStats());
 });
 
